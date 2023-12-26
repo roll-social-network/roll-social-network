@@ -3,10 +3,11 @@ phone auth models
 """
 import random
 import string
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.conf import settings
+from django.utils import timezone
 
 def fill_code() -> str:
     """
@@ -19,7 +20,7 @@ def fill_valid_until():
     """
     fill valid until field considering PHONE_AUTH_VALIDATION_CODE_TTL setting
     """
-    return datetime.now() + timedelta(minutes=settings.PHONE_AUTH_VALIDATION_CODE_TTL)
+    return timezone.now() + timedelta(minutes=settings.PHONE_AUTH_VALIDATION_CODE_TTL)
 
 class VerificationCode(models.Model):
     """
