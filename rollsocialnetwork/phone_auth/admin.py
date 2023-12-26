@@ -8,8 +8,11 @@ class VerificationCodeAdmin(admin.ModelAdmin):
     """
     VerificationCode model admin
     """
+    fields = [
+        "user",
+        "valid_until",
+    ]
     readonly_fields = [
-        "code",
         "valid_until",
     ]
 
