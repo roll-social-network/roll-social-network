@@ -4,7 +4,7 @@ from .utils import (
     get_or_create_user,
     normalize_phone_number,
 )
-from rollsocialnetwork.phone_auth.models import VerificationCode
+from .models import VerificationCode
 
 PHONE_1 = "+55 11 98070-6050"
 PHONE_2 = "+55 11 98070-6051"
@@ -28,3 +28,21 @@ class VerificationCodeRequestTestCase(TestCase):
     def test_request_ok(self):
         verification_code = VerificationCode.request(PHONE_1)
         self.assertIsNotNone(verification_code.pk)
+
+class VerificationCodeVerifyTestCase(TestCase):
+    def setUp(self):
+        verification_code = VerificationCode.request(PHONE_1)
+        self.code = verification_code.code
+
+    def test_verify_ok(self):
+        verification_code = VerificationCode.verify(PHONE_1, self.code)
+        self.assertIsNotNone(verification_code)
+        self.assertIsInstance(verification_code, VerificationCode)
+
+    def test_verify_wrong_phone(self):
+        verification_code = VerificationCode.verify(PHONE_2, self.code)
+        self.assertIsNone(verification_code)
+
+    def test_verify_wrong_code(self):
+        verification_code = VerificationCode.verify(PHONE_1, "0000")
+        self.assertIsNone(verification_code)

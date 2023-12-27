@@ -37,3 +37,15 @@ class VerificationCode(models.Model):
         verification_code = cls(user=user)
         verification_code.save()
         return verification_code
+
+    @classmethod
+    def verify(cls, phone_number: str, code: str):
+        """
+        verify verification code using phone number and code
+        """
+        user = get_or_create_user(phone_number)
+        try:
+            verification_code = cls.objects.get(user=user, code=code)
+        except cls.DoesNotExist:
+            return None
+        return verification_code
