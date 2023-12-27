@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from .utils import (
     fill_code,
     fill_valid_until,
+    get_or_create_user,
 )
 
 class VerificationCode(models.Model):
@@ -26,3 +27,13 @@ class VerificationCode(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user}'s verification code"
+
+    @classmethod
+    def request(cls, phone_number: str):
+        """
+        request verification code using phone number
+        """
+        user = get_or_create_user(phone_number)
+        verification_code = cls(user=user)
+        verification_code.save()
+        return verification_code
