@@ -22,12 +22,18 @@ def fill_valid_until():
     """
     return timezone.now() + timedelta(minutes=settings.PHONE_AUTH_VALIDATION_CODE_TTL)
 
+def format_pn(pn: phonenumbers.PhoneNumber) -> str:
+    """
+    format PhoneNumber object to string
+    """
+    return phonenumbers.format_number(pn, phonenumbers.PhoneNumberFormat.E164)
+
 def normalize_phone_number(phone_number: str) -> str:
     """
     normalize phone number
     """
     pn = phonenumbers.parse(phone_number, None)
-    return phonenumbers.format_number(pn, phonenumbers.PhoneNumberFormat.E164)
+    return format_pn(pn)
 
 def get_or_create_user(phone_number: str):
     """
