@@ -7,6 +7,7 @@ name = "pypi"
 dev = "python manage.py runserver"
 dbmigrate = "python manage.py migrate"
 lint = "pylint --load-plugins pylint_django --django-settings-module=rollsocialnetwork.settings rollsocialnetwork"
+test = "python manage.py test"
 
 [packages]
 django = "*"
