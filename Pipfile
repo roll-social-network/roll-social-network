@@ -12,6 +12,7 @@ lint = "pylint --load-plugins pylint_django --django-settings-module=rollsocialn
 django = "*"
 python-decouple = "*"
 django-database-url = "*"
+phonenumbers = "*"
 
 [dev-packages]
 pylint = "*"
