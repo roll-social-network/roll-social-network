@@ -13,6 +13,7 @@ test = "python manage.py test"
 django = "*"
 python-decouple = "*"
 django-database-url = "*"
+django-phonenumber-field = "*"
 phonenumbers = "*"
 
 [dev-packages]
