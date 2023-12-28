@@ -60,6 +60,12 @@ class VerificationCodeVerifyTestCase(TestCase):
         verification_code_2.valid_until = timezone.now() - timedelta(seconds=1)
         verification_code_2.save()
         self.code_2 = verification_code_2.code
+        self.verification_code_3 = VerificationCode.request(PHONE_2)
+        self.code_3 = self.verification_code_3.code
+        verification_code_4 = VerificationCode.request(PHONE_2)
+        verification_code_4.attempts = 0
+        verification_code_4.save()
+        self.code_4 = verification_code_4.code
 
     def test_verify_ok(self):
         """
@@ -88,4 +94,20 @@ class VerificationCodeVerifyTestCase(TestCase):
         try verify with expired valid until
         """
         verification_code = VerificationCode.verify(PHONE_1, self.code_2)
+        self.assertIsNone(verification_code)
+
+    def test_verify_decreases_attempts(self):
+        """
+        verify decreases attempts
+        """
+        initial_attempts = self.verification_code_3.attempts
+        VerificationCode.verify(PHONE_2, "0000")
+        verification_code = VerificationCode.objects.get(pk=self.verification_code_3.pk)
+        self.assertEqual(initial_attempts - verification_code.attempts, 1)
+
+    def test_try_verify_no_more_tries(self):
+        """
+        try verify no more tries
+        """
+        verification_code = VerificationCode.verify(PHONE_2, self.code_4)
         self.assertIsNone(verification_code)

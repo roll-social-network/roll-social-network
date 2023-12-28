@@ -3,6 +3,8 @@ phone auth models
 """
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.conf import settings
+from django.utils import timezone
 
 from .utils import (
     fill_code,
@@ -24,6 +26,7 @@ class VerificationCode(models.Model):
     valid_until = models.DateTimeField(default=fill_valid_until,
                                        blank=False,
                                        editable=False)
+    attempts = models.PositiveIntegerField(default=settings.PHONE_AUTH_VERIFY_ATTEMPTS)
 
     def __str__(self) -> str:
         return f"{self.user}'s verification code"
@@ -45,9 +48,13 @@ class VerificationCode(models.Model):
         """
         user = get_or_create_user(phone_number)
         try:
-            verification_code = cls.objects.get(user=user,
-                                                code=code,
-                                                valid_until__gte=timezone.now())
+            return cls.objects.get(user=user,
+                                   code=code,
+                                   valid_until__gte=timezone.now(),
+                                   attempts__gt=0)
+
         except cls.DoesNotExist:
+            cls.objects.filter(user=user,
+                               valid_until__gte=timezone.now(),
+                               attempts__gt=0).update(attempts=models.F('attempts') - 1)
             return None
-        return verification_code
