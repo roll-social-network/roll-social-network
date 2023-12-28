@@ -19,7 +19,7 @@ jobs:
           pip install pipenv
       - name: Install Dependencies
         run: |
-          pipenv install
+          pipenv install --dev
       - name: Run Lint
         run: |
           pipenv run lint
