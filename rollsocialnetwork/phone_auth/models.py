@@ -1,6 +1,7 @@
 """
 phone auth models
 """
+from typing import Optional
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.conf import settings
@@ -42,7 +43,7 @@ class VerificationCode(models.Model):
         return verification_code
 
     @classmethod
-    def verify(cls, phone_number: str, code: str):
+    def verify(cls, phone_number: str, code: str) -> Optional["VerificationCode"]:
         """
         verify verification code using phone number and code
         """
@@ -52,7 +53,6 @@ class VerificationCode(models.Model):
                                    code=code,
                                    valid_until__gte=timezone.now(),
                                    attempts__gt=0)
-
         except cls.DoesNotExist:
             cls.objects.filter(user=user,
                                valid_until__gte=timezone.now(),

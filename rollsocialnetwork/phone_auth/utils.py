@@ -43,9 +43,11 @@ def get_or_create_user(phone_number: str):
     user_model = get_user_model()
     try:
         user = user_model.objects.get(**{
-            user_model.USERNAME_FIELD: cleaned_phone_number,
+            user_model.USERNAME_FIELD: cleaned_phone_number, # type: ignore[attr-defined]
         })
     except user_model.DoesNotExist:
-        user = user_model(**{user_model.USERNAME_FIELD: cleaned_phone_number})
+        user = user_model(**{
+            user_model.USERNAME_FIELD: cleaned_phone_number, # type: ignore[attr-defined]
+        })
         user.save()
     return user

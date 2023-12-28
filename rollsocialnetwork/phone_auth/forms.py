@@ -5,7 +5,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from phonenumber_field.formfields import PhoneNumberField
+from phonenumber_field.formfields import PhoneNumberField  # type: ignore[import-untyped]
 from .utils import format_pn
 
 class RequestVerificationCodeForm(forms.Form):

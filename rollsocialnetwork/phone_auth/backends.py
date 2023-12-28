@@ -12,10 +12,10 @@ class PhoneAuthBackend(BaseBackend):
     """
     phone auth backend class
     """
-    def authenticate(self,  # pylint: disable=W0221
+    def authenticate(self,  # type: ignore[override] # pylint: disable=W0221
                      request: HttpRequest,
-                     phone_number: str | None,
-                     code: str | None,
+                     phone_number: str,
+                     code: str,
                      **kwargs: Any) -> AbstractBaseUser | None:
         verification_code = VerificationCode.verify(phone_number, code)
         if verification_code:

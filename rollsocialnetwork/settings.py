@@ -3,7 +3,8 @@ roll social network settings.
 """
 
 from pathlib import Path
-from decouple import config
+from typing import List
+from decouple import config  # type: ignore[import-untyped]
 import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,7 +13,7 @@ SECRET_KEY = config(
     default="django-insecure-q=u8&7w8!%khn7a$lj5drzm9i)k90fh7m_-0b14pjxfz51d(ah"
 )
 DEBUG = config("DEBUG", default=True, cast=bool)
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS: List[str] = []
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",

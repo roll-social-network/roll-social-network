@@ -7,6 +7,7 @@ name = "pypi"
 dev = "python manage.py runserver"
 dbmigrate = "python manage.py migrate"
 lint = "pylint --load-plugins pylint_django --django-settings-module=rollsocialnetwork.settings rollsocialnetwork"
+type-check = "mypy rollsocialnetwork"
 test = "python manage.py test"
 
 [packages]
@@ -19,6 +20,9 @@ phonenumbers = "*"
 [dev-packages]
 pylint = "*"
 pylint-django = "*"
+mypy = "*"
+django-types = "*"
+types-dj-database-url = "*"
 
 [requires]
 python_version = "3.12"
