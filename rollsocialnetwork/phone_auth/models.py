@@ -45,7 +45,9 @@ class VerificationCode(models.Model):
         """
         user = get_or_create_user(phone_number)
         try:
-            verification_code = cls.objects.get(user=user, code=code)
+            verification_code = cls.objects.get(user=user,
+                                                code=code,
+                                                valid_until__gte=timezone.now())
         except cls.DoesNotExist:
             return None
         return verification_code

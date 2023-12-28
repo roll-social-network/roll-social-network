@@ -1,8 +1,10 @@
 """
 phone auth tests
 """
+from datetime import timedelta
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from .utils import (
     get_or_create_user,
     normalize_phone_number,
@@ -52,27 +54,38 @@ class VerificationCodeVerifyTestCase(TestCase):
     tests for VerificationCode.verify() class method
     """
     def setUp(self):
-        verification_code = VerificationCode.request(PHONE_1)
-        self.code = verification_code.code
+        verification_code_1 = VerificationCode.request(PHONE_1)
+        self.code_1 = verification_code_1.code
+        verification_code_2 = VerificationCode.request(PHONE_1)
+        verification_code_2.valid_until = timezone.now() - timedelta(seconds=1)
+        verification_code_2.save()
+        self.code_2 = verification_code_2.code
 
     def test_verify_ok(self):
         """
         verify ok
         """
-        verification_code = VerificationCode.verify(PHONE_1, self.code)
+        verification_code = VerificationCode.verify(PHONE_1, self.code_1)
         self.assertIsNotNone(verification_code)
         self.assertIsInstance(verification_code, VerificationCode)
 
-    def test_verify_wrong_phone_number(self):
+    def test_try_verify_wrong_phone_number(self):
         """
-        verify with wrong phone number
+        try verify with wrong phone number
         """
-        verification_code = VerificationCode.verify(PHONE_2, self.code)
+        verification_code = VerificationCode.verify(PHONE_2, self.code_1)
         self.assertIsNone(verification_code)
 
-    def test_verify_wrong_code(self):
+    def test_try_verify_wrong_code(self):
         """
-        verify with wrong code
+        try verify with wrong code
         """
         verification_code = VerificationCode.verify(PHONE_1, "0000")
+        self.assertIsNone(verification_code)
+
+    def test_try_verify_expired_valid_until(self):
+        """
+        try verify with expired valid until
+        """
+        verification_code = VerificationCode.verify(PHONE_1, self.code_2)
         self.assertIsNone(verification_code)
