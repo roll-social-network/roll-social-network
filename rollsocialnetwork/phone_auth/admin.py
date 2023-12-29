@@ -10,9 +10,11 @@ class VerificationCodeAdmin(admin.ModelAdmin):
     """
     fields = [
         "user",
+        "attempts",
         "valid_until",
     ]
     readonly_fields = [
+        "attempts",
         "valid_until",
     ]
 
