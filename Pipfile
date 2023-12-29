@@ -16,6 +16,7 @@ python-decouple = "*"
 django-database-url = "*"
 django-phonenumber-field = "*"
 phonenumbers = "*"
+twilio = "*"
 
 [dev-packages]
 pylint = "*"
@@ -23,6 +24,7 @@ pylint-django = "*"
 mypy = "*"
 django-types = "*"
 types-dj-database-url = "*"
+twilio-stubs = "*"
 
 [requires]
 python_version = "3.12"

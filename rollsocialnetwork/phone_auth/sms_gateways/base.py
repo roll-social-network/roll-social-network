@@ -18,6 +18,12 @@ class SMSGatewayBase:  # pylint: disable=R0903
     def __init__(self, *args) -> None:
         pass
 
+    def build_message_body(self, verification_code: "VerificationCode") -> str:
+        """
+        build message body
+        """
+        return f"your verification code is {verification_code.code}"
+
     def send(self, verification_code: "VerificationCode") -> None:
         """
         send

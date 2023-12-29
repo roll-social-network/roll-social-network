@@ -9,6 +9,7 @@ from django.conf import settings
 from .base import SMSGatewayBase
 from .disabled import DisabledGateway
 from .logger import LoggerGateway
+from .twilio import TwilioGateway
 
 GATEWAYS: Dict[str, Type[SMSGatewayBase]] = {}
 
@@ -29,3 +30,4 @@ def get_sms_gateway() -> SMSGatewayBase:
 
 register(LoggerGateway)
 register(DisabledGateway)
+register(TwilioGateway)
