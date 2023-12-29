@@ -2,7 +2,10 @@
 phone auth tests
 """
 from datetime import timedelta
-from django.test import TestCase
+from django.test import (
+    TestCase,
+    override_settings
+)
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from .utils import (
@@ -13,6 +16,8 @@ from .models import VerificationCode
 
 PHONE_1 = "+55 11 98070-6050"
 PHONE_2 = "+55 11 98070-6051"
+
+disable_phone_auth_sms_gateway = override_settings(PHONE_AUTH_SMS_GATEWAY="disabled")
 
 class GetOrCreateUserTestCase(TestCase):
     """
@@ -42,6 +47,7 @@ class VerificationCodeRequestTestCase(TestCase):
     """
     tests for VerificationCode.request() class method
     """
+    @disable_phone_auth_sms_gateway
     def test_request_ok(self):
         """
         request ok
@@ -53,6 +59,7 @@ class VerificationCodeVerifyTestCase(TestCase):
     """
     tests for VerificationCode.verify() class method
     """
+    @disable_phone_auth_sms_gateway
     def setUp(self):
         verification_code_1 = VerificationCode.request(PHONE_1)
         self.code_1 = verification_code_1.code

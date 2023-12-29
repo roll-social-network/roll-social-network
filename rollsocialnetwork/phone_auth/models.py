@@ -6,6 +6,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.utils import timezone
+from .sms_gateways import get_sms_gateway
 
 from .utils import (
     fill_code,
@@ -40,6 +41,8 @@ class VerificationCode(models.Model):
         user = get_or_create_user(phone_number)
         verification_code = cls(user=user)
         verification_code.save()
+        sms_gateway = get_sms_gateway()
+        sms_gateway.send(verification_code)
         return verification_code
 
     @classmethod
