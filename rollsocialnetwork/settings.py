@@ -38,7 +38,10 @@ ROOT_URLCONF = "rollsocialnetwork.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": ["templates"],
+        "DIRS": [
+            "./rollsocialnetwork/templates",
+            "templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
