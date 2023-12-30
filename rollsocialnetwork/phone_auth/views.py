@@ -34,7 +34,10 @@ class RequestVerificationCodeView(FormView):
 
     def get_success_url(self) -> str:
         success_url = super().get_success_url()
-        params = {"phone": self._phone_number}
+        params = {
+            **{"phone": self._phone_number},
+            **self.request.GET.dict(),
+        }
         return f"{success_url}?{urlencode(params)}"
 
 class VerifyVerificationCodeView(LoginView):
