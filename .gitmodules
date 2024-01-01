@@ -1,0 +1,3 @@
+[submodule "roll-social-network-frontend"]
+	path = roll-social-network-frontend
+	url = git@github.com:dougppaz/roll-social-network-frontend.git
