@@ -53,7 +53,6 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = "rollsocialnetwork.wsgi.application"
 DATABASES = {
     "default": dj_database_url.parse(config("DATABASES_DEFAULT", default="sqlite:///./db.sqlite3"))
@@ -84,6 +83,9 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    "roll-social-network-frontend/dist",
+]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SITE_ID = 1
 PHONE_AUTH_VALIDATION_CODE_TTL = config("PHONE_AUTH_VALIDATION_CODE_TTL", default=60, cast=int)
