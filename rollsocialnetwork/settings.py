@@ -33,6 +33,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.contrib.sites.middleware.CurrentSiteMiddleware",
 ]
 ROOT_URLCONF = "rollsocialnetwork.urls"
 TEMPLATES = [
@@ -49,6 +50,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "rollsocialnetwork.context_processors.is_home_site"
             ],
         },
     },
@@ -87,7 +89,8 @@ STATICFILES_DIRS = [
     "roll-social-network-frontend/dist",
 ]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-SITE_ID = 1
+SITE_ID = config("SITE_ID", default=None, cast=lambda v: None if v is None else int(v))
+HOME_SITE_ID = config("HOME_SITE_ID", default=1, cast=int)
 PHONE_AUTH_VALIDATION_CODE_TTL = config("PHONE_AUTH_VALIDATION_CODE_TTL", default=60, cast=int)
 PHONE_AUTH_VALIDATION_CODE_LENGTH = config("PHONE_AUTH_VALIDATION_CODE_LENGTH", default=4, cast=int)
 PHONE_AUTH_VERIFY_ATTEMPTS = config("PHONE_AUTH_VERIFY_ATTEMPTS", default=3, cast=int)
