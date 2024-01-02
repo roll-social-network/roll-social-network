@@ -1,18 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="utf-8">
-    <title>Roll Social Network</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="social networks in essence">
-</head>
+{% load i18n %}
 
-<body>
-    <header>
-        <h1>Roll Social Network</h1>
-        <h2>social networks in essence</h2>
-    </header>
-</body>
-
-</html>
+{% block body %}
+<header class="full-heigth centered">
+    <div class="content">
+        {% if is_home_site %}
+        <h1>roll</h1>
+        <h2>{% translate 'create your social network with your essence' %}</h2>
+        <ul class="breadcrumb">
+            <li><a href="">{% translate 'find' %}</a></li>
+            <li><a href="">{% translate 'new' %}</a></li>
+            <li><a href="">{% translate 'terms' %}</a></li>
+        </ul>
+        {% else %}
+        <h1>{{ request.site.name }}</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'request-verification-code' %}">{% translate 'login' %}</a></li>
+        </ul>
+        {% endif %}
+    </div>
+</header>
+{% endblock %}
