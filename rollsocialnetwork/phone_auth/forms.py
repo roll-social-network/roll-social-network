@@ -12,14 +12,17 @@ class RequestVerificationCodeForm(forms.Form):
     """
     request verification code form
     """
-    phone = PhoneNumberField()
+    phone = PhoneNumberField(label=_('phone number'),
+                             help_text=_('+XXXXXXXXXXX, e.g. +1 (212) 5552368'))
 
 class VerifyVerificationCodeForm(forms.Form):
     """
     verify verification code form
     """
-    phone = PhoneNumberField()
-    code = forms.CharField(max_length=8)
+    phone = PhoneNumberField(label=_('phone number'))
+    code = forms.CharField(max_length=8,
+                           label=_('code'),
+                           help_text=_('sent by sms'))
 
     error_messages = {
         "invalid_login": _("Please enter a correct verification code"),
