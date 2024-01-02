@@ -1,19 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'common_base.html' %}
 
-<head>
-    <meta charset="utf-8">
-    <title>Phone Auth - Verify Verification Code</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Verify Verification Code">
-</head>
+{% load i18n %}
 
-<body>
-    <form method="post">
-        {% csrf_token %}
-        {{ form }}
-        <div><button type="submit">Verify</button></div>
-    </form>
-</body>
+{% block subtitle %}{% translate 'verify code' %}{% endblock %}
 
-</html>
+{% block content %}
+<div class="full-height centered">
+    <div class="content">
+        <form method="post">
+            {% csrf_token %}
+            {{ form }}
+            <div><button type="submit">{% translate 'verify' %}</button></div>
+        </form>
+    </div>
+</div>
+{% endblock %}
