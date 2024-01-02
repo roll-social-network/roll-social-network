@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block body %}
-<header class="full-heigth centered">
+<header class="full-height centered">
     <div class="content">
         {% if is_home_site %}
         <h1>roll</h1>
@@ -11,12 +11,17 @@
         <ul class="breadcrumb">
             <li><a href="">{% translate 'find' %}</a></li>
             <li><a href="">{% translate 'new' %}</a></li>
+            <li><a href="">{% translate 'about' %}</a></li>
             <li><a href="">{% translate 'terms' %}</a></li>
         </ul>
         {% else %}
         <h1>{{ request.site.name }}</h1>
         <ul class="breadcrumb">
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'logout' %}">{% translate 'logout' %}</a></li>
+            {% else %}
             <li><a href="{% url 'request-verification-code' %}">{% translate 'login' %}</a></li>
+            {% endif %}
         </ul>
         {% endif %}
     </div>
