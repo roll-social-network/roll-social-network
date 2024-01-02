@@ -3,7 +3,6 @@ roll social network settings.
 """
 
 from pathlib import Path
-from typing import List
 from decouple import config  # type: ignore[import-untyped]
 import dj_database_url
 
