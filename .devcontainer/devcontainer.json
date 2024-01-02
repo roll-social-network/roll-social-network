@@ -1,5 +1,5 @@
 {
-    "name": "Roll Social Network",
+    "name": "roll social network",
     "build": {
         "dockerfile": "./Dockerfile"
     },
