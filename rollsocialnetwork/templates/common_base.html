@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block body %}
+<header class="fixed">
+    <h1><a href="{% url 'home' %}">{{ request.site.name }}</a></h1>
+    <p class="thin">{% block subtitle %}-{% endblock %}</p>
+</header>
+{% block content %}{% endblock %}
+<footer>
+    <p>{{ request.site.name }} by <strong>roll social networks</strong></p>
+    <ul class="breadcrumb">
+        <li><a href="">{% translate 'about' %}</a></li>
+        <li><a href="">{% translate 'terms' %}</a></li>
+    </ul>
+</footer>
+{% endblock %}
