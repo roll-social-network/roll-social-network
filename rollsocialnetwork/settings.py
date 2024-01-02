@@ -13,7 +13,7 @@ SECRET_KEY = config(
     default="django-insecure-q=u8&7w8!%khn7a$lj5drzm9i)k90fh7m_-0b14pjxfz51d(ah"
 )
 DEBUG = config("DEBUG", default=True, cast=bool)
-ALLOWED_HOSTS: List[str] = []
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="*", cast=str.split)
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
