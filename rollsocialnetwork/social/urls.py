@@ -10,8 +10,8 @@ from .views import (
 
 urlpatterns = [
     path("", TimelineView.as_view(), name="social-timeline"),
-    path("profile/<str:username>/", UserProfileDetailView.as_view(), name="social-user-profile"),
     path("create-user-profile/",
          UserProfileCreateView.as_view(),
          name='social-create-user-profile'),
+    path("<str:username>/", UserProfileDetailView.as_view(), name="social-user-profile"),
 ]
