@@ -12,4 +12,5 @@ class CurrentUserProfile(MiddlewareMixin):  # pylint: disable=R0903
         """
         process request
         """
-        request.user_profile = UserProfile.get_user_profile(request.user, request.site)
+        if request.user.is_authenticated:
+            request.user_profile = UserProfile.get_user_profile(request.user, request.site)
