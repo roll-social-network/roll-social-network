@@ -18,6 +18,7 @@
         <h1>{{ request.site.name }}</h1>
         <ul class="breadcrumb">
             {% if user.is_authenticated %}
+            <li><a href="{% url 'social-timeline' %}">{% translate 'timeline' %}</a></li>
             <li><a href="{% url 'logout' %}">{% translate 'logout' %}</a></li>
             {% else %}
             <li><a href="{% url 'request-verification-code' %}">{% translate 'login' %}</a></li>

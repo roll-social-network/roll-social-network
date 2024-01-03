@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "phonenumber_field",
     "rollsocialnetwork.phone_auth",
+    "rollsocialnetwork.social",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -33,6 +34,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.contrib.sites.middleware.CurrentSiteMiddleware",
+    "rollsocialnetwork.social.middleware.CurrentUserProfile",
 ]
 ROOT_URLCONF = "rollsocialnetwork.urls"
 TEMPLATES = [
@@ -49,7 +51,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "rollsocialnetwork.context_processors.is_home_site"
+                "rollsocialnetwork.context_processors.is_home_site",
+                "rollsocialnetwork.social.context_processors.social",
             ],
         },
     },
@@ -76,7 +79,7 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "rollsocialnetwork.phone_auth.backends.PhoneAuthBackend",
 ]
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/s/"
 LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "/phone-auth/request/"
 LANGUAGE_CODE = "en-us"
@@ -95,3 +98,4 @@ PHONE_AUTH_VALIDATION_CODE_LENGTH = config("PHONE_AUTH_VALIDATION_CODE_LENGTH", 
 PHONE_AUTH_VERIFY_ATTEMPTS = config("PHONE_AUTH_VERIFY_ATTEMPTS", default=3, cast=int)
 PHONE_AUTH_SMS_GATEWAY = config("PHONE_AUTH_SMS_GATEWAY", default="logger")
 PHONE_AUTH_SMS_GATEWAY_ARGS = config("PHONE_AUTH_SMS_GATEWAY_ARGS", default="", cast=str.split)
+CREATE_USER_PROFILE_URL = "/s/create-user-profile/"

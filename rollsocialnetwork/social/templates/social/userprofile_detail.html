@@ -1,0 +1,12 @@
+{% extends 'common_base.html' %}
+
+{% load i18n %}
+
+{% block subtitle %}{% blocktranslate with username=user_profile.username %}@{{ username }} profile{% endblocktranslate %}{% endblock %}
+
+{% block content %}
+<div class="header-saver"></div>
+<section>
+    <h2>{% blocktranslate with username=user_profile.username %}@{{ username }} profile{% endblocktranslate %}</h2>
+</section>
+{% endblock %}
