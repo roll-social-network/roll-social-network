@@ -17,6 +17,7 @@ django-database-url = "*"
 django-phonenumber-field = "*"
 phonenumbers = "*"
 twilio = "*"
+pillow = "*"
 
 [dev-packages]
 pylint = "*"
