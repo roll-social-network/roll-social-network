@@ -1,15 +1,13 @@
 """
 social models
 """
-from typing import (
-    Optional,
-    Type,
-)
+from typing import Optional
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.urls import reverse
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import AnonymousUser
 
 class UserProfile(models.Model):
     """
@@ -30,7 +28,9 @@ class UserProfile(models.Model):
                              blank=False)
 
     @classmethod
-    def get_user_profile(cls, user: Type[AbstractBaseUser], site: Site) -> Optional['UserProfile']:
+    def get_user_profile(cls,
+                         user: AbstractBaseUser | AnonymousUser,
+                         site: Site) -> Optional['UserProfile']:
         """
         get user profile
         """
