@@ -7,21 +7,11 @@ from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.views.generic import (
-    TemplateView,
-    DetailView,
-)
+from django.views.generic import DetailView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.views import RedirectURLMixin  # type: ignore[attr-defined]
 from .decorators import user_profile_required
 from .models import UserProfile
-
-@method_decorator([login_required, user_profile_required], name="dispatch")
-class TimelineView(TemplateView):
-    """
-    timeline view
-    """
-    template_name = "social/timeline.html"
 
 @method_decorator([login_required, user_profile_required], name="dispatch")
 class UserProfileDetailView(DetailView):

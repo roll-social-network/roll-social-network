@@ -21,6 +21,7 @@ urlpatterns = [
     path("phone-auth/", include("rollsocialnetwork.phone_auth.urls")),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("s/", include("rollsocialnetwork.social.urls")),
+    path("t/", include("rollsocialnetwork.timeline.urls")),
     path("admin/", admin.site.urls),
 ]
 

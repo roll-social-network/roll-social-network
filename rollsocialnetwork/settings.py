@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "rollsocialnetwork.phone_auth",
     "rollsocialnetwork.social",
+    "rollsocialnetwork.timeline",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -79,7 +80,7 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "rollsocialnetwork.phone_auth.backends.PhoneAuthBackend",
 ]
-LOGIN_REDIRECT_URL = "/s/"
+LOGIN_REDIRECT_URL = "/t/"
 LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "/phone-auth/request/"
 LANGUAGE_CODE = "en-us"
