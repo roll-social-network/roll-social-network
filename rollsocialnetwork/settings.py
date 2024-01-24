@@ -90,6 +90,9 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [
     "roll-social-network-frontend/dist",
 ]
+MEDIA_ROOT = config("MEDIA_ROOT", default="./media/")
+MEDIA_URL = config("MEDIA_URL", default="/media/")
+MEDIA_AS_STATIC = config("MEDIA_AS_STATIC", default=True, cast=bool)
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SITE_ID = config("SITE_ID", default=None, cast=lambda v: None if v is None else int(v))
 HOME_SITE_ID = config("HOME_SITE_ID", default=1, cast=int)

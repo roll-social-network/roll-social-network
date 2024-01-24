@@ -5,12 +5,15 @@ The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
 """
 
+from django.conf import settings
 from django.contrib import admin
 from django.urls import (
     path,
     include,
+    re_path,
 )
 from django.views.generic import TemplateView
+from django.views.static import serve
 from .views import LogoutView
 
 urlpatterns = [
@@ -20,3 +23,14 @@ urlpatterns = [
     path("s/", include("rollsocialnetwork.social.urls")),
     path("admin/", admin.site.urls),
 ]
+
+if settings.MEDIA_AS_STATIC:
+    urlpatterns += [
+        re_path(
+            r"^media/(?P<path>.*)$",
+            serve,
+            {
+                "document_root": settings.MEDIA_ROOT,
+            },
+        ),
+    ]
