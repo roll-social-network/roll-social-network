@@ -18,6 +18,7 @@ django-phonenumber-field = "*"
 phonenumbers = "*"
 twilio = "*"
 pillow = "*"
+easy-thumbnails = "*"
 
 [dev-packages]
 pylint = "*"
