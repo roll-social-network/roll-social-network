@@ -2,8 +2,7 @@
 
 <div class="post">
     <a href="{% url 'social-user-profile' username=post.user_profile.username %}" class="username">@{{ post.user_profile.username }}</a>
-    <picture>
-        <source srcset="{{ post.photo|thumbnail_url:'photo8' }}" media="(max-width: 180px)" />
+    <picture style="background-image: url('{{ post.photo|thumbnail_url:'photo8' }}');">
         <source srcset="{{ post.photo|thumbnail_url:'photo184' }}" media="(max-width: 360px)" />
         <img
             src="{{ post.photo|thumbnail_url:'photo584' }}"
