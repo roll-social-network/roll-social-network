@@ -110,16 +110,19 @@ THUMBNAIL_ALIASES = {
         'photo8': {
             'size': (8, 8),
             'crop': True,
+            'upscale': True,
             'quality': 10,
         },
         'photo184': {
             'size': (184, 184),
             'crop': True,
+            'upscale': True,
             'quality': 50,
         },
         'photo584': {
             'size': (584, 584),
             'crop': True,
+            'upscale': True,
             'quality': 90,
         },
     }
