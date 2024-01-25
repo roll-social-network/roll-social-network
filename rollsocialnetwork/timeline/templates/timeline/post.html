@@ -3,9 +3,12 @@
 <div class="post">
     <a href="{% url 'social-user-profile' username=post.user_profile.username %}" class="username">@{{ post.user_profile.username }}</a>
     <picture>
-        <source srcset="{{ post.photo|thumbnail_url:'photo584' }}" media="(min-width: 360px)" />
-        <source srcset="{{ post.photo|thumbnail_url:'photo184' }}" media="(min-width: 180px)" />
-        <img src="{{ post.photo|thumbnail_url:'photo8' }}" alt="{% blocktranslate with username=post.user_profile.username %}Post by @{{ username }}{% endblocktranslate %}" />
+        <source srcset="{{ post.photo|thumbnail_url:'photo8' }}" media="(max-width: 180px)" />
+        <source srcset="{{ post.photo|thumbnail_url:'photo184' }}" media="(max-width: 360px)" />
+        <img
+            src="{{ post.photo|thumbnail_url:'photo584' }}"
+            loading="lazy"
+            alt="{% blocktranslate with username=post.user_profile.username %}Post by @{{ username }}{% endblocktranslate %}" />
     </picture>
     <p class="created-at">{{ post.created_at|naturaltime }}</p>
 </div>
