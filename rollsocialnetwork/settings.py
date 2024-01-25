@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    "django.contrib.humanize",
     "phonenumber_field",
     'easy_thumbnails',
     "rollsocialnetwork.phone_auth",
