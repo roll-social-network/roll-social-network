@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "phonenumber_field",
+    'easy_thumbnails',
     "rollsocialnetwork.phone_auth",
     "rollsocialnetwork.social",
     "rollsocialnetwork.timeline",
@@ -103,3 +104,22 @@ PHONE_AUTH_VERIFY_ATTEMPTS = config("PHONE_AUTH_VERIFY_ATTEMPTS", default=3, cas
 PHONE_AUTH_SMS_GATEWAY = config("PHONE_AUTH_SMS_GATEWAY", default="logger")
 PHONE_AUTH_SMS_GATEWAY_ARGS = config("PHONE_AUTH_SMS_GATEWAY_ARGS", default="", cast=str.split)
 CREATE_USER_PROFILE_URL = "/s/create-user-profile/"
+THUMBNAIL_ALIASES = {
+    'timeline': {
+        'photo8': {
+            'size': (8, 8),
+            'crop': True,
+            'quality': 10,
+        },
+        'photo184': {
+            'size': (184, 184),
+            'crop': True,
+            'quality': 50,
+        },
+        'photo584': {
+            'size': (584, 584),
+            'crop': True,
+            'quality': 90,
+        },
+    }
+}
