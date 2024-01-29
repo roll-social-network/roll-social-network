@@ -27,6 +27,7 @@ mypy = "*"
 django-types = "*"
 types-dj-database-url = "*"
 twilio-stubs = "*"
+faker = "*"
 
 [requires]
 python_version = "3.12"
