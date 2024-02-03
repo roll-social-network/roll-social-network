@@ -15,7 +15,7 @@
     <a class="new-post" href="{% url 'timeline' %}">{% translate 'view new posts' %}</a>
 </section>
 {% endif %}
-<section>
+<section id="timeline">
     {% for post in object_list %}
     {% include 'timeline/post.html' %}
     {% empty %}
