@@ -6,6 +6,7 @@ from django.test import (
     RequestFactory,
 )
 from rollsocialnetwork.social.tests_factory import UserProfileFactory
+from rollsocialnetwork.timeline.models import Like
 from .views import TimelineView
 from .tests_factory import PostFactory
 
@@ -59,3 +60,32 @@ class TimelineViewTest(TestCase):
         self.assertIn("slice_kwarg", context_data.keys())
         self.assertIn("slice", context_data.keys())
         self.assertIn("has_new_post_out_slice", context_data.keys())
+
+class PostLikeDislikeTest(TestCase):
+    """
+    post like dislike test
+    """
+    def setUp(self):
+        self.user_profile_factory = UserProfileFactory()
+        self.post_factory = PostFactory()
+        self.user_profile = self.user_profile_factory.create_user_profile()
+
+    def test_get_like_returns(self):
+        """
+        test get like returns
+        """
+        post = self.post_factory.create_post()
+        self.assertIsNone(post.get_like(self.user_profile))
+        post._like(self.user_profile)  # pylint: disable=protected-access
+        self.assertIsInstance(post.get_like(self.user_profile), Like)
+
+    def test_like_dislike_comportament(self):
+        """
+        test like dislike comportament
+        """
+        post = self.post_factory.create_post()
+        like = post.like_dislike(self.user_profile)
+        self.assertIsInstance(like, Like)
+        self.assertEqual(like.user_profile, self.user_profile)
+        self.assertEqual(like.post, post)
+        self.assertIsNone(post.like_dislike(self.user_profile))
