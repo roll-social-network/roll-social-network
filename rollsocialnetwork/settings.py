@@ -37,7 +37,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.contrib.sites.middleware.CurrentSiteMiddleware",
-    "rollsocialnetwork.social.middleware.CurrentUserProfile",
+    "rollsocialnetwork.social.middleware.CurrentUserProfileMiddleware",
 ]
 ROOT_URLCONF = "rollsocialnetwork.urls"
 TEMPLATES = [

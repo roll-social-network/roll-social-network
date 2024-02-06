@@ -5,7 +5,7 @@ from django.utils.deprecation import MiddlewareMixin
 from rollsocialnetwork.http_request import HttpRequest
 from .models import UserProfile
 
-class CurrentUserProfile(MiddlewareMixin):  # pylint: disable=R0903
+class CurrentUserProfileMiddleware(MiddlewareMixin):  # pylint: disable=R0903
     """
     Middleware that sets `user_profile` attribute to request object.
     """
