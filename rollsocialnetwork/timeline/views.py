@@ -5,12 +5,17 @@ from typing import (
     Any,
     Optional,
 )
-from django.http import HttpResponse
+from django.http import (
+    HttpResponse,
+    HttpResponseBadRequest,
+    HttpResponseRedirect,
+)
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
+from django.views.generic.detail import DetailView
 from django.forms.models import BaseModelForm
 from django.db.models.query import QuerySet
 from rollsocialnetwork.http_request import HttpRequest
@@ -84,4 +89,35 @@ class PostCreateView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self) -> str:
-        return reverse('timeline')
+        return reverse("timeline")
+
+@method_decorator([login_required, user_profile_required], name="dispatch")
+class PostLikeDislikeView(DetailView):
+    """
+    like dislike view
+    """
+    model = Post
+
+    def get_queryset(self) -> QuerySet[Post]:
+        return Post.objects.filter(user_profile__site=self.request.site)
+
+    def get(self, request: HttpRequest, *args, **kwargs):  # type: ignore[override]
+        post: Post = self.get_object()  # type: ignore[assignment]
+        user_profile = request.user_profile
+        if not user_profile:
+            return HttpResponseBadRequest()
+        like = post.like_dislike(user_profile)
+        success_url = self.get_success_url()
+        action_component = request.headers.get("Action-Component")
+        if action_component == "like-dislike":
+            status_code = 201 if like else 204
+            return HttpResponse(status=status_code)
+        return HttpResponseRedirect(success_url)
+
+    def get_success_url(self) -> str:
+        """
+        get success url
+        """
+        post_pk = self.kwargs.get(self.pk_url_kwarg)
+        reverse_timeline = reverse("timeline")
+        return f"{reverse_timeline}#post-{post_pk}"

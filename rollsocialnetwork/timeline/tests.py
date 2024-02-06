@@ -1,11 +1,13 @@
 """
 timeline tests
 """
+from django.http import HttpResponseRedirect
 from django.test import (
     TestCase,
     RequestFactory,
 )
 from rollsocialnetwork.social.tests_factory import UserProfileFactory
+from rollsocialnetwork.tests_factory import SiteFactory
 from rollsocialnetwork.timeline.models import Like
 from .views import TimelineView
 from .tests_factory import PostFactory
@@ -89,3 +91,63 @@ class PostLikeDislikeTest(TestCase):
         self.assertEqual(like.user_profile, self.user_profile)
         self.assertEqual(like.post, post)
         self.assertIsNone(post.like_dislike(self.user_profile))
+
+class PostLikeDislikeViewTest(TestCase):
+    """
+    post like dislike view test
+    """
+    def setUp(self):
+        self.factory = RequestFactory()
+        user_profile_factory = UserProfileFactory()
+        site_factory = SiteFactory()
+        post_factory = PostFactory()
+        self.site = site_factory.create_site()
+        self.user_profile = user_profile_factory.create_user_profile(site=self.site)
+        self.post = post_factory.create_post(user_profile=self.user_profile)
+        self.client.force_login(self.user_profile.user)
+
+    def test_like_dislike_view_comportament(self):
+        """
+        test like dislike view comportament
+        """
+        response = self.client.get(
+            f"/t/post/{self.post.pk}/like-dislike/",
+            SERVER_NAME=self.site.domain,
+        )
+        self.assertIsInstance(response, HttpResponseRedirect)
+        self.assertEqual(response.url, f"/t/#post-{self.post.pk}")
+        like = self.post.get_like(self.user_profile)
+        self.assertIsNotNone(like)
+        self.assertEqual(like.user_profile, self.user_profile)
+        response = self.client.get(
+            f"/t/post/{self.post.pk}/like-dislike/",
+            SERVER_NAME=self.site.domain,
+        )
+        like = self.post.get_like(self.user_profile)
+        self.assertIsNone(like)
+
+    def test_like_dislike_action_component_comportament(self):
+        """
+        test like dislike action component comportament
+        """
+        response = self.client.get(
+            f"/t/post/{self.post.pk}/like-dislike/",
+            SERVER_NAME=self.site.domain,
+            headers={
+                "Action-Component": "like-dislike",
+            }
+        )
+        self.assertEqual(response.status_code, 201)
+        like = self.post.get_like(self.user_profile)
+        self.assertIsNotNone(like)
+        self.assertEqual(like.user_profile, self.user_profile)
+        response = self.client.get(
+            f"/t/post/{self.post.pk}/like-dislike/",
+            SERVER_NAME=self.site.domain,
+            headers={
+                "Action-Component": "like-dislike",
+            }
+        )
+        self.assertEqual(response.status_code, 204)
+        like = self.post.get_like(self.user_profile)
+        self.assertIsNone(like)
