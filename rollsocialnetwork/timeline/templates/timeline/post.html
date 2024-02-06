@@ -1,6 +1,6 @@
 {% load i18n thumbnail humanize %}
 
-<div class="post">
+<div class="post" id="post-{{ post.pk }}">
     <a href="{% url 'social-user-profile' username=post.user_profile.username %}" class="username">@{{ post.user_profile.username }}</a>
     <picture style="background-image: url('{{ post.photo|thumbnail_url:'photo8' }}');">
         <source srcset="{{ post.photo|thumbnail_url:'photo184' }}" media="(max-width: 360px)" />
@@ -9,5 +9,10 @@
             loading="lazy"
             alt="{% blocktranslate with username=post.user_profile.username %}Post by @{{ username }}{% endblocktranslate %}" />
     </picture>
-    <p class="created-at">{{ post.created_at|naturaltime }}</p>
+    <div class="footer">
+        <div class="created-at">{{ post.created_at|naturaltime }}</div>
+        <div class="actions">
+            {% include "timeline/actions/like_dislike.html" %}
+        </div>
+    </div>
 </div>

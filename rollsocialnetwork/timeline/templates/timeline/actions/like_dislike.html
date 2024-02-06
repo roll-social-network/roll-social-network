@@ -1,0 +1,9 @@
+{% load posts %}
+
+{% with has_like=post|has_like:user_profile %}
+    <a
+        href="{% url 'timeline-post-like-dislike' pk=post.pk %}"
+        is="vue:LikeDislikeAction"
+        :post-pk="{{ post.pk }}"{% if has_like %}
+        initial-has-like{% endif %}><i class="fa-{% if has_like %}solid{% else %}regular{% endif %} fa-heart"></i></a>
+{% endwith %}
