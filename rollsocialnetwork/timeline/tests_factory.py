@@ -21,7 +21,7 @@ class PostFactory:
             "user_profile": user_profile or self.user_profile_factory.create_user_profile(),
         }
 
-    def create_post(self, **kwargs):
+    def create_post(self, **kwargs) -> Post:
         """
         create post
         """
