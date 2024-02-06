@@ -21,7 +21,7 @@ class UserProfileDetailView(DetailView):
     slug_field = "username"
     slug_url_kwarg = "username"
 
-    def get_queryset(self) -> QuerySet[Any]:
+    def get_queryset(self) -> QuerySet[UserProfile]:
         return UserProfile.objects.filter(site=self.request.site)
 
 @method_decorator(login_required, name="dispatch")
