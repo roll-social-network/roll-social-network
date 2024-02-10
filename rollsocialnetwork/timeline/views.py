@@ -11,19 +11,17 @@ from django.http import (
     HttpResponseRedirect,
 )
 from django.urls import reverse
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.forms.models import BaseModelForm
 from django.db.models.query import QuerySet
 from rollsocialnetwork.http_request import HttpRequest
-from rollsocialnetwork.social.decorators import user_profile_required
+from rollsocialnetwork.social.mixins import UserProfileRequiredMixin
 from .models import Post
 
-@method_decorator([login_required, user_profile_required], name="dispatch")
-class TimelineView(ListView):
+class TimelineView(UserProfileRequiredMixin,  # pylint: disable=R0901
+                   ListView):
     """
     timeline view
     """
@@ -75,8 +73,8 @@ class TimelineView(ListView):
         })
         return context_data
 
-@method_decorator([login_required, user_profile_required], name="dispatch")
-class PostCreateView(CreateView):
+class PostCreateView(UserProfileRequiredMixin,
+                     CreateView):
     """
     post create view
     """
@@ -91,8 +89,8 @@ class PostCreateView(CreateView):
     def get_success_url(self) -> str:
         return reverse("timeline")
 
-@method_decorator([login_required, user_profile_required], name="dispatch")
-class PostLikeDislikeView(DetailView):
+class PostLikeDislikeView(UserProfileRequiredMixin,
+                          DetailView):
     """
     like dislike view
     """

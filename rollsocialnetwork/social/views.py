@@ -1,20 +1,19 @@
 """
 social views
 """
-from typing import Any
 from django.db.models.query import QuerySet
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.views.generic import DetailView
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.views import RedirectURLMixin  # type: ignore[attr-defined]
-from .decorators import user_profile_required
+from .mixins import UserProfileRequiredMixin
 from .models import UserProfile
 
-@method_decorator([login_required, user_profile_required], name="dispatch")
-class UserProfileDetailView(DetailView):
+class UserProfileDetailView(UserProfileRequiredMixin,
+                            DetailView):
     """
     user profile detail view
     """
@@ -25,7 +24,8 @@ class UserProfileDetailView(DetailView):
         return UserProfile.objects.filter(site=self.request.site)
 
 @method_decorator(login_required, name="dispatch")
-class UserProfileCreateView(RedirectURLMixin, CreateView):
+class UserProfileCreateView(RedirectURLMixin,
+                            CreateView):
     """
     user profile create view
     """
