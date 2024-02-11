@@ -1,6 +1,7 @@
 """
 timeline tests
 """
+from unittest import mock
 from django.http import HttpResponseRedirect
 from django.test import (
     TestCase,
@@ -8,57 +9,64 @@ from django.test import (
 )
 from rollsocialnetwork.social.tests_factory import UserProfileFactory
 from rollsocialnetwork.tests_factory import SiteFactory
-from rollsocialnetwork.timeline.models import Like
-from .views import TimelineView
+from rollsocialnetwork.timeline.models import Like, Post
+from .mixins import TimelineViewMixin
 from .tests_factory import PostFactory
 
-class TimelineViewTest(TestCase):
+class TimelineViewMixinTest(TestCase):
     """
     timeline view test
     """
     def setUp(self):
-        self.factory = RequestFactory()
-        self.user_profile_factory = UserProfileFactory()
         self.post_factory = PostFactory()
-        self.user_profile = self.user_profile_factory.create_user_profile()
 
-    def test_fill_slice_value_empty_posts(self):
+    def _get_queryset(self):
+        return []
+
+    @mock.patch.object(TimelineViewMixin, 'get_slice_value', return_value=None)
+    def test_fill_slice_value_empty_posts(self, get_slice_value_mock):
         """
         test fill slice value returns None
         """
-        request = self.factory.get("/t/")
-        view = TimelineView(request=request)
-        self.assertIsNone(view.fill_slice_value())
+        mixin = TimelineViewMixin()
+        mixin.get_queryset = mock.MagicMock()
+        mixin.get_queryset.return_value = Post.objects.all()
+        self.assertIsNone(mixin.fill_slice_value())
 
-    def test_fill_slice_value_older_post(self):
+    @mock.patch.object(TimelineViewMixin, 'get_slice_value', return_value=None)
+    def test_fill_slice_value_older_post(self, _get_slice_value_mock):
         """
         test fill slice value is older post pk
         """
         _post_1 = self.post_factory.create_post()
         post_2 = self.post_factory.create_post()
-        request = self.factory.get("/t/")
-        view = TimelineView(request=request)
-        self.assertEqual(view.fill_slice_value(), str(post_2.pk))
+        mixin = TimelineViewMixin()
+        mixin.get_queryset = mock.MagicMock()
+        mixin.get_queryset.return_value = Post.objects.all()
+        self.assertEqual(mixin.fill_slice_value(), str(post_2.pk))
 
-    def test_fill_has_new_post_out_slice_comportament(self):
+    @mock.patch.object(TimelineViewMixin, 'get_slice_value')
+    def test_fill_has_new_post_out_slice_comportament(self, get_slice_value_mock):
         """
         test fill has new post out slice comportament
         """
         post_1 = self.post_factory.create_post()
-        request = self.factory.get(f"/t/?slice={post_1.pk}")
-        view = TimelineView(request=request)
-        self.assertFalse(view.fill_has_new_post_out_slice())
+        get_slice_value_mock.return_value = post_1.pk
+        mixin = TimelineViewMixin()
+        self.assertFalse(mixin.fill_has_new_post_out_slice())
         _post_2 = self.post_factory.create_post()
-        self.assertTrue(view.fill_has_new_post_out_slice())
+        self.assertTrue(mixin.fill_has_new_post_out_slice())
 
-    def test_get_context_data_comportament(self):
+    @mock.patch.object(TimelineViewMixin, 'fill_slice_value', return_value=None)
+    @mock.patch.object(TimelineViewMixin, 'fill_has_new_post_out_slice', return_value=None)
+    def test_build_context_data_comportament(self,
+                                             _fill_has_new_post_out_slice_mock,
+                                             _fill_slice_value_mock):
         """
         test get context data comportament
         """
-        request = self.factory.get("/t/")
-        view = TimelineView(request=request, kwargs={})
-        view.object_list = view.get_queryset()
-        context_data = view.get_context_data()
+        mixin = TimelineViewMixin()
+        context_data = mixin.build_context_data()
         self.assertIn("slice_kwarg", context_data.keys())
         self.assertIn("slice", context_data.keys())
         self.assertIn("has_new_post_out_slice", context_data.keys())
