@@ -10,26 +10,7 @@
     <h2>{% translate 'timeline' %}</h2>
     <p><a href="{% url 'timeline-create-post' %}">{% translate 'create a post' %}</a></p>
 </section>
-{% if has_new_post_out_slice %}
-<section>
-    <a class="new-post" href="{% url 'timeline' %}">{% translate 'view new posts' %}</a>
-</section>
-{% endif %}
-<section id="timeline">
-    {% for post in object_list %}
-    {% include 'timeline/post.html' %}
-    {% empty %}
-    <p>{% translate 'No posts yet.' %}</p>
-    {% endfor %}
-    <div class="pagination">
-        {% if page_obj.has_previous %}
-        <a href="?{{ slice_kwarg }}={{ slice }}&page={{ page_obj.previous_page_number }}" class="left">⏴{% translate
-            'previous' %}</a>
-        {% endif %}
-        {% if page_obj.has_next %}
-        <a href="?{{ slice_kwarg }}={{ slice }}&page={{ page_obj.next_page_number }}" class="right">{% translate 'next'
-            %} ⏵</a>
-        {% endif %}
-    </div>
-</section>
+{% with posts=object_list posts_page=page_obj %}
+{% include "timeline/timeline.html" %}
+{% endwith %}
 {% endblock %}
