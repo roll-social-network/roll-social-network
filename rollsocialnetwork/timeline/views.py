@@ -1,10 +1,6 @@
 """
 timeline views
 """
-from typing import (
-    Any,
-    Optional,
-)
 from django.http import (
     HttpResponse,
     HttpResponseBadRequest,
@@ -19,8 +15,10 @@ from django.db.models.query import QuerySet
 from rollsocialnetwork.http_request import HttpRequest
 from rollsocialnetwork.social.mixins import UserProfileRequiredMixin
 from .models import Post
+from .mixins import TimelineViewMixin
 
 class TimelineView(UserProfileRequiredMixin,  # pylint: disable=R0901
+                   TimelineViewMixin,
                    ListView):
     """
     timeline view
@@ -28,50 +26,10 @@ class TimelineView(UserProfileRequiredMixin,  # pylint: disable=R0901
     model = Post
     ordering = ["-created_at"]
     paginate_by = 10
-    slice_kwarg = "slice"
-
-    def _retrive_slice_value(self) -> Optional[str]:
-        qs = self.get_queryset()
-        if qs.count() == 0:
-            return None
-        return str(qs[0].pk)
-
-    def fill_slice_value(self) -> Optional[str]:
-        """
-        fill slice value
-        """
-        return self.get_slice_value() or self._retrive_slice_value()
-
-    def get_slice_value(self) -> Optional[str]:
-        """
-        get slice value
-        """
-        return self.request.GET.get(self.slice_kwarg)
-
-    def fill_has_new_post_out_slice(self) -> bool:
-        """
-        fill has new post out slice
-        """
-        slice_value = self.get_slice_value()
-        if not slice_value:
-            return False
-        return self.model.objects.filter(pk__gt=slice_value).count() > 0
 
     def get_queryset(self) -> QuerySet[Post]:
         queryset = super().get_queryset()
-        slice_value = self.get_slice_value()
-        if not slice_value:
-            return queryset
-        return queryset.filter(pk__lte=slice_value)
-
-    def get_context_data(self, **kwargs: dict[str, Any]) -> dict[str, Any]:
-        context_data = super().get_context_data(**kwargs)
-        context_data.update({
-            "slice_kwarg": self.slice_kwarg,
-            "slice": self.fill_slice_value(),
-            "has_new_post_out_slice": self.fill_has_new_post_out_slice(),
-        })
-        return context_data
+        return self.build_sliced_queryset(queryset)
 
 class PostCreateView(UserProfileRequiredMixin,
                      CreateView):
