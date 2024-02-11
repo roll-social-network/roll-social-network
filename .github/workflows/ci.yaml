@@ -1,5 +1,8 @@
 name: CI
 
+permissions:
+  pull-requests: write
+
 on:
   - push
   - pull_request
@@ -8,7 +11,7 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -27,7 +30,7 @@ jobs:
       - name: Run Type Checker
         run: |
           pipenv run type-checker
-      - name: Run Tests with coverage
+      - name: Run Tests with Coverage
         run: |
           pipenv run coverage
           pipenv run coverage-xml
@@ -39,3 +42,10 @@ jobs:
           fail_below_min: true
           format: markdown
           thresholds: '80 95'
+          output: both
+      - name: Add Coverage Report as PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: github.event_name == 'pull_request'
+        with:
+          recreate: true
+          path: code-coverage-results.md
