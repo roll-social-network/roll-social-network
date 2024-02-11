@@ -27,6 +27,15 @@ jobs:
       - name: Run Type Checker
         run: |
           pipenv run type-checker
-      - name: Run Tests
+      - name: Run Tests with coverage
         run: |
-          pipenv run test
+          pipenv run coverage
+          pipenv run coverage-xml
+      - name: Code Coverage Summary Report
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: coverage.xml
+          badge: true
+          fail_below_min: true
+          format: markdown
+          thresholds: '80 95'
