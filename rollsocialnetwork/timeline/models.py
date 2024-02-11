@@ -9,9 +9,13 @@ class Post(models.Model):
     """
     post model
     """
+    class Meta:
+        ordering = ['-created_at']
+
     user_profile = models.ForeignKey(UserProfile,
                                      on_delete=models.CASCADE,
-                                     blank=False)
+                                     blank=False,
+                                     related_name='posts')
     photo = models.ImageField(max_length=256,
                               blank=False,
                               upload_to="posts")
