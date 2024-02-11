@@ -9,6 +9,8 @@ dbmigrate = "python manage.py migrate"
 lint = "pylint --load-plugins pylint_django --django-settings-module=rollsocialnetwork.settings rollsocialnetwork"
 type-checker = "mypy rollsocialnetwork"
 test = "python manage.py test"
+coverage = "coverage run ./manage.py test"
+coverage-xml = "coverage xml"
 
 [packages]
 django = "*"
@@ -28,6 +30,7 @@ django-types = "*"
 types-dj-database-url = "*"
 twilio-stubs = "*"
 faker = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.12"
