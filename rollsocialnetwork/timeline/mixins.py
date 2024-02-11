@@ -51,14 +51,17 @@ class TimelineViewMixin:
             return queryset
         return queryset.filter(pk__lte=slice_value)
 
+    def build_context_data(self):
+        return {
+            "slice_kwarg": self.slice_kwarg,
+            "slice": self.fill_slice_value(),
+            "has_new_post_out_slice": self.fill_has_new_post_out_slice(),
+        }
+
     def get_context_data(self, **kwargs: dict[str, Any]) -> dict[str, Any]:
         """
         get context data
         """
         context_data = super().get_context_data(**kwargs)  # type: ignore[misc]
-        context_data.update({
-            "slice_kwarg": self.slice_kwarg,
-            "slice": self.fill_slice_value(),
-            "has_new_post_out_slice": self.fill_has_new_post_out_slice(),
-        })
+        context_data.update(self.build_context_data())
         return context_data
