@@ -1,2 +1,4 @@
 [run]
 source = rollsocialnetwork
+omit =
+    **/migrations/*.py
