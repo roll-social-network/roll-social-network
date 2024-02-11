@@ -2,11 +2,12 @@
 
 {% load i18n %}
 
-{% block subtitle %}{% blocktranslate with username=user_profile.username %}@{{ username }} profile{% endblocktranslate %}{% endblock %}
+{% block subtitle %}{% blocktranslate with username=object.username %}@{{ username }} profile{% endblocktranslate %}{% endblock %}
 
 {% block content %}
 <div class="header-saver"></div>
 <section>
-    <h2>{% blocktranslate with username=user_profile.username %}@{{ username }} profile{% endblocktranslate %}</h2>
+    <h2>@{{ object.username }}</h2>
+    {% include "timeline/timeline.html" %}
 </section>
 {% endblock %}
