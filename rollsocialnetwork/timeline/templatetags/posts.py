@@ -6,7 +6,7 @@ usage:
 {% load posts %}
 """
 from django import template
-
+from django.contrib.sites.models import Site
 from rollsocialnetwork.timeline.models import Post
 from rollsocialnetwork.social.models import UserProfile
 
@@ -18,4 +18,8 @@ def has_like(post: Post, user_profile: UserProfile):
     """
     return post.get_like(user_profile) is not None
 
+def is_external_post(post: Post, site: Site):
+    return post.user_profile.site.pk != site.pk
+
 register.filter("has_like", has_like)
+register.filter("is_external_post", is_external_post)
