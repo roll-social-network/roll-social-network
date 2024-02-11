@@ -1,7 +1,11 @@
-{% load i18n thumbnail humanize %}
+{% load i18n thumbnail humanize posts %}
 
+{% with is_external_post=post|is_external_post:request.site %}
 <div class="post" id="post-{{ post.pk }}">
-    <a href="{% url 'social-user-profile' username=post.user_profile.username %}" class="username">@{{ post.user_profile.username }}</a>
+    <a href="{% if is_external_post %}{{request.scheme}}://{{ post.user_profile.site.domain }}{% endif %}{{ post.user_profile.get_absolute_url }}" class="username">
+        <div class="text">{{ post.user_profile.username }}</div>
+        {% if is_external_post %}<div class="site-domain">@{{ post.user_profile.site.domain }}</div>{% endif %}
+    </a>
     <picture style="background-image: url('{{ post.photo|thumbnail_url:'photo8' }}');">
         <source srcset="{{ post.photo|thumbnail_url:'photo184' }}" media="(max-width: 360px)" />
         <img
@@ -16,3 +20,4 @@
         </div>
     </div>
 </div>
+{% endwith %}

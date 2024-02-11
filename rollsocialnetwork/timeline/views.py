@@ -12,6 +12,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.forms.models import BaseModelForm
 from django.db.models.query import QuerySet
+from django.conf import settings
 from rollsocialnetwork.http_request import HttpRequest
 from rollsocialnetwork.social.mixins import UserProfileRequiredMixin
 from .models import Post
@@ -29,6 +30,8 @@ class TimelineView(UserProfileRequiredMixin,  # pylint: disable=R0901
 
     def get_queryset(self) -> QuerySet[Post]:
         queryset = super().get_queryset()
+        if self.request.site.id != settings.HOME_SITE_ID:
+            queryset = queryset.filter(user_profile__site=self.request.site)
         return self.build_sliced_queryset(queryset)
 
 class PostCreateView(UserProfileRequiredMixin,
