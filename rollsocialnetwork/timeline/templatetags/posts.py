@@ -19,6 +19,9 @@ def has_like(post: Post, user_profile: UserProfile):
     return post.get_like(user_profile) is not None
 
 def is_external_post(post: Post, site: Site):
+    """
+    is external post
+    """
     return post.user_profile.site.pk != site.pk
 
 register.filter("has_like", has_like)
