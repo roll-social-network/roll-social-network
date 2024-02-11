@@ -11,6 +11,7 @@ type-checker = "mypy rollsocialnetwork"
 test = "python manage.py test"
 coverage = "coverage run ./manage.py test"
 coverage-xml = "coverage xml"
+coverage-report = "coverage report"
 
 [packages]
 django = "*"
