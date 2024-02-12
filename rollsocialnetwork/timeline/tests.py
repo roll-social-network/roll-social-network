@@ -3,10 +3,7 @@ timeline tests
 """
 from unittest import mock
 from django.http import HttpResponseRedirect
-from django.test import (
-    TestCase,
-    RequestFactory,
-)
+from django.test import TestCase
 from rollsocialnetwork.social.tests_factory import UserProfileFactory
 from rollsocialnetwork.tests_factory import SiteFactory
 from rollsocialnetwork.timeline.models import Like, Post
@@ -105,7 +102,6 @@ class PostLikeDislikeViewTest(TestCase):
     post like dislike view test
     """
     def setUp(self):
-        self.factory = RequestFactory()
         user_profile_factory = UserProfileFactory()
         site_factory = SiteFactory()
         post_factory = PostFactory()
