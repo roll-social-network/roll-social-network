@@ -3,3 +3,4 @@ source = rollsocialnetwork
 omit =
     **/migrations/*.py
     rollsocialnetwork/asgi.py
+    rollsocialnetwork/wsgi.py

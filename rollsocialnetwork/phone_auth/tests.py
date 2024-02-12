@@ -2,19 +2,23 @@
 phone auth tests
 """
 from datetime import timedelta
+from unittest import mock
 from django.test import (
     TestCase,
     override_settings
 )
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-from rollsocialnetwork.phone_auth.tests_factory import VerificationCodeFactory
+from django.forms import ValidationError
 from rollsocialnetwork.tests_factory import UserFactory
+from rollsocialnetwork.tests_fake import fake
 from .utils import (
     get_or_create_user,
     normalize_phone_number,
 )
 from .models import VerificationCode
+from . import forms
+from .tests_factory import VerificationCodeFactory
 
 PHONE_1 = "+55 11 98070-6050"
 PHONE_2 = "+55 11 98070-6051"
@@ -146,3 +150,35 @@ class PhoneAuthBackendTestCase(TestCase):
         response = self.client.login(phone_number=self.user.username,
                                      code="1234")
         self.assertFalse(response)
+
+class VerifyVerificationCodeFormTestCase(TestCase):
+    """
+    verify verification code form test case
+    """
+    def setUp(self):
+        self.user_factory = UserFactory()
+
+    @mock.patch.object(forms, "authenticate")
+    def test_valid_login(self, authenticate_mock):
+        """
+        test valid login
+        """
+        user = self.user_factory.create_user()
+        authenticate_mock.return_value = user
+        form = forms.VerifyVerificationCodeForm(data={"phone": user.username, "code": "1234"})
+        is_valid = form.is_valid()
+        self.assertTrue(is_valid)
+        cleaned_data = form.clean()
+        self.assertIsInstance(cleaned_data, dict)
+
+    @mock.patch.object(forms, "authenticate")
+    def test_invalid_login(self, authenticate_mock):
+        """
+        test invalid login
+        """
+        authenticate_mock.return_value = None
+        form = forms.VerifyVerificationCodeForm(data={"phone": fake.e164(), "code": "1234"})
+        is_valid = form.is_valid()
+        self.assertFalse(is_valid)
+        with self.assertRaises(ValidationError):
+            form.clean()
