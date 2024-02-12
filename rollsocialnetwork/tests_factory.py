@@ -32,7 +32,7 @@ class UserFactory:
         """
         factory user
         """
-        return {"username": fake.unique.isbn10()}
+        return {"username": fake.unique.e164()}
 
     def create_user(self):
         """
