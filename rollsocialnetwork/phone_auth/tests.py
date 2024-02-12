@@ -8,6 +8,8 @@ from django.test import (
 )
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from rollsocialnetwork.phone_auth.tests_factory import VerificationCodeFactory
+from rollsocialnetwork.tests_factory import UserFactory
 from .utils import (
     get_or_create_user,
     normalize_phone_number,
@@ -118,3 +120,29 @@ class VerificationCodeVerifyTestCase(TestCase):
         """
         verification_code = VerificationCode.verify(PHONE_2, self.code_4)
         self.assertIsNone(verification_code)
+
+class PhoneAuthBackendTestCase(TestCase):
+    """
+    phone auth backend test case
+    """
+    def setUp(self):
+        user_factory = UserFactory()
+        self.verification_code_factory = VerificationCodeFactory()
+        self.user = user_factory.create_user()
+
+    def test_authenticate_with_correct_phone_number_and_code(self):
+        """
+        test authenticate with correct phone number and code
+        """
+        verification_code = self.verification_code_factory.create_verification_code(user=self.user)
+        response = self.client.login(phone_number=self.user.username,
+                                     code=verification_code.code)
+        self.assertTrue(response)
+
+    def test_authenticate_incorrect(self):
+        """
+        test authenticate incorrect
+        """
+        response = self.client.login(phone_number=self.user.username,
+                                     code="1234")
+        self.assertFalse(response)
