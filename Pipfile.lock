@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e703f620c7fdbb3fbc5ec2e0bc41a2cb0de5b7bfc4ccd4382e388a1123b126c0"
+            "sha256": "59ad65eea83f2228069b00f3792c3d0eb6a1f77998f21f378728c426b7ffbc04"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -990,6 +990,13 @@
             "markers": "python_version >= '3.8'",
             "version": "==23.1.0"
         },
+        "faker-e164": {
+            "hashes": [
+                "sha256:005e60a144a96cc166eed7dc186510efaa641ca755f0f4e4234b0cdaec02d105"
+            ],
+            "index": "pypi",
+            "version": "==0.1.0"
+        },
         "frozenlist": {
             "hashes": [
                 "sha256:04ced3e6a46b4cfffe20f9ae482818e34eba9b5fb0ce4056e4cc9b6e212d09b7",
@@ -1234,6 +1241,13 @@
             ],
             "markers": "python_version >= '3.5'",
             "version": "==1.0.0"
+        },
+        "phonenumberslite": {
+            "hashes": [
+                "sha256:4f9e679dbb1176df9b1aeffb2f0f81de87fa03cc6b4adc008c672c676496f219",
+                "sha256:527920ded7fd2a6c0f6f76b1095c0f9d6cd45f326192dbdc8167b99dd9c64ddf"
+            ],
+            "version": "==8.13.30"
         },
         "platformdirs": {
             "hashes": [

@@ -32,6 +32,7 @@ types-dj-database-url = "*"
 twilio-stubs = "*"
 faker = "*"
 coverage = "*"
+faker-e164 = "*"
 
 [requires]
 python_version = "3.12"
