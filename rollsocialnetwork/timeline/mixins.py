@@ -52,6 +52,9 @@ class TimelineViewMixin:
         return queryset.filter(pk__lte=slice_value)
 
     def build_context_data(self):
+        """
+        build context data
+        """
         return {
             "slice_kwarg": self.slice_kwarg,
             "slice": self.fill_slice_value(),

@@ -24,7 +24,7 @@ class TimelineViewMixinTest(TestCase):
         return []
 
     @mock.patch.object(TimelineViewMixin, 'get_slice_value', return_value=None)
-    def test_fill_slice_value_empty_posts(self, get_slice_value_mock):
+    def test_fill_slice_value_empty_posts(self, _get_slice_value_mock):
         """
         test fill slice value returns None
         """

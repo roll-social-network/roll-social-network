@@ -35,6 +35,9 @@ class TimelineView(UserProfileRequiredMixin,  # pylint: disable=R0901
         return self.build_sliced_queryset(queryset)
 
     def is_home_site(self):
+        """
+        is home site
+        """
         return self.request.site.id == settings.HOME_SITE_ID
 
 class PostCreateView(UserProfileRequiredMixin,
