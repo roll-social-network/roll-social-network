@@ -22,6 +22,7 @@ phonenumbers = "*"
 twilio = "*"
 pillow = "*"
 easy-thumbnails = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 pylint = "*"

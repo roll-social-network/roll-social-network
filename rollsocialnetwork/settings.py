@@ -5,6 +5,7 @@ roll social network settings.
 from pathlib import Path
 from decouple import config  # type: ignore[import-untyped]
 import dj_database_url
+import corsheaders.defaults
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config(
@@ -24,6 +25,7 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "phonenumber_field",
     "easy_thumbnails",
+    "corsheaders",
     "rollsocialnetwork",
     "rollsocialnetwork.phone_auth",
     "rollsocialnetwork.social",
@@ -32,6 +34,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -128,3 +131,13 @@ THUMBNAIL_ALIASES = {
         },
     }
 }
+CORS_ALLOW_ALL_ORIGINS = config("CORS_ALLOW_ALL_ORIGINS",
+                                default=False,
+                                cast=bool)
+CORS_ALLOWED_ORIGIN_REGEXES = config("CORS_ALLOWED_ORIGIN_REGEXES",
+                                     default="",
+                                     cast=(lambda value: value.split(",")))
+CORS_ALLOW_HEADERS = [
+    *corsheaders.defaults.default_headers,
+    "action-component",
+]
