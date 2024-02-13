@@ -1,8 +1,8 @@
-{% load i18n thumbnail humanize posts %}
+{% load i18n thumbnail humanize posts uris %}
 
 {% with is_external_post=post|is_external_post:request.site %}
 <div class="post" id="post-{{ post.pk }}">
-    <a href="{% if is_external_post %}{{request.scheme}}://{{ post.user_profile.site.domain }}{% endif %}{{ post.user_profile.get_absolute_url }}" class="username">
+    <a href="{% site_build_absolute_uri post.user_profile.site 'social-user-profile' username=post.user_profile.username %}" class="username">
         <div class="text">{{ post.user_profile.username }}</div>
         {% if is_external_post %}<div class="site-domain">@{{ post.user_profile.site.domain }}</div>{% endif %}
     </a>
