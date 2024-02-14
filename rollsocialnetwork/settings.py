@@ -141,3 +141,6 @@ CORS_ALLOW_HEADERS = [
     *corsheaders.defaults.default_headers,
     "action-component",
 ]
+CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_DOMAIN = config("SESSION_COOKIE_DOMAIN",
+                               default=None)
