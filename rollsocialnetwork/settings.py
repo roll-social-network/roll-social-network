@@ -136,7 +136,7 @@ CORS_ALLOW_ALL_ORIGINS = config("CORS_ALLOW_ALL_ORIGINS",
                                 cast=bool)
 CORS_ALLOWED_ORIGIN_REGEXES = config("CORS_ALLOWED_ORIGIN_REGEXES",
                                      default="",
-                                     cast=(lambda value: value.split(",")))
+                                     cast=lambda value: value.split(","))
 CORS_ALLOW_HEADERS = [
     *corsheaders.defaults.default_headers,
     "action-component",
