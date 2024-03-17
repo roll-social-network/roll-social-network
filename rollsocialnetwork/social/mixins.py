@@ -21,6 +21,9 @@ class UserProfileRequiredMixin(AccessMixin):
 
     @property
     def is_action_component(self):
+        """
+        is action component?
+        """
         return "Action-Component" in self.request.headers.keys()
 
     def get_login_url(self):
@@ -38,6 +41,9 @@ class UserProfileRequiredMixin(AccessMixin):
         raise BadRequest("not expected, user authenticated and user profile setted")
 
     def get_action_message(self):
+        """
+        get action message
+        """
         if not self.request.user.is_authenticated:
             return _("Authenticate")
         if not self.request.user_profile:
@@ -45,6 +51,9 @@ class UserProfileRequiredMixin(AccessMixin):
         raise BadRequest("not expected, user authenticated and user profile setted")
 
     def get_action_url(self):
+        """
+        get action url
+        """
         resolved_url = resolve_url(self.get_login_url())
         if self.is_action_component:
             scheme, netloc = urlparse(resolved_url)[:2]
