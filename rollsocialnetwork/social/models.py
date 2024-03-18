@@ -15,8 +15,10 @@ class UserProfile(models.Model):
     """
     class Meta:
         unique_together = [
-            "username",
-            "site",
+            ("username",
+             "site",),
+            ("user",
+             "site",),
         ]
 
     username = models.SlugField()
