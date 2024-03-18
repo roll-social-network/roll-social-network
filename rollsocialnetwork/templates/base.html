@@ -15,7 +15,9 @@
     <div id="toast">
         <div is="vue:toast-queue"></div>
     </div>
+    {% block scripts %}
     <script type="text/javascript" src="{% static 'main.js' %}"></script>
+    {% endblock %}
 </body>
 
 </html>
