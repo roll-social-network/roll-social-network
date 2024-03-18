@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% load i18n static %}
+
+{% block body %}
+<section>
+    <p class="text-center">{% translate 'you can now close this window...' %}</p>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'openerCallback.js' %}"></script>
+{% endblock %}

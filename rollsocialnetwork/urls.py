@@ -14,11 +14,13 @@ from django.urls import (
 )
 from django.views.generic import TemplateView
 from django.views.static import serve
+from .opener_callback import OpenerCallbackView
 from .views import LogoutView
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="index.html"), name="home"),
     path("phone-auth/", include("rollsocialnetwork.phone_auth.urls")),
+    path("callback/opener/", OpenerCallbackView.as_view(), name="opener_callback"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("s/", include("rollsocialnetwork.social.urls")),
     path("t/", include("rollsocialnetwork.timeline.urls")),
