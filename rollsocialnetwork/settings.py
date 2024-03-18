@@ -96,6 +96,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATICFILES_DIRS = [
     "roll-social-network-frontend/dist",
+    "rollsocialnetwork/static",
 ]
 MEDIA_ROOT = config("MEDIA_ROOT", default="./media/")
 MEDIA_URL = config("MEDIA_URL", default="/media/")
