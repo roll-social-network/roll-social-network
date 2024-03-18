@@ -1,8 +1,12 @@
 """
 timeline models
 """
-from typing import Optional
+from typing import (
+    Optional,
+    Type,
+)
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from rollsocialnetwork.social.models import UserProfile
 
 class Post(models.Model):
@@ -52,6 +56,13 @@ class Post(models.Model):
             return self._like(user_profile)
         self._dislike(like)
         return None
+
+    def has_user_like(self, user: Type[AbstractUser]) -> bool:
+        """
+        has user like
+        """
+        return Like.objects.filter(user_profile__user=user,
+                                   post=self).count() > 0
 
 class Like(models.Model):
     """

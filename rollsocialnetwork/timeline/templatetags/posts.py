@@ -5,18 +5,19 @@ usage:
 
 {% load posts %}
 """
+from typing import Type
 from django import template
 from django.contrib.sites.models import Site
+from django.contrib.auth.models import AbstractUser
 from rollsocialnetwork.timeline.models import Post
-from rollsocialnetwork.social.models import UserProfile
 
 register = template.Library()
 
-def has_like(post: Post, user_profile: UserProfile):
+def has_user_like(post: Post, user: Type[AbstractUser]) -> bool:
     """
     has like
     """
-    return post.get_like(user_profile) is not None
+    return post.has_user_like(user)
 
 def is_external_post(post: Post, site: Site):
     """
@@ -24,5 +25,5 @@ def is_external_post(post: Post, site: Site):
     """
     return post.user_profile.site.pk != site.pk
 
-register.filter("has_like", has_like)
+register.filter("has_user_like", has_user_like)
 register.filter("is_external_post", is_external_post)

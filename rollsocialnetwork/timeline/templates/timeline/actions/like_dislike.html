@@ -1,6 +1,6 @@
 {% load posts uris %}
 
-{% with has_like=post|has_like:user_profile %}
+{% with has_like=post|has_user_like:user %}
     <a
         href="{% site_build_absolute_uri post.user_profile.site 'timeline-post-like-dislike' pk=post.pk %}"
         is="vue:LikeDislikeAction"
