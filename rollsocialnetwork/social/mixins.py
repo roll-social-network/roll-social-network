@@ -79,18 +79,20 @@ class UserProfileRequiredMixin(AccessMixin):
             raise PermissionDenied(self.get_permission_denied_message())
         path = self.request.build_absolute_uri()
         action_url = self.get_action_url()
-        if self.is_action_component:
-            return JsonResponse({
-                "message": self.get_permission_denied_message(),
-                "action_message": self.get_action_message(),
-                "action_url": action_url,
-            }, status=403)
         action_scheme, action_netloc = urlparse(action_url)[:2]
         current_scheme, current_netloc = urlparse(path)[:2]
         if (not action_scheme or action_scheme == current_scheme) and (
             not action_netloc or action_netloc == current_netloc
         ):
             path = self.request.get_full_path()
+        if self.is_action_component:
+            return JsonResponse({
+                "message": self.get_permission_denied_message(),
+                "action_message": self.get_action_message(),
+                "action_url": action_url,
+                "action_component": "popup_login",
+                "next": path,
+            }, status=403)
         return redirect_to_login(
             path,
             action_url,
