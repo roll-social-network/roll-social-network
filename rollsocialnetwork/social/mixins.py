@@ -90,7 +90,7 @@ class UserProfileRequiredMixin(AccessMixin):
                 "message": self.get_permission_denied_message(),
                 "action_message": self.get_action_message(),
                 "action_url": action_url,
-                "action_component": "popup-login",
+                "action_component": "popup-opener-callback",
                 "next": path,
             }, status=403)
         return redirect_to_login(
