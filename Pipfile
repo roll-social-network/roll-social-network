@@ -23,6 +23,7 @@ twilio = "*"
 pillow = "*"
 easy-thumbnails = "*"
 django-cors-headers = "*"
+django-csp = "*"
 
 [dev-packages]
 pylint = "*"

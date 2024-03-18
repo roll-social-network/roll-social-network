@@ -39,9 +39,9 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.contrib.sites.middleware.CurrentSiteMiddleware",
     "rollsocialnetwork.social.middleware.CurrentUserProfileMiddleware",
+    "csp.middleware.CSPMiddleware",
 ]
 ROOT_URLCONF = "rollsocialnetwork.urls"
 TEMPLATES = [
@@ -144,3 +144,9 @@ CORS_ALLOW_HEADERS = [
 CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_DOMAIN = config("SESSION_COOKIE_DOMAIN",
                                default=None)
+CSP_CONNECT_SRC = config("CSP_CONNECT_SRC",
+                         default="'self'",
+                         cast=lambda value: value.split(","))
+CSP_SCRIPT_SRC = ["'self'", "'unsafe-eval'"]
+CSP_STYLE_SRC = ["'self'", "'unsafe-inline'", "'unsafe-hashes'", "fonts.googleapis.com"]
+CSP_FONT_SRC = ["'self'", "fonts.gstatic.com"]
