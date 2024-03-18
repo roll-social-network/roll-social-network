@@ -16,6 +16,7 @@ from django.core.paginator import (
 )
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
+from rollsocialnetwork.opener_callback import OpenerCallbackRedirectURLMixin
 from rollsocialnetwork.timeline.mixins import TimelineViewMixin
 from .mixins import UserProfileRequiredMixin
 from .models import UserProfile
@@ -87,7 +88,8 @@ class UserProfileDetailView(UserProfileRequiredMixin,
             ) from e
 
 @method_decorator(login_required, name="dispatch")
-class UserProfileCreateView(RedirectURLMixin,
+class UserProfileCreateView(OpenerCallbackRedirectURLMixin,
+                            RedirectURLMixin,
                             CreateView):
     """
     user profile create view
