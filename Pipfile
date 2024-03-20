@@ -6,6 +6,7 @@ name = "pypi"
 [scripts]
 dev = "python manage.py runserver"
 dbmigrate = "python manage.py migrate"
+statics = "python manage.py collectstatic --noinput"
 lint = "pylint --load-plugins pylint_django --django-settings-module=rollsocialnetwork.settings rollsocialnetwork"
 type-checker = "mypy rollsocialnetwork"
 test = "python manage.py test"
