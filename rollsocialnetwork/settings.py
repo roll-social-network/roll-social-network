@@ -149,6 +149,7 @@ CORS_ALLOW_HEADERS = [
     "action-component",
 ]
 CORS_ALLOW_CREDENTIALS = True
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "unsafe-none"
 SESSION_COOKIE_DOMAIN = config("SESSION_COOKIE_DOMAIN",
                                default=None)
 CSP_CONNECT_SRC = config("CSP_CONNECT_SRC",
