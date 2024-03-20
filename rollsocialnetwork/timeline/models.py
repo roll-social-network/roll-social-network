@@ -7,6 +7,7 @@ from typing import (
 )
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.files.storage import storages  # type: ignore[attr-defined]
 from rollsocialnetwork.social.models import UserProfile
 
 class Post(models.Model):
@@ -19,10 +20,11 @@ class Post(models.Model):
     user_profile = models.ForeignKey(UserProfile,
                                      on_delete=models.CASCADE,
                                      blank=False,
-                                     related_name='posts')
+                                     related_name="posts")
     photo = models.ImageField(max_length=256,
                               blank=False,
-                              upload_to="posts")
+                              upload_to="photos",
+                              storage=storages["posts"])
     created_at = models.DateTimeField(auto_now_add=True,
                                       blank=False,
                                       editable=False)
