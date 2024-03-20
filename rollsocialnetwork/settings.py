@@ -93,11 +93,14 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
-STATIC_URL = "static/"
+STATIC_URL = config("STATIC_URL",
+                    default="static/")
 STATICFILES_DIRS = [
     "roll-social-network-frontend/dist",
     "rollsocialnetwork/static",
 ]
+STATIC_ROOT = config("STATIC_ROOT",
+                     default=None)
 MEDIA_ROOT = config("MEDIA_ROOT", default="./media/")
 MEDIA_URL = config("MEDIA_URL", default="/media/")
 MEDIA_AS_STATIC = config("MEDIA_AS_STATIC", default=True, cast=bool)
