@@ -2,6 +2,7 @@
 roll social network settings.
 """
 
+import json
 from pathlib import Path
 from decouple import config  # type: ignore[import-untyped]
 import dj_database_url
@@ -135,6 +136,8 @@ THUMBNAIL_ALIASES = {
         },
     }
 }
+THUMBNAIL_DEFAULT_STORAGE = config("THUMBNAIL_DEFAULT_STORAGE",
+                                   default="easy_thumbnails.storage.ThumbnailFileSystemStorage")
 CORS_ALLOW_ALL_ORIGINS = config("CORS_ALLOW_ALL_ORIGINS",
                                 default=False,
                                 cast=bool)
@@ -163,3 +166,24 @@ CSP_FONT_SRC = config("CSP_FONT_SRC",
 CSP_IMG_SRC = config("CSP_IMG_SRC",
                      default="'self'",
                      cast=lambda value: value.split(","))
+STORAGES = {
+    "default": {
+        "BACKEND": config("STORAGES_DEFAULT_BACKEND",
+                          default="django.core.files.storage.FileSystemStorage"),
+        "OPTIONS": config("STORAGES_DEFAULT_OPTIONS",
+                          default="{}",
+                          cast=json.loads)
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"
+    },
+    "posts": {
+        "BACKEND": config("STORAGES_POSTS_BACKEND",
+                          default="django.core.files.storage.FileSystemStorage"),
+        "OPTIONS": config("STORAGES_POSTS_OPTIONS",
+                          default="{}",
+                          cast=json.loads)
+    }
+}
+FTP_STORAGE_LOCATION = config("FTP_STORAGE_LOCATION",
+                              default=None)
