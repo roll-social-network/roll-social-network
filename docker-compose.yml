@@ -34,6 +34,7 @@ services:
       STORAGES_POSTS_BACKEND: storages.backends.ftp.FTPStorage
       THUMBNAIL_DEFAULT_STORAGE: storages.backends.ftp.FTPStorage
       FTP_STORAGE_LOCATION: ftp://roll:roll@medias-ftp:21
+      MEDIA_PATH_AS_NGINX_ACCEL: true
       # at first time uncomment bellow line to configure site domain in /admin
       # SITE_ID: 1
   db:
@@ -55,9 +56,12 @@ services:
     volumes:
       - medias-data:/home/roll/
   medias:
-    image: nginx:latest
+    build:
+      dockerfile: Dockerfile.medias
     volumes:
       - medias-data:/usr/share/nginx/html/:ro
+    depends_on:
+      - app
 
 volumes:
   db-data: {}
