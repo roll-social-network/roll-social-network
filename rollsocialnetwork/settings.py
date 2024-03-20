@@ -104,7 +104,14 @@ STATIC_ROOT = config("STATIC_ROOT",
                      default=None)
 MEDIA_ROOT = config("MEDIA_ROOT", default="./media/")
 MEDIA_URL = config("MEDIA_URL", default="/media/")
-MEDIA_AS_STATIC = config("MEDIA_AS_STATIC", default=True, cast=bool)
+MEDIA_PATH_AS_STATIC = config("MEDIA_PATH_AS_STATIC",
+                              default=False,
+                              cast=bool)
+MEDIA_PATH_AS_NGINX_ACCEL = config("MEDIA_PATH_AS_NGINX_ACCEL",
+                                   default=False,
+                                   cast=bool)
+NGINX_ACCEL_REDIRECT_INTERNAL_LOCATION = config("NGINX_ACCEL_REDIRECT_INTERNAL_LOCATION",
+                                                default="/medias/")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SITE_ID = config("SITE_ID", default=None, cast=lambda v: None if v is None else int(v))
 HOME_SITE_ID = config("HOME_SITE_ID", default=1, cast=int)

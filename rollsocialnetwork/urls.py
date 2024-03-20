@@ -15,7 +15,10 @@ from django.urls import (
 from django.views.generic import TemplateView
 from django.views.static import serve
 from .opener_callback import OpenerCallbackView
-from .views import LogoutView
+from .views import (
+    LogoutView,
+    NginxAccelRedirectView,
+)
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="index.html"), name="home"),
@@ -27,7 +30,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
 ]
 
-if settings.MEDIA_AS_STATIC:
+if settings.MEDIA_PATH_AS_STATIC:
     urlpatterns += [
         re_path(
             r"^media/(?P<path>.*)$",
@@ -36,4 +39,12 @@ if settings.MEDIA_AS_STATIC:
                 "document_root": settings.MEDIA_ROOT,
             },
         ),
+    ]
+
+if settings.MEDIA_PATH_AS_NGINX_ACCEL:
+    urlpatterns += [
+        re_path(
+            r"^media/(?P<path>.*)$",
+            NginxAccelRedirectView.as_view()
+        )
     ]
