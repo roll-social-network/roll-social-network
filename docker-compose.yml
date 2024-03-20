@@ -1,0 +1,64 @@
+# Create local environment in Production mode!
+# The base domain is roll.local.
+# Point home, statics, medias and customs hosts to 127.0.0.1 in /etc/hosts, e.g.:
+# 127.0.0.1 roll.local medias.roll.local statics.roll.local custom1.roll.local custom2.roll.local
+
+services:
+  proxy:
+    image: haproxy:latest
+    ports:
+      - 80:80
+    depends_on:
+      - app
+      - statics
+      - medias
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+  app:
+    build: .
+    depends_on:
+      - db
+      - medias-ftp
+    environment:
+      DATABASES_DEFAULT: postgres://roll:roll@db/roll
+      SESSION_COOKIE_DOMAIN: .roll.local
+      CORS_ALLOWED_ORIGIN_REGEXES: "^http://\\w+\\.roll.local$,^http://roll.local$"
+      STATIC_URL: http://statics.roll.local/
+      MEDIA_URL: http://medias.roll.local/
+      CSP_STYLE_SRC: "'self','unsafe-inline','unsafe-hashes',statics.roll.local,fonts.googleapis.com"
+      CSP_FONT_SRC: "'self',statics.roll.local,fonts.gstatic.com"
+      CSP_SCRIPT_SRC: "'self','unsafe-eval',statics.roll.local"
+      CSP_IMG_SRC: "'self',statics.roll.local,medias.roll.local"
+      CSP_CONNECT_SRC: "'self',roll.local,*.roll.local"
+      STORAGES_DEFAULT_BACKEND: storages.backends.ftp.FTPStorage
+      STORAGES_POSTS_BACKEND: storages.backends.ftp.FTPStorage
+      THUMBNAIL_DEFAULT_STORAGE: storages.backends.ftp.FTPStorage
+      FTP_STORAGE_LOCATION: ftp://roll:roll@medias-ftp:21
+      # at first time uncomment bellow line to configure site domain in /admin
+      # SITE_ID: 1
+  db:
+    image: postgres:latest
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: roll
+      POSTGRES_PASSWORD: roll
+      POSTGRES_DB: roll
+  statics:
+    build:
+      dockerfile: Dockerfile.statics
+  medias-ftp:
+    image: garethflowers/ftp-server
+    environment:
+      - FTP_PASS=roll
+      - FTP_USER=roll
+    volumes:
+      - medias-data:/home/roll/
+  medias:
+    image: nginx:latest
+    volumes:
+      - medias-data:/usr/share/nginx/html/:ro
+
+volumes:
+  db-data: {}
+  medias-data: {}
