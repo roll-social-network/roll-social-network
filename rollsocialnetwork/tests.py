@@ -103,7 +103,7 @@ class OCTestView(OpenerCallbackRedirectURLMixin,  # pylint: disable=R0903
     """
     OC Test View
 
-    extends OpenerCallbackRedirectURLMixin and OCTestBaseView
+    extends OpenerCallbackRedirectURLMixin and TestBaseView
     """
 
 class OpenerCallbackRedirectURLMixinTest(TestCase):
