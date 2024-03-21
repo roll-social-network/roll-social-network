@@ -29,14 +29,14 @@ class UserProfileRequiredMixin(AccessMixin):
     def get_login_url(self):
         if not self.request.user.is_authenticated:
             return settings.LOGIN_URL
-        if not self.request.user_profile:
+        if not hasattr(self.request, "user_profile") or not self.request.user_profile:
             return settings.CREATE_USER_PROFILE_URL
         raise BadRequest("not expected, user authenticated and user profile setted")
 
     def get_permission_denied_message(self):
         if not self.request.user.is_authenticated:
             return _("You are not authenticated.")
-        if not self.request.user_profile:
+        if not hasattr(self.request, "user_profile") or not self.request.user_profile:
             return _("You do not have a user profile on this roll.")
         raise BadRequest("not expected, user authenticated and user profile setted")
 
@@ -46,7 +46,7 @@ class UserProfileRequiredMixin(AccessMixin):
         """
         if not self.request.user.is_authenticated:
             return _("Authenticate")
-        if not self.request.user_profile:
+        if not hasattr(self.request, "user_profile") or not self.request.user_profile:
             return _("Create a profile")
         raise BadRequest("not expected, user authenticated and user profile setted")
 
@@ -55,30 +55,30 @@ class UserProfileRequiredMixin(AccessMixin):
         get action url
         """
         resolved_url = resolve_url(self.get_login_url())
-        if self.is_action_component:
-            scheme, netloc = urlparse(resolved_url)[:2]
-            if scheme and netloc:
-                return resolved_url
-            path = self.request.build_absolute_uri()
-            current_scheme, current_netloc = urlparse(path)[:2]
-            return f"{current_scheme}://{current_netloc}{resolved_url}"
-        return resolved_url
+        if not self.is_action_component:
+            return resolved_url
+        scheme, netloc = urlparse(resolved_url)[:2]
+        if scheme and netloc:
+            return resolved_url
+        path = self.request.build_absolute_uri()
+        current_scheme, current_netloc = urlparse(path)[:2]
+        return f"{current_scheme}://{current_netloc}{resolved_url}"
 
     def dispatch(self, request, *args, **kwargs):
         """
         dispatch
         """
-        if not request.user.is_authenticated or not request.user_profile:
+        if not request.user.is_authenticated \
+            or not hasattr(request, "user_profile") \
+                and not request.user_profile:
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
     def handle_no_permission(self):
-        if (self.raise_exception or (
-            self.request.user.is_authenticated and self.request.user_profile)
-        ):
+        if self.raise_exception:
             raise PermissionDenied(self.get_permission_denied_message())
-        path = self.request.build_absolute_uri()
         action_url = self.get_action_url()
+        path = self.request.build_absolute_uri()
         action_scheme, action_netloc = urlparse(action_url)[:2]
         current_scheme, current_netloc = urlparse(path)[:2]
         if (not action_scheme or action_scheme == current_scheme) and (
