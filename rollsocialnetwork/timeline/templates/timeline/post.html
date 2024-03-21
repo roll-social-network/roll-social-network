@@ -6,7 +6,10 @@
         <div class="text">{{ post.user_profile.username }}</div>
         {% if is_external_post %}<div class="site-domain">@{{ post.user_profile.site.domain }}</div>{% endif %}
     </a>
-    <picture style="background-image: url('{{ post.photo|thumbnail_url:'photo8' }}');">
+    <picture>
+        <img
+            class="preview"
+            src="{{ post.photo|thumbnail_url:'photo8' }}" />
         <source srcset="{{ post.photo|thumbnail_url:'photo184' }}" media="(max-width: 360px)" />
         <img
             src="{{ post.photo|thumbnail_url:'photo584' }}"
