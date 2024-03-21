@@ -66,6 +66,12 @@ class Post(models.Model):
         return Like.objects.filter(user_profile__user=user,
                                    post=self).count() > 0
 
+    def likes_count(self) -> int:
+        """
+        likes count
+        """
+        return self.likes.count()
+
 class Like(models.Model):
     """
     like model
@@ -81,7 +87,8 @@ class Like(models.Model):
                                      blank=False)
     post = models.ForeignKey(Post,
                              on_delete=models.CASCADE,
-                             blank=True)
+                             blank=True,
+                             related_name="likes")
     liked_at = models.DateTimeField(auto_now_add=True,
                                     blank=False,
                                     editable=False)
