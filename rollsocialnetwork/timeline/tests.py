@@ -2,8 +2,8 @@
 timeline tests
 """
 from unittest import mock
-from django.http import HttpResponseRedirect
 from django.test import TestCase
+from django.http import HttpResponseRedirect
 from rollsocialnetwork.social.tests_factory import UserProfileFactory
 from rollsocialnetwork.tests_factory import SiteFactory
 from rollsocialnetwork.timeline.models import Like, Post
