@@ -15,6 +15,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.conf import settings
 from django.urls import reverse
 from django.utils.http import urlencode
+from django.views import View
 from .views import NginxAccelRedirectView
 from .tests_factory import (
     SiteFactory,
@@ -84,15 +85,12 @@ class NginxAccelRedirectViewTest(TestCase):
             f"{settings.NGINX_ACCEL_REDIRECT_INTERNAL_LOCATION}{path}"
         )
 
-class TestBaseView:  # pylint: disable=R0903
+class TestBaseView(View):  # pylint: disable=R0903
     """
     Test Base View
     """
 
     DEFAULT_REDIRECT_URL = "default/url"
-
-    def __init__(self, request):
-        self.request = request
 
     def get_redirect_url(self):
         """
@@ -121,7 +119,7 @@ class OpenerCallbackRedirectURLMixinTest(TestCase):
         test not message
         """
         request = self.factory.get("/octest/")
-        oc_test = OCTestView(request)
+        oc_test = OCTestView(request=request)
         redirect_url = oc_test.get_redirect_url()
         self.assertEqual(redirect_url, TestBaseView.DEFAULT_REDIRECT_URL)
 
@@ -133,7 +131,7 @@ class OpenerCallbackRedirectURLMixinTest(TestCase):
         message = "message"
         opener_callback_url = reverse("opener_callback")
         request = self.factory.get(f"/octest/?{message_field}={message}")
-        oc_test = OCTestView(request)
+        oc_test = OCTestView(request=request)
         redirect_url = oc_test.get_redirect_url()
         qs = {
             "message": message
@@ -150,7 +148,7 @@ class OpenerCallbackRedirectURLMixinTest(TestCase):
         origin = "http://example.com"
         opener_callback_url = reverse("opener_callback")
         request = self.factory.get(f"/octest/?{message_field}={message}&{origin_field}={origin}")
-        oc_test = OCTestView(request)
+        oc_test = OCTestView(request=request)
         redirect_url = oc_test.get_redirect_url()
         qs = {
             "message": message,
