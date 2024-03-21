@@ -3,7 +3,8 @@ rollsocialnetwork tests
 """
 from django.test import (
     TestCase,
-    RequestFactory
+    RequestFactory,
+    override_settings
 )
 from django.http import (
     HttpResponse,
@@ -20,6 +21,7 @@ from .tests_factory import (
     UserFactory,
 )
 from .opener_callback import OpenerCallbackRedirectURLMixin
+from .context_processors import is_home_site
 
 class LogoutViewTest(TestCase):
     """
@@ -145,7 +147,7 @@ class OpenerCallbackRedirectURLMixinTest(TestCase):
         message_field = OpenerCallbackRedirectURLMixin.MESSAGE_FIELD_NAME
         origin_field = OpenerCallbackRedirectURLMixin.ORIGIN_FIELD_NAME
         message = "message"
-        origin = "example.com"
+        origin = "http://example.com"
         opener_callback_url = reverse("opener_callback")
         request = self.factory.get(f"/octest/?{message_field}={message}&{origin_field}={origin}")
         oc_test = OCTestView(request)
@@ -155,3 +157,41 @@ class OpenerCallbackRedirectURLMixinTest(TestCase):
             "origin": origin
         }
         self.assertEqual(redirect_url, f"{opener_callback_url}?{urlencode(qs)}")
+
+class IsHomeSiteContextProcessorTest(TestCase):
+    """
+    is_home_site context processor test
+    """
+
+    def setUp(self):
+        self.factory = RequestFactory()
+        site_factory = SiteFactory()
+        self.site = site_factory.create_site()
+
+    def test_is(self):
+        """
+        is home site
+        """
+        request = self.factory.get(
+            "/test/",
+            SERVER_NAME=self.site.domain
+        )
+        request.site = self.site
+        with override_settings(HOME_SITE_ID=self.site.id):
+            result = is_home_site(request)
+            result_is_home_site = result.get("is_home_site")
+            self.assertTrue(result_is_home_site)
+
+    def test_not_is(self):
+        """
+        not is home site
+        """
+        request = self.factory.get(
+            "/test/",
+            SERVER_NAME=self.site.domain
+        )
+        request.site = self.site
+        with override_settings(HOME_SITE_ID=0):
+            result = is_home_site(request)
+            result_is_home_site = result.get("is_home_site")
+            self.assertFalse(result_is_home_site)
