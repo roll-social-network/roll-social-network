@@ -1,9 +1,13 @@
 {% load posts uris %}
 
-{% with has_like=post|has_user_like:user %}
+{% with has_like=post|has_user_like:user likes_count=post.likes_count %}
     <a
         href="{% site_build_absolute_uri post.user_profile.site 'timeline-post-like-dislike' pk=post.pk %}"
         is="vue:LikeDislikeAction"
         :post-pk="{{ post.pk }}"{% if has_like %}
-        initial-has-like{% endif %}><i class="fa-{% if has_like %}solid{% else %}regular{% endif %} fa-heart"></i></a>
+        initial-has-like{% endif %}
+        :initial-likes-count="{{ likes_count }}">
+        <i class="fa-{% if has_like %}solid{% else %}regular{% endif %} fa-heart"></i>
+        <span>{{ likes_count }}</span>
+    </a>
 {% endwith %}
