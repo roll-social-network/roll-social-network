@@ -28,12 +28,11 @@ class OpenerCallbackRedirectURLMixin:  # pylint: disable=R0903
         message = self.request.GET.get(self.__class__.MESSAGE_FIELD_NAME)
         if not message:
             return super().get_redirect_url()
-        origin = self.request.GET.get(self.__class__.ORIGIN_FIELD_NAME)
         url = reverse("opener_callback")
-        qs = {
-            "message": message,
-            "origin": origin
-        }
+        qs = {"message": message}
+        origin = self.request.GET.get(self.__class__.ORIGIN_FIELD_NAME)
+        if origin:
+            qs.update({"origin": origin})
         return f"{url}?{urlencode(qs)}"
 
 class OpenerCallbackView(TemplateView):

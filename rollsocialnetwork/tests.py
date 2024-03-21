@@ -11,11 +11,13 @@ from django.http import (
 from django.contrib.auth.models import AnonymousUser
 from django.conf import settings
 from django.urls import reverse
+from django.utils.http import urlencode
 from .views import NginxAccelRedirectView
 from .tests_factory import (
     SiteFactory,
     UserFactory,
 )
+from .opener_callback import OpenerCallbackRedirectURLMixin
 
 class LogoutViewTest(TestCase):
     def setUp(self):
@@ -61,3 +63,77 @@ class NginxAccelRedirectViewTest(TestCase):
             response["X-Accel-Redirect"],
             f"{settings.NGINX_ACCEL_REDIRECT_INTERNAL_LOCATION}{path}"
         )
+
+class TestBaseView:  # pylint: disable=R0903
+    """
+    Test Base View
+    """
+
+    DEFAULT_REDIRECT_URL = "default/url"
+
+    def __init__(self, request):
+        self.request = request
+
+    def get_redirect_url(self):
+        """
+        get redirect url
+        """
+        return TestBaseView.DEFAULT_REDIRECT_URL
+
+class OCTestView(OpenerCallbackRedirectURLMixin,  # pylint: disable=R0903
+                 TestBaseView):
+    """
+    OC Test View
+
+    extends OpenerCallbackRedirectURLMixin and OCTestBaseView
+    """
+
+class OpenerCallbackRedirectURLMixinTest(TestCase):
+    """
+    OpenerCallbackRedirectURLMixin test
+    """
+
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def test_not_message(self):
+        """
+        test not message
+        """
+        request = self.factory.get("/octest/")
+        oc_test = OCTestView(request)
+        redirect_url = oc_test.get_redirect_url()
+        self.assertEqual(redirect_url, TestBaseView.DEFAULT_REDIRECT_URL)
+
+    def test_with_message(self):
+        """
+        test with message
+        """
+        message_field = OpenerCallbackRedirectURLMixin.MESSAGE_FIELD_NAME
+        message = "message"
+        opener_callback_url = reverse("opener_callback")
+        request = self.factory.get(f"/octest/?{message_field}={message}")
+        oc_test = OCTestView(request)
+        redirect_url = oc_test.get_redirect_url()
+        qs = {
+            "message": message
+        }
+        self.assertEqual(redirect_url, f"{opener_callback_url}?{urlencode(qs)}")
+
+    def test_with_message_and_origin(self):
+        """
+        test with message and origin
+        """
+        message_field = OpenerCallbackRedirectURLMixin.MESSAGE_FIELD_NAME
+        origin_field = OpenerCallbackRedirectURLMixin.ORIGIN_FIELD_NAME
+        message = "message"
+        origin = "example.com"
+        opener_callback_url = reverse("opener_callback")
+        request = self.factory.get(f"/octest/?{message_field}={message}&{origin_field}={origin}")
+        oc_test = OCTestView(request)
+        redirect_url = oc_test.get_redirect_url()
+        qs = {
+            "message": message,
+            "origin": origin
+        }
+        self.assertEqual(redirect_url, f"{opener_callback_url}?{urlencode(qs)}")
