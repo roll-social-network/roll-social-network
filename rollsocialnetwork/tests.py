@@ -1,4 +1,6 @@
-from unittest import mock
+"""
+rollsocialnetwork tests
+"""
 from django.test import (
     TestCase,
     RequestFactory
@@ -20,11 +22,18 @@ from .tests_factory import (
 from .opener_callback import OpenerCallbackRedirectURLMixin
 
 class LogoutViewTest(TestCase):
+    """
+    LogoutView test
+    """
+
     def setUp(self):
         site_factory = SiteFactory()
         self.site = site_factory.create_site()
 
     def test_get(self):
+        """
+        test get
+        """
         response = self.client.get(
             reverse("logout"),
             SERVER_NAME=self.site.domain
@@ -32,6 +41,9 @@ class LogoutViewTest(TestCase):
         self.assertIsInstance(response, HttpResponseRedirect)
 
 class NginxAccelRedirectViewTest(TestCase):
+    """
+    NginxAccelRedirectView test
+    """
     def setUp(self):
         self.factory = RequestFactory()
         site_factory = SiteFactory()
@@ -40,6 +52,9 @@ class NginxAccelRedirectViewTest(TestCase):
         self.user = user_factory.create_user()
 
     def test_not_authenticated(self):
+        """
+        test not authenticated
+        """
         path = "file.jpg"
         request = self.factory.get(
             f"/media/{path}",
@@ -50,6 +65,9 @@ class NginxAccelRedirectViewTest(TestCase):
         self.assertIsInstance(response, HttpResponseForbidden)
 
     def test_authenticated(self):
+        """
+        test authenticated
+        """
         path = "file.jpg"
         request = self.factory.get(
             f"/media/{path}",
