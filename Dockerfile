@@ -15,15 +15,13 @@ ENV DEBUG 0
 COPY --from=build-requirements /home/app/requirements.txt .
 RUN apk add --no-cache postgresql-libs && \
         apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \
-        pip install gunicorn \
-                    psycopg2-binary \
+        pip install psycopg2-binary \
                     psycopg2 \
                     django-storages --no-cache-dir && \
         pip install -r requirements.txt --no-cache-dir && \
         apk --purge del .build-deps
-COPY gunicorn.conf.py .
 COPY manage.py .
 COPY rollsocialnetwork rollsocialnetwork
 
-ENTRYPOINT [ "gunicorn" ]
-CMD [ "-c", "gunicorn.conf.py", "rollsocialnetwork.wsgi" ]
+ENTRYPOINT [ "daphne" ]
+CMD [ "-b", "0.0.0.0", "rollsocialnetwork.asgi:application" ]

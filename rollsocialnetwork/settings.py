@@ -16,6 +16,7 @@ SECRET_KEY = config(
 DEBUG = config("DEBUG", default=True, cast=bool)
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="*", cast=str.split)
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -66,6 +67,7 @@ TEMPLATES = [
     },
 ]
 WSGI_APPLICATION = "rollsocialnetwork.wsgi.application"
+ASGI_APPLICATION = "rollsocialnetwork.asgi.application"
 DATABASES = {
     "default": dj_database_url.parse(config("DATABASES_DEFAULT", default="sqlite:///./db.sqlite3"))
 }
