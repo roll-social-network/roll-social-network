@@ -25,6 +25,8 @@ pillow = "*"
 easy-thumbnails = "*"
 django-cors-headers = "*"
 django-csp = "*"
+channels = "*"
+daphne = "*"
 
 [dev-packages]
 pylint = "*"
