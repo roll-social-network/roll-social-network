@@ -70,7 +70,7 @@ class UserProfileRequiredMixin(AccessMixin):
         """
         if not request.user.is_authenticated \
             or not hasattr(request, "user_profile") \
-                and not request.user_profile:
+                or not request.user_profile:
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
