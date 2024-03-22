@@ -8,7 +8,9 @@ from typing import (
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.files.storage import storages  # type: ignore[attr-defined]
+from django.dispatch import receiver  # type: ignore[attr-defined]
 from rollsocialnetwork.social.models import UserProfile
+from rollsocialnetwork.watcher import Watcher
 
 class Post(models.Model):
     """
@@ -95,3 +97,14 @@ class Like(models.Model):
 
     def __str__(self) -> str:
         return f"Like {self.user_profile} at {self.post}"
+
+@receiver([models.signals.post_save,
+           models.signals.post_delete], sender=Like)
+def notify_posts_likes_count(instance, **kwargs):
+    """
+    notify watcher model:posts, attr:likes_count
+    """
+    Watcher.notify("posts",
+                   "likes_count",
+                   instance.post.likes_count(),
+                   pk=instance.post.pk)
