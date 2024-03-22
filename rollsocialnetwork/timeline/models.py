@@ -70,7 +70,7 @@ class Post(models.Model):
         """
         likes count
         """
-        return self.likes.count()
+        return self.likes.count()  # type: ignore[attr-defined]
 
 class Like(models.Model):
     """
