@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "easy_thumbnails",
     "corsheaders",
+    "channels",
     "rollsocialnetwork",
     "rollsocialnetwork.phone_auth",
     "rollsocialnetwork.social",
@@ -197,3 +198,12 @@ STORAGES = {
 }
 FTP_STORAGE_LOCATION = config("FTP_STORAGE_LOCATION",
                               default=None)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": config("CHANNEL_LAYERS_DEFAULT_BACKEND",
+                          default="channels.layers.InMemoryChannelLayer"),
+        "CONFIG": config("CHANNEL_LAYERS_DEFAULT_CONFIG",
+                         default="{}",
+                         cast=json.loads)
+    }
+}

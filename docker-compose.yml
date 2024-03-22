@@ -35,6 +35,13 @@ services:
       THUMBNAIL_DEFAULT_STORAGE: storages.backends.ftp.FTPStorage
       FTP_STORAGE_LOCATION: ftp://roll:roll@medias-ftp:21
       MEDIA_PATH_AS_NGINX_ACCEL: true
+      CHANNEL_LAYERS_DEFAULT_BACKEND: channels_redis.core.RedisChannelLayer
+      CHANNEL_LAYERS_DEFAULT_CONFIG: >
+        {
+          "hosts": [
+            ["channel-layer-redis", 6379]
+          ]
+        }
       # at first time uncomment bellow line to configure site domain in /admin
       # SITE_ID: 1
   db:
@@ -49,7 +56,7 @@ services:
     build:
       dockerfile: Dockerfile.statics
   medias-ftp:
-    image: garethflowers/ftp-server
+    image: garethflowers/ftp-server:latest
     environment:
       - FTP_PASS=roll
       - FTP_USER=roll
@@ -62,6 +69,8 @@ services:
       - medias-data:/usr/share/nginx/html/:ro
     depends_on:
       - app
+  channel-layer-redis:
+    image: redis:alpine
 
 volumes:
   db-data: {}

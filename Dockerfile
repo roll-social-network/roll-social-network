@@ -17,7 +17,8 @@ RUN apk add --no-cache postgresql-libs && \
         apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \
         pip install psycopg2-binary \
                     psycopg2 \
-                    django-storages --no-cache-dir && \
+                    django-storages \
+                    channels-redis --no-cache-dir && \
         pip install -r requirements.txt --no-cache-dir && \
         apk --purge del .build-deps
 COPY manage.py .
