@@ -8,7 +8,7 @@
 {% if posts_page.has_next %}
 <div
     class="pagination"
-    is="vue:Pagination"
+    is="vue:InfinitePagination"
     slice-kwarg="{{ slice_kwarg }}"
     :slice="{{ slice }}"
     :page="{{ posts_page.next_page_number }}">
