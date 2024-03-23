@@ -40,6 +40,11 @@ class TimelineView(UserProfileRequiredMixin,  # pylint: disable=R0901
         """
         return self.request.site.id == settings.HOME_SITE_ID
 
+    def get_template_names(self):
+        if self.request.headers.get("AJAX-Request") == 'true':
+            return ["timeline/post_list_ajax.html"]
+        return super().get_template_names()
+
 class PostCreateView(UserProfileRequiredMixin,
                      CreateView):
     """

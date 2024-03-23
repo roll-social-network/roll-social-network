@@ -1,0 +1,17 @@
+{% load i18n %}
+
+{% for post in posts %}
+{% include 'timeline/post.html' %}
+{% empty %}
+<p>{% translate 'No posts yet.' %}</p>
+{% endfor %}
+{% if posts_page.has_next %}
+<div
+    class="pagination"
+    is="vue:Pagination"
+    slice-kwarg="{{ slice_kwarg }}"
+    :slice="{{ slice }}"
+    :page="{{ posts_page.next_page_number }}">
+    <a href="?{{ slice_kwarg }}={{ slice }}&page={{ posts_page.next_page_number }}" class="next">{% translate 'next' %}</a>
+</div>
+{% endif %}
