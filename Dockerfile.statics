@@ -2,9 +2,9 @@ FROM node:20.11-alpine AS build-frontend
 
 WORKDIR /home/app
 
-COPY roll-social-network-frontend/package*.json .
+COPY frontend/package*.json .
 RUN npm install
-COPY roll-social-network-frontend .
+COPY frontend .
 RUN npm run build
 
 FROM python:3.12.1-alpine AS build-statics
@@ -16,7 +16,7 @@ ENV STATIC_ROOT=./statics/
 RUN pip install pipenv
 COPY Pipfile* .
 RUN pipenv install
-COPY --from=build-frontend /home/app/dist roll-social-network-frontend/dist
+COPY --from=build-frontend /home/app/dist frontend/dist
 COPY manage.py .
 COPY rollsocialnetwork rollsocialnetwork
 RUN pipenv run statics
