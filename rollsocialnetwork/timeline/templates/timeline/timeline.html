@@ -6,17 +6,5 @@
 </section>
 {% endif %}
 <section id="timeline">
-    {% for post in posts %}
-    {% include 'timeline/post.html' %}
-    {% empty %}
-    <p>{% translate 'No posts yet.' %}</p>
-    {% endfor %}
-    <div class="pagination">
-        {% if posts_page.has_previous %}
-        <a href="?{{ slice_kwarg }}={{ slice }}&page={{ posts_page.previous_page_number }}" class="left">&blacktriangleleft; {% translate 'previous' %}</a>
-        {% endif %}
-        {% if posts_page.has_next %}
-        <a href="?{{ slice_kwarg }}={{ slice }}&page={{ posts_page.next_page_number }}" class="right">{% translate 'next' %} &blacktriangleright;</a>
-        {% endif %}
-    </div>
+    {% include "timeline/timeline_content.html" %}
 </section>
