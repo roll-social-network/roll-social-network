@@ -43,6 +43,13 @@ Watcher is a WebSocket solution for real-time state update.
 
 ![UML Diagram](.readme-imgs/roll-watcher.png)
 
+### Protected Media with NGINX X-Accel
+
+When the `MEDIA_PATH_AS_NGINX_ACCEL` flag is enabled, the `/media/` endpoint responds, for authenticated users, with the status code 201 and with the `X-Accel-Redirect` header. With this you can protect media files against unauthenticated users.
+
+Read more about X-Accel in the [NGINX documentation](https://www.nginx.com/resources/wiki/start/topics/examples/x-accel/).
+
+See the concept applied in the [NGINX media conf file](nginx.medias.default.conf).
 
 
 ## Run
