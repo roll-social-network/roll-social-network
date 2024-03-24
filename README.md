@@ -37,6 +37,12 @@ Advantages of the chosen authentication model:
 - Security. Access can only be done with the verification code sent at each login or by granting it to a third party.
 - Real people. We guarantee, in most cases, that the clients is a real person and not a robot. With this we can also have legal applications, since the data uploaded to the social network can be linked to a real person.
 
+### Watcher (WebSocket)
+
+Watcher is a WebSocket solution for real-time state update.
+
+![UML Diagram](.readme-imgs/roll-watcher.png)
+
 
 
 ## Run
