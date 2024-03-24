@@ -1,0 +1,14 @@
+@startuml
+actor           Client as client
+entity          App as app
+collections     VerificationCode as verification_code
+entity          "SMS Gateway" as sms_gateway
+
+client -> app : Requests a Verification Code
+app -> verification_code : Creates a valid Verification Code
+app -> sms_gateway : Requests sending SMS with code
+sms_gateway -> client : Sends SMS with code
+client -> app : Requests code verification
+app -> verification_code : Check if the code is still valid and if the attempts have expired
+app -> client : Authenticates session
+@enduml

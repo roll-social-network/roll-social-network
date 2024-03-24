@@ -12,6 +12,7 @@ Create social networks in their essence. Join communities "rolls" to consume and
 
 **roll social network** is an open source project under the [MIT](LICENSE) license developed with the [Django](https://www.djangoproject.com/) and [Vue](https://vuejs.org/) frameworks.
 
+
 ## Architecture
 
 ### Rolls, Social and Timeline
@@ -21,6 +22,21 @@ In our social network, a community unit is called **roll**. Users can join a **r
 Entity-relationship model:
 
 ![ER Model](.readme-imgs/roll-architecture-rolls-social-timeline.drawio.png)
+
+### Auth
+
+Access to our social network rolls requires authentication. To simplify and solve some problems, authentication linked to the customer's phone number was chosen.
+
+UML Diagram:
+
+![UML Diagram](.readme-imgs/roll-auth.png)
+
+Advantages of the chosen authentication model:
+
+- Simplicity. The user does not need to set or remember a password or have a recovery email.
+- Security. Access can only be done with the verification code sent at each login or by granting it to a third party.
+- Real people. We guarantee, in most cases, that the clients is a real person and not a robot. With this we can also have legal applications, since the data uploaded to the social network can be linked to a real person.
+
 
 
 ## Run
