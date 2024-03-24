@@ -12,6 +12,17 @@ Create social networks in their essence. Join communities "rolls" to consume and
 
 **roll social network** is an open source project under the [MIT](LICENSE) license developed with the [Django](https://www.djangoproject.com/) and [Vue](https://vuejs.org/) frameworks.
 
+## Architecture
+
+### Rolls, Social and Timeline
+
+In our social network, a community unit is called **roll**. Users can join a **roll** by creating a profile on it. Once associated, the user has access to the timeline and can interact by liking other users' posts, as well as collaborating by publishing their own content.
+
+Entity-relationship model:
+
+![ER Model](.readme-imgs/roll-architecture-rolls-social-timeline.drawio.png)
+
+
 ## Run
 
 ### Development mode
@@ -93,8 +104,11 @@ $ docker compose up --build
 
 Services diagram:
 
-![Local as Production services diagram.](readme-imgs/roll-local-as-production.drawio.png)
+![Local as Production services diagram.](.readme-imgs/roll-local-as-production.drawio.png)
+
 
 ## Settings and Environment Vars
 
 This project follow The [Twelve-Factor App](https://12factor.net/) methodology so all settings can be defined through environment variables.
+
+All settings were centralized in the [settings.py](rollsocialnetwork/settings.py) file and can be defined by environment variables due to the [python-decople](https://pypi.org/project/python-decouple/) [config object](https://github.com/HBNetwork/python-decouple?tab=readme-ov-file#usage).
