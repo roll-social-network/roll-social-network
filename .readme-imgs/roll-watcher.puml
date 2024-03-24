@@ -1,0 +1,13 @@
+@startuml watcher
+actor   Client as client
+entity  "Watcher Websocket" as ws
+collections Groups as groups
+entity  App as app
+
+client -> ws : Connects as consumer
+client -> ws : Registers interest in an entity
+ws -> groups : Adds consumer to group
+app -> groups : Notify state change
+groups -> ws : Sends message to consumers
+ws -> client : Sends message with new state
+@enduml

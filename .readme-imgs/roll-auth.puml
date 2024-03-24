@@ -1,4 +1,4 @@
-@startuml
+@startuml auth
 actor           Client as client
 entity          App as app
 collections     VerificationCode as verification_code

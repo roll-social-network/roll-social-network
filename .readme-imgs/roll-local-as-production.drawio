@@ -1,0 +1,111 @@
+<mxfile host="app.diagrams.net" modified="2024-03-23T20:25:58.428Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="7pTtIluABjcZwDNz4Xsv" version="24.1.0" type="google">
+  <diagram name="Página-1" id="sUuSvCXzBVOk4iP936Uk">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Igicl3p0ovKhWm91BI77-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Igicl3p0ovKhWm91BI77-1" target="Igicl3p0ovKhWm91BI77-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-1" value="Client" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Igicl3p0ovKhWm91BI77-2" target="Igicl3p0ovKhWm91BI77-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Igicl3p0ovKhWm91BI77-2" target="Igicl3p0ovKhWm91BI77-10">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="220" y="130" />
+              <mxPoint x="80" y="130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Igicl3p0ovKhWm91BI77-2" target="Igicl3p0ovKhWm91BI77-17">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="220" y="130" />
+              <mxPoint x="270" y="130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-2" value="&lt;b&gt;proxy&lt;/b&gt;&lt;div&gt;haproxy&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-3" value="Exposes 80 port" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;fillColor=#FFFF99;" vertex="1" parent="1">
+          <mxGeometry x="200" y="-30" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Igicl3p0ovKhWm91BI77-5" target="Igicl3p0ovKhWm91BI77-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Igicl3p0ovKhWm91BI77-5" target="Igicl3p0ovKhWm91BI77-12">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="566" y="130" />
+              <mxPoint x="453" y="130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Igicl3p0ovKhWm91BI77-5" target="Igicl3p0ovKhWm91BI77-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="566" y="130" />
+              <mxPoint x="619" y="130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-5" value="&lt;b&gt;app&lt;/b&gt;&lt;div&gt;ASGI web server&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="506" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-6" value="Serves the Django ASGI application for HTTP and WS connections" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;fillColor=#FFFF99;" vertex="1" parent="1">
+          <mxGeometry x="530" y="-50" width="120" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-8" value="&lt;b&gt;db&lt;/b&gt;&lt;div&gt;postgres&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="589" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-10" value="&lt;b&gt;statics&lt;/b&gt;&lt;div&gt;nginx&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-12" value="&lt;b&gt;medias-ftp&lt;/b&gt;&lt;div&gt;ftp-server&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="423" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-17" value="&lt;b&gt;medias&lt;/b&gt;&lt;div&gt;nginx&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-19" value="&lt;b&gt;db-data&lt;/b&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="619" y="350" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="Igicl3p0ovKhWm91BI77-20" target="Igicl3p0ovKhWm91BI77-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-20" value="&lt;b&gt;medias-data&lt;/b&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="453" y="350" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="Igicl3p0ovKhWm91BI77-8" target="Igicl3p0ovKhWm91BI77-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="Igicl3p0ovKhWm91BI77-12" target="Igicl3p0ovKhWm91BI77-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-28" value="&lt;b&gt;channel-layer-redis&lt;/b&gt;&lt;div&gt;redis&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="780" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-31" value="Redis server to supports channels" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;fillColor=#FFFF99;" vertex="1" parent="1">
+          <mxGeometry x="820" y="-30" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-32" value="Serves medias files" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;fillColor=#FFFF99;" vertex="1" parent="1">
+          <mxGeometry x="280" y="170" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-33" value="Serves statics files like Styles, Javascripts and Fonts." style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;fillColor=#FFFF99;" vertex="1" parent="1">
+          <mxGeometry x="90" y="150" width="120" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-36" value="The Django application storages media files via FTP protocol" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;fillColor=#FFFF99;" vertex="1" parent="1">
+          <mxGeometry x="460" y="150" width="120" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Igicl3p0ovKhWm91BI77-39" value="Simple Postgres instance" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;fillColor=#FFFF99;" vertex="1" parent="1">
+          <mxGeometry x="630" y="170" width="120" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
