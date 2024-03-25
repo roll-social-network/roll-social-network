@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block body %}
+<header class="banner">
+    <div class="section">
+        <h1>{{ request.site.name }}</h1>
+        <p>{% translate 'Create social networks in their essence. Join communities "rolls" to consume and share photos. Interact with other users by liking their posts.' %}</p>
+        <ul class="breadcrumb left">
+            <li><a href="{% url 'timeline' %}">{% translate 'view all posts' %}</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'logout' %}">{% translate 'logout' %}</a></li>
+            {% else %}
+            <li><a href="{% url 'request-verification-code' %}">{% translate 'login' %}</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</header>
+<section>
+    <h2 class="discreet">{% translate 'popular rolls' %}</h2>
+    <div class="rolls-cards">
+        {% for site in popular %}
+        {% include 'roll_card.html' %}
+        {% endfor %}
+    </div>
+    <div>
+        <ul class="breadcrumb right">
+            <li><a href="">{% translate 'more rolls' %}</a></li>
+            <li><a href="">{% translate 'create a new roll' %}</a></li>
+        </ul>
+    </div>
+</section>
+{% endblock %}

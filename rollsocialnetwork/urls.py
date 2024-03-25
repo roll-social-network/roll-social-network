@@ -12,16 +12,16 @@ from django.urls import (
     include,
     re_path,
 )
-from django.views.generic import TemplateView
 from django.views.static import serve
 from .opener_callback import OpenerCallbackView
 from .views import (
     LogoutView,
     NginxAccelRedirectView,
+    HomeView,
 )
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="index.html"), name="home"),
+    path("", HomeView.as_view(), name="home"),
     path("phone-auth/", include("rollsocialnetwork.phone_auth.urls")),
     path("callback/opener/", OpenerCallbackView.as_view(), name="opener_callback"),
     path("logout/", LogoutView.as_view(), name="logout"),
