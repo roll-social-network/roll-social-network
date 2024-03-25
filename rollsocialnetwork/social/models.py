@@ -27,7 +27,8 @@ class UserProfile(models.Model):
                              blank=False)
     site = models.ForeignKey(Site,
                              on_delete=models.CASCADE,
-                             blank=False)
+                             blank=False,
+                             related_name="profiles",)
 
     @classmethod
     def get_user_profile(cls,
