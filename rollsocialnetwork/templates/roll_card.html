@@ -1,7 +1,14 @@
+{% load i18n %}
+
 <a
     href="//{{site.domain}}"
     target="_blank"
     class="card">
     <div class="title">{{site.name}}</div>
+    <div class="stats">
+        <span>{{site.posts_count}} {% translate 'posts' %}</span>
+        <span>++</span>
+        <span>{{site.profiles_count}} {% translate 'profiles' %}</span>
+    </div>
     <div class="domain">{{site.domain}}</div>
 </a>
