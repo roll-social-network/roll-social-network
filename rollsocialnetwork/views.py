@@ -13,7 +13,8 @@ from django.http import (
 from django.views.generic import (
     View,
     TemplateView,
-    ListView
+    ListView,
+    CreateView
 )
 from django.conf import settings
 from django.contrib.auth import logout
@@ -22,6 +23,8 @@ from django.db.models import (
     QuerySet,
     Count,
 )
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import RollForm
 
 class LogoutView(View):
     """
@@ -87,9 +90,21 @@ class RollsView(ListView):
     """
 
     model = Site
+    paginate_by = 12
 
     def get_queryset(self) -> QuerySet[Site]:
         return get_popular_sites()
+
+class CreateRollView(LoginRequiredMixin,
+                     CreateView):
+    """
+    create roll view
+    """
+    model = Site
+    form_class = RollForm
+
+    def get_success_url(self):
+        return f"{self.request.scheme}://{self.object.domain}"
 
 def get_popular_sites() -> QuerySet[Site]:
     """
