@@ -11,8 +11,8 @@
 <footer>
     <p>{{ request.site.name }} by <strong>roll social networks</strong></p>
     <ul class="breadcrumb">
-        <li><a href="">{% translate 'about' %}</a></li>
-        <li><a href="">{% translate 'terms' %}</a></li>
+        <li><a href="{{ about_page_url }}">{% translate 'about' %}</a></li>
+        <li><a href="{{ terms_page_url }}">{% translate 'terms' %}</a></li>
     </ul>
 </footer>
 {% endblock %}

@@ -62,6 +62,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "rollsocialnetwork.context_processors.is_home_site",
+                "rollsocialnetwork.context_processors.footer_urls",
                 "rollsocialnetwork.social.context_processors.social",
             ],
         },
@@ -209,3 +210,7 @@ CHANNEL_LAYERS = {
 }
 SUBDOMAIN_BASE = config("SUBDOMAIN_BASE",
                         default="roll.local")
+ABOUT_PAGE_URL = config("ABOUT_PAGE_URL",
+                        default=f"//{SUBDOMAIN_BASE}#about")
+TERMS_PAGE_URL = config("TERMS_PAGE_URL",
+                        default=f"//{SUBDOMAIN_BASE}#terms")
