@@ -1,7 +1,10 @@
 """
 rollsocialnetwork views
 """
-from typing import Dict, List
+from typing import (
+    Dict,
+    List
+)
 from django.http import (
     HttpResponse,
     HttpResponseForbidden,
@@ -10,6 +13,7 @@ from django.http import (
 from django.views.generic import (
     View,
     TemplateView,
+    ListView
 )
 from django.conf import settings
 from django.contrib.auth import logout
@@ -76,6 +80,16 @@ class HomeView(TemplateView):
                 "popular": get_popular_sites()[:6]
             })
         return context_data
+
+class RollsView(ListView):
+    """
+    rolls view
+    """
+
+    model = Site
+
+    def get_queryset(self) -> QuerySet[Site]:
+        return get_popular_sites()
 
 def get_popular_sites() -> QuerySet[Site]:
     """

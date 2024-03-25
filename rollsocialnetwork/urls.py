@@ -18,10 +18,12 @@ from .views import (
     LogoutView,
     NginxAccelRedirectView,
     HomeView,
+    RollsView,
 )
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
+    path("rolls/", RollsView.as_view(), name="rolls"),
     path("phone-auth/", include("rollsocialnetwork.phone_auth.urls")),
     path("callback/opener/", OpenerCallbackView.as_view(), name="opener_callback"),
     path("logout/", LogoutView.as_view(), name="logout"),

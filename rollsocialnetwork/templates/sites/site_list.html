@@ -1,0 +1,32 @@
+{% extends 'common_base.html' %}
+
+{% load i18n %}
+
+{% block header-title %}<h1><a href="{% url 'home' %}">{{ request.site.name }}</a></h1>{% endblock %}
+{% block subtitle %}{% translate 'all rolls' %}{% endblock %}
+
+{% block content %}
+<div class="header-saver"></div>
+<section>
+    <div class="rolls-cards">
+        {% for site in object_list %}
+        {% include 'roll_card.html' %}
+        {% endfor %}
+    </div>
+    {% if page_obj.has_previous or page_obj.has_next %}
+    <div class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">{% translate 'previous' %}</a>
+        {% else%}
+        <span>&nbsp;</span>
+        {% endif %}
+        <span class="current">{% blocktranslate with number=page_obj.number num_pages=page_obj.paginator.num_pages %}Page {{ number }} of {{ num_pages }}{% endblocktranslate %}</span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">{% translate 'next' %}</a>
+        {% else %}
+        <span>&nbsp;</span>
+        {% endif %}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
