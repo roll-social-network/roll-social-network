@@ -14,7 +14,10 @@ from django.views.generic import (
 from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib.sites.models import Site
-from django.db.models import QuerySet
+from django.db.models import (
+    QuerySet,
+    Count,
+)
 
 class LogoutView(View):
     """
@@ -70,7 +73,7 @@ class HomeView(TemplateView):
         context_data = super().get_context_data(**kwargs)
         if self.is_home_site:
             context_data.update({
-                "popular": get_popular_sites()
+                "popular": get_popular_sites()[:6]
             })
         return context_data
 
@@ -78,4 +81,7 @@ def get_popular_sites() -> QuerySet[Site]:
     """
     get popular sites
     """
-    return Site.objects.exclude(id=settings.HOME_SITE_ID)
+    return Site.objects.exclude(id=settings.HOME_SITE_ID)\
+        .annotate(profiles_count=Count("profiles"),
+                  posts_count=Count("profiles__posts"))\
+            .order_by("-posts_count", "-profiles_count")
