@@ -207,3 +207,5 @@ CHANNEL_LAYERS = {
                          cast=json.loads)
     }
 }
+SUBDOMAIN_BASE = config("SUBDOMAIN_BASE",
+                        default="roll.local")
