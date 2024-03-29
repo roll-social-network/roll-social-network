@@ -1,0 +1,28 @@
+@startuml otp-time-based
+actor           Client as client
+entity          App as app
+collections     VerificationCode as verification_code
+entity          "SMS Gateway" as sms_gateway
+entity          "Time-based OTP lib" as otp
+collections     "OTP Time Based Secrets" as otp_secrets
+
+== First Authentication ==
+
+client -> app : Requests a Verification Code
+app -> verification_code : Creates a valid Verification Code
+app -> sms_gateway : Requests sending SMS with code
+sms_gateway -> client : Sends SMS with code
+client -> app : Requests code verification
+app -> verification_code : Check if the code is still valid and if the attempts have expired
+app -> client : Authenticates session
+otp -> otp_secrets : Creates Secret Key
+client -> app : Registers Secret Key at your OTP apps (e.g.: Google Authenticator, Authy)
+app -> otp_secrets : Get client Secret Key
+
+== Next Authentications ==
+
+client -> app : Generates OTP code at OTP app, requests check code
+app -> otp : Check if the code is valid
+otp -> otp_secrets : Get Secret Key, verify code
+app -> client : Authenticates session
+@enduml
