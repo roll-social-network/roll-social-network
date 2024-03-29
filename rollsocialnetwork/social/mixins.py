@@ -62,7 +62,8 @@ class UserProfileRequiredMixin(AccessMixin):
             return resolved_url
         path = self.request.build_absolute_uri()
         current_scheme, current_netloc = urlparse(path)[:2]
-        return f"{current_scheme}://{current_netloc}{resolved_url}"
+        scheme = settings.OVERRIDE_SCHEME or current_scheme
+        return f"{scheme}://{current_netloc}{resolved_url}"
 
     def dispatch(self, request, *args, **kwargs):
         """

@@ -104,7 +104,8 @@ class CreateRollView(LoginRequiredMixin,
     form_class = RollForm
 
     def get_success_url(self):
-        return f"{self.request.scheme}://{self.object.domain}"
+        scheme = settings.OVERRIDE_SCHEME or self.request.scheme
+        return f"{scheme}://{self.object.domain}"
 
 def get_popular_sites() -> QuerySet[Site]:
     """

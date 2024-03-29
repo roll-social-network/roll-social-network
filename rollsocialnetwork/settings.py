@@ -217,3 +217,5 @@ TERMS_PAGE_URL = config("TERMS_PAGE_URL",
 CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS",
                               default=f"https://{SUBDOMAIN_BASE},https://*.{SUBDOMAIN_BASE}",
                               cast=lambda value: value.split(","))
+OVERRIDE_SCHEME = config("OVERRIDE_SCHEME",
+                         default=None)

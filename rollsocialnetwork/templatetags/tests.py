@@ -3,7 +3,8 @@ templatetags tests
 """
 from django.test import (
     TestCase,
-    RequestFactory
+    RequestFactory,
+    override_settings
 )
 from django.template import Context
 from rollsocialnetwork.tests_factory import SiteFactory
@@ -43,3 +44,16 @@ class SiteBuildAbsoluteURITemplateTagTest(TestCase):
                                          self.other_site,
                                          "home")
         self.assertEqual(result, f"http://{self.other_site.domain}/")
+
+    def test_is_other_site_with_override_scheme(self):
+        """
+        test is other site return absolute url with override scheme
+        """
+        context = Context()
+        context.request = self.factory.get("/test/")
+        context.request.site = self.site
+        with override_settings(OVERRIDE_SCHEME="https"):
+            result = site_build_absolute_uri(context,
+                                            self.other_site,
+                                            "home")
+            self.assertEqual(result, f"https://{self.other_site.domain}/")
