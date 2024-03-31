@@ -7,6 +7,7 @@
 {% block content %}
 <div class="full-height centered">
     <div class="content">
+        <p>{% translate 'check your inbox on your cell phone, we sent code via SMS.' %}</p>
         <form method="post">
             {% csrf_token %}
             {{ form }}

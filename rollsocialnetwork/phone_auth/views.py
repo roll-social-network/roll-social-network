@@ -18,7 +18,7 @@ class RequestVerificationCodeView(FormView):
     """
     request verification code view
     """
-    template_name = "request_verification_code.html"
+    template_name = "phone_auth/request_form.html"
     form_class = RequestVerificationCodeForm
     success_url = reverse_lazy("verify-verification-code")
 
@@ -44,7 +44,7 @@ class VerifyVerificationCodeView(LoginView):
     """
     verify verification code view
     """
-    template_name = "verify_verification_code.html"
+    template_name = "phone_auth/verify_verification_code_form.html"
     form_class = VerifyVerificationCodeForm
 
     def get_initial(self) -> dict[str, Any]:
