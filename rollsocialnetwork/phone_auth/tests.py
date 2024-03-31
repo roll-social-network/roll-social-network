@@ -21,7 +21,10 @@ from .models import (
     VerificationCode,
     OTPSecret,
 )
-from . import forms
+from .forms import (
+    VerifyVerificationCodeForm,
+    VerifyOTPCodeForm,
+)
 from .tests_factory import (
     VerificationCodeFactory,
     OTPSecretFactory,
@@ -167,26 +170,28 @@ class VerifyVerificationCodeFormTestCase(TestCase):
     def setUp(self):
         self.user_factory = UserFactory()
 
-    @mock.patch.object(forms, "authenticate")
+    @mock.patch.object(VerifyVerificationCodeForm,
+                       "authenticate_fn")
     def test_valid_login(self, authenticate_mock):
         """
         test valid login
         """
         user = self.user_factory.create_user()
         authenticate_mock.return_value = user
-        form = forms.VerifyVerificationCodeForm(data={"phone": user.username, "code": "1234"})
+        form = VerifyVerificationCodeForm(data={"phone": user.username, "code": "1234"})
         is_valid = form.is_valid()
         self.assertTrue(is_valid)
         cleaned_data = form.clean()
         self.assertIsInstance(cleaned_data, dict)
 
-    @mock.patch.object(forms, "authenticate")
+    @mock.patch.object(VerifyVerificationCodeForm,
+                       "authenticate_fn")
     def test_invalid_login(self, authenticate_mock):
         """
         test invalid login
         """
         authenticate_mock.return_value = None
-        form = forms.VerifyVerificationCodeForm(data={"phone": fake.e164(), "code": "1234"})
+        form = VerifyVerificationCodeForm(data={"phone": fake.e164(), "code": "1234"})
         is_valid = form.is_valid()
         self.assertFalse(is_valid)
         with self.assertRaises(ValidationError):
@@ -295,3 +300,25 @@ class PhoneAuthOTPBackendTestCase(TestCase):
         response = self.client.login(phone_number=self.user.username,
                                      otp_code="1234")
         self.assertFalse(response)
+
+class VerifyOTPCodeFormAuthenticateTestCase(TestCase):
+    """
+    tests for VerifyOTPCodeForm.call_authenticate() method
+    """
+
+    def setUp(self):
+        user_factory = UserFactory()
+        self.user = user_factory.create_user()
+
+    @mock.patch.object(VerifyOTPCodeForm,
+                       "authenticate_fn")
+    def test_called_with_correct_kwargs(self, authenticate_mock):
+        """
+        test called with correct kwargs
+        """
+        authenticate_mock.returns_value = self.user
+        form = VerifyOTPCodeForm()
+        pn = "+0000000"
+        code = "0000"
+        form.call_authenticate(pn, code)
+        authenticate_mock.assert_called_with(None, phone_number=pn, otp_code=code)
