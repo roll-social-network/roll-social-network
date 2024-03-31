@@ -90,6 +90,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "rollsocialnetwork.phone_auth.backends.PhoneAuthBackend",
+    "rollsocialnetwork.phone_auth.backends.PhoneAuthOTPBackend",
 ]
 LOGIN_REDIRECT_URL = "/t/"
 LOGOUT_REDIRECT_URL = "/"
@@ -176,7 +177,7 @@ CSP_FONT_SRC = config("CSP_FONT_SRC",
                       default="'self',fonts.gstatic.com",
                       cast=lambda value: value.split(","))
 CSP_IMG_SRC = config("CSP_IMG_SRC",
-                     default="'self'",
+                     default="'self',data:",
                      cast=lambda value: value.split(","))
 STORAGES = {
     "default": {

@@ -9,13 +9,13 @@ class SiteFactory:
     """
     site factory
     """
-    def factory_site(self):
+    def factory_site(self, domain=None, name=None):
         """
         factory site
         """
         return {
-            "domain": fake.unique.domain_name(),
-            "name": fake.unique.company(),
+            "domain": domain or fake.unique.domain_name(),
+            "name": name or fake.unique.company(),
         }
 
     def create_site(self, **kwargs):

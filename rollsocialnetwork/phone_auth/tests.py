@@ -257,7 +257,7 @@ class OTPSecretURITestCase(TestCase):
     def setUp(self) -> None:
         otp_secret_factory = OTPSecretFactory()
         site_factory = SiteFactory()
-        self.site = site_factory.create_site()
+        self.site = site_factory.create_site(name="cats-site")
         self.otp_secret = otp_secret_factory.create_otp_secret()
 
     def test_has_home_site_info(self):
@@ -267,3 +267,31 @@ class OTPSecretURITestCase(TestCase):
         with override_settings(HOME_SITE_ID=self.site.id):
             result = self.otp_secret.uri
             self.assertIn(self.site.name, result)
+
+class PhoneAuthOTPBackendTestCase(TestCase):
+    """
+    phone auth OTP backend test case
+    """
+    def setUp(self):
+        self.factory = RequestFactory()
+        user_factory = UserFactory()
+        self.otp_secret_factory = OTPSecretFactory()
+        self.user = user_factory.create_user()
+
+    def test_authenticate_with_correct_phone_number_and_otp_code(self):
+        """
+        test authenticate with correct phone number and otp code
+        """
+        otp_secret = self.otp_secret_factory.create_otp_secret(user=self.user)
+        response = self.client.login(request=self.factory.post("/login/"),
+                                     phone_number=self.user.username,
+                                     otp_code=otp_secret.totp.now())
+        self.assertTrue(response)
+
+    def test_authenticate_incorrect(self):
+        """
+        test authenticate incorrect
+        """
+        response = self.client.login(phone_number=self.user.username,
+                                     otp_code="1234")
+        self.assertFalse(response)
