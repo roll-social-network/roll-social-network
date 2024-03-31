@@ -4,21 +4,28 @@ phone auth tests
 from datetime import timedelta
 from unittest import mock
 from django.test import (
+    RequestFactory,
     TestCase,
     override_settings
 )
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.forms import ValidationError
-from rollsocialnetwork.tests_factory import UserFactory
+from rollsocialnetwork.tests_factory import SiteFactory, UserFactory
 from rollsocialnetwork.tests_fake import fake
 from .utils import (
     get_or_create_user,
     normalize_phone_number,
 )
-from .models import VerificationCode
+from .models import (
+    VerificationCode,
+    OTPSecret,
+)
 from . import forms
-from .tests_factory import VerificationCodeFactory
+from .tests_factory import (
+    VerificationCodeFactory,
+    OTPSecretFactory,
+)
 
 PHONE_1 = "+55 11 98070-6050"
 PHONE_2 = "+55 11 98070-6051"
@@ -130,6 +137,7 @@ class PhoneAuthBackendTestCase(TestCase):
     phone auth backend test case
     """
     def setUp(self):
+        self.factory = RequestFactory()
         user_factory = UserFactory()
         self.verification_code_factory = VerificationCodeFactory()
         self.user = user_factory.create_user()
@@ -139,7 +147,8 @@ class PhoneAuthBackendTestCase(TestCase):
         test authenticate with correct phone number and code
         """
         verification_code = self.verification_code_factory.create_verification_code(user=self.user)
-        response = self.client.login(phone_number=self.user.username,
+        response = self.client.login(request=self.factory.post("/login/"),
+                                     phone_number=self.user.username,
                                      code=verification_code.code)
         self.assertTrue(response)
 
@@ -182,3 +191,79 @@ class VerifyVerificationCodeFormTestCase(TestCase):
         self.assertFalse(is_valid)
         with self.assertRaises(ValidationError):
             form.clean()
+
+class OTPSecretVerifyTestCase(TestCase):
+    """
+    tests for OTPSecret.verify() class method
+    """
+
+    def setUp(self) -> None:
+        otp_secret_factory = OTPSecretFactory()
+        self.otp_secret = otp_secret_factory.create_otp_secret()
+
+    def test_verify_ok(self):
+        """
+        test verify ok
+        """
+        result = OTPSecret.verify(self.otp_secret.user.username,
+                                  self.otp_secret.totp.now())
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, OTPSecret)
+
+    def test_verify_wrong_code(self):
+        """
+        test verify wrong code
+        """
+        result = OTPSecret.verify(self.otp_secret.user.username,
+                                  "000000")
+        self.assertIsNone(result)
+
+    def test_verify_user_not_exists(self):
+        """
+        test verify user not exists
+        """
+        result = OTPSecret.verify("+00000000",
+                                  "000000")
+        self.assertIsNone(result)
+
+class OTPSecretPhoneNumberHasOTPSecretTestCase(TestCase):
+    """
+    tests for OTPSecret.phone_number_has_otp_secret() class method
+    """
+
+    def setUp(self) -> None:
+        otp_secret_factory = OTPSecretFactory()
+        self.otp_secret = otp_secret_factory.create_otp_secret()
+
+    def test_exist(self):
+        """
+        test exist
+        """
+        result = OTPSecret.phone_number_has_otp_secret(self.otp_secret.user.username)
+        self.assertTrue(result)
+
+    def test_not_exist(self):
+        """
+        test not exist
+        """
+        result = OTPSecret.phone_number_has_otp_secret("+00000000")
+        self.assertFalse(result)
+
+class OTPSecretURITestCase(TestCase):
+    """
+    tests for OTPSecret.uri class property
+    """
+
+    def setUp(self) -> None:
+        otp_secret_factory = OTPSecretFactory()
+        site_factory = SiteFactory()
+        self.site = site_factory.create_site()
+        self.otp_secret = otp_secret_factory.create_otp_secret()
+
+    def test_has_home_site_info(self):
+        """
+        test has home site info
+        """
+        with override_settings(HOME_SITE_ID=self.site.id):
+            result = self.otp_secret.uri
+            self.assertIn(self.site.name, result)

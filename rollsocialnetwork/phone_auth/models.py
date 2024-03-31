@@ -1,17 +1,24 @@
 """
 phone auth models
 """
-from typing import Optional
+from typing import (
+    Optional,
+    Tuple,
+)
+from pyotp.totp import TOTP
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.utils import timezone
+from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.sites.models import Site
 from .sms_gateways import get_sms_gateway
 
 from .utils import (
     fill_code,
     fill_valid_until,
     get_or_create_user,
+    fill_otp_secret_value,
 )
 
 class VerificationCode(models.Model):
@@ -61,3 +68,79 @@ class VerificationCode(models.Model):
                                valid_until__gte=timezone.now(),
                                attempts__gt=0).update(attempts=models.F('attempts') - 1)
             return None
+
+class OTPSecret(models.Model):
+    """
+    OTP Secret model
+    """
+
+    user = models.OneToOneField(get_user_model(),
+                                on_delete=models.CASCADE,
+                                blank=False)
+    value = models.CharField(max_length=32,
+                             default=fill_otp_secret_value,
+                             blank=False,
+                             editable=False)
+
+    @classmethod
+    def has_otp_secret(cls, user: AbstractBaseUser) -> bool:
+        """
+        user has OTP secret
+        """
+        return OTPSecret.objects.filter(user=user).exists()
+
+    @classmethod
+    def phone_number_has_otp_secret(cls, phone_number: str) -> bool:
+        """
+        phone number has OTP secret
+        """
+        return OTPSecret.objects.filter(user__username=phone_number).exists()
+
+    @classmethod
+    def create(cls, user: AbstractBaseUser) -> "OTPSecret":
+        """
+        create from user
+        """
+        return OTPSecret.objects.create(user=user)
+
+    @classmethod
+    def get_or_create(cls, user: AbstractBaseUser) -> Tuple["OTPSecret", bool]:
+        """
+        get or create from user
+        """
+        return OTPSecret.objects.get_or_create(user=user)
+
+    @classmethod
+    def verify(cls, phone_number: str, otp_code: str) -> Optional["OTPSecret"]:
+        """
+        verify OTP Code
+        """
+        try:
+            otp_secret = OTPSecret.objects.get(user__username=phone_number)
+            if otp_secret.totp.verify(otp_code):
+                return otp_secret
+            return None
+        except OTPSecret.DoesNotExist:
+            return None
+
+    def __str__(self) -> str:
+        """
+        human-readable
+        """
+        return f"{self.user}'s OTP secret"
+
+    @property
+    def totp(self) -> TOTP:
+        """
+        TOTP instance
+        """
+        return TOTP(self.value)
+
+    @property
+    def uri(self) -> str:
+        """
+        uri for 2FA authentication apps
+        """
+        home_site = Site.objects.get(id=settings.HOME_SITE_ID)
+        return self.totp.provisioning_uri(name=self.user.username,  # type: ignore[attr-defined]  # pylint: disable=no-member
+                                          issuer_name=home_site.name)
