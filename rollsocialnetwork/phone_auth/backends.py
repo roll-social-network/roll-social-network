@@ -14,8 +14,14 @@ from .models import (
     OTPSecret,
 )
 
-class GetUserMixin:
+class GetUserMixin:  # pylint: disable=too-few-public-methods
+    """
+    Get User Mixin
+    """
     def get_user(self, user_id):
+        """
+        get user
+        """
         user_model = get_user_model()
         try:
             return user_model.objects.get(pk=user_id)
