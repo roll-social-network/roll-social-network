@@ -3,16 +3,22 @@ phone auth views
 """
 from typing import Any
 from urllib.parse import urlencode
-from django.views.generic.edit import FormView
+from django.views.generic import (
+    FormView,
+    TemplateView,
+)
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .utils import format_pn
 from .forms import (
     RequestVerificationCodeForm,
     VerifyVerificationCodeForm,
 )
-from .models import VerificationCode
+from .models import (
+    VerificationCode,
+    OTPSecret,
+)
 
 class RequestVerificationCodeView(FormView):
     """
@@ -49,3 +55,19 @@ class VerifyVerificationCodeView(LoginView):
 
     def get_initial(self) -> dict[str, Any]:
         return self.request.GET.dict()
+
+class ShowOTPSecretView(LoginRequiredMixin,
+                        TemplateView):
+    """
+    Show OTP Secret view
+    """
+
+    template_name = "phone_auth/show_otp_secret.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        otp_secret, _ = OTPSecret.get_or_create(self.request.user)  # type: ignore[arg-type]
+        context.update({
+            "otp_secret": otp_secret
+        })
+        return context

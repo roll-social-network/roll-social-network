@@ -5,6 +5,7 @@ from django.urls import path
 from .views import (
     RequestVerificationCodeView,
     VerifyVerificationCodeView,
+    ShowOTPSecretView,
 )
 
 urlpatterns = [
@@ -14,4 +15,5 @@ urlpatterns = [
     path("verify/",
          VerifyVerificationCodeView.as_view(),
          name="verify-verification-code"),
+    path("show-otp-secret/", ShowOTPSecretView.as_view()),
 ]
