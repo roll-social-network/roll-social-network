@@ -2,7 +2,10 @@
 phone auth admin
 """
 from django.contrib import admin
-from .models import VerificationCode
+from .models import (
+    VerificationCode,
+    OTPSecret,
+)
 
 class VerificationCodeAdmin(admin.ModelAdmin):
     """
@@ -18,4 +21,13 @@ class VerificationCodeAdmin(admin.ModelAdmin):
         "valid_until",
     ]
 
+class OTPSecretAdmin(admin.ModelAdmin):
+    """
+    OTP Secret model admin
+    """
+
+    fields = []
+    readonly_fields = ["user"]
+
 admin.site.register(VerificationCode, VerificationCodeAdmin)
+admin.site.register(OTPSecret, OTPSecretAdmin)
