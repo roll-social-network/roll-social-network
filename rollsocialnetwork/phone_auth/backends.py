@@ -40,7 +40,7 @@ class PhoneAuthBackend(GetUserMixin,
                      **kwargs: Dict) -> Optional[AbstractBaseUser]:
         verification_code = VerificationCode.verify(phone_number, code)
         if verification_code and not OTPSecret.has_otp_secret(verification_code.user):
-            request.created_otp_secret = OTPSecret.create(verification_code.user)
+            OTPSecret.create(verification_code.user)
         if verification_code:
             return verification_code.user
         return None
