@@ -178,7 +178,7 @@ class VerifyVerificationCodeFormTestCase(TestCase):
         """
         user = self.user_factory.create_user()
         authenticate_mock.return_value = user
-        form = VerifyVerificationCodeForm(data={"phone": user.username, "code": "1234"})
+        form = VerifyVerificationCodeForm(data={"phone_number": user.username, "code": "1234"})
         is_valid = form.is_valid()
         self.assertTrue(is_valid)
         cleaned_data = form.clean()
@@ -191,7 +191,7 @@ class VerifyVerificationCodeFormTestCase(TestCase):
         test invalid login
         """
         authenticate_mock.return_value = None
-        form = VerifyVerificationCodeForm(data={"phone": fake.e164(), "code": "1234"})
+        form = VerifyVerificationCodeForm(data={"phone_number": fake.e164(), "code": "1234"})
         is_valid = form.is_valid()
         self.assertFalse(is_valid)
         with self.assertRaises(ValidationError):
@@ -321,4 +321,4 @@ class VerifyOTPCodeFormAuthenticateTestCase(TestCase):
         pn = "+0000000"
         code = "0000"
         form.call_authenticate(pn, code)
-        authenticate_mock.assert_called_with(None, phone_number=pn, otp_code=code)
+        authenticate_mock.assert_called_with(phone_number=pn, otp_code=code)
