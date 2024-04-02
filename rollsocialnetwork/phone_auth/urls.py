@@ -7,7 +7,7 @@ from .views import (
     RequestVerificationCodeView,
     VerifyVerificationCodeView,
     VerifyOTPCodeView,
-    ShowOTPSecretView,
+    ValidateOTPSecretView,
 )
 
 urlpatterns = [
@@ -23,5 +23,5 @@ urlpatterns = [
     path("verify-otp/<str:phone_number>/",
          VerifyOTPCodeView.as_view(),
          name="verify-otp-code"),
-    path("show-otp-secret/", ShowOTPSecretView.as_view()),
+    path("validate-otp-secret/", ValidateOTPSecretView.as_view()),
 ]

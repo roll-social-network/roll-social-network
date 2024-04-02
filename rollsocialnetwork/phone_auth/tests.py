@@ -11,6 +11,7 @@ from django.test import (
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.forms import ValidationError
+from rollsocialnetwork.phone_auth.views import LoginView, ValidateOTPSecretView
 from rollsocialnetwork.tests_factory import SiteFactory, UserFactory
 from rollsocialnetwork.tests_fake import fake
 from .utils import (
@@ -332,3 +333,78 @@ class VerifyOTPCodeFormAuthenticateTestCase(TestCase):
         code = "0000"
         form.call_authenticate(pn, code)
         authenticate_mock.assert_called_with(phone_number=pn, otp_code=code)
+
+class LoginViewGetVerifyURLTestCase(TestCase):
+    """
+    tests for LoginView.get_verify_url() method
+    """
+
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.phone_number = fake.e164()
+
+    @mock.patch.object(OTPSecret, "phone_number_has_valid_otp_secret", return_value=True)
+    def test_has_valid_otp_secret(self, _phone_number_has_valid_otp_secret_mock):
+        """
+        test has valid OTP Secret
+        """
+        request = self.factory.post("/login/", {"phone_number": self.phone_number})
+        view = LoginView(request=request)
+        form = view.get_form()
+        is_valid = form.is_valid()
+        self.assertTrue(is_valid)
+        result = view.get_verify_url(form)
+        self.assertEqual(result, f"/phone-auth/verify-otp/{self.phone_number}/")
+
+    @mock.patch.object(OTPSecret, "phone_number_has_valid_otp_secret", return_value=False)
+    def test_hasnt_valid_otp_secret(self, _phone_number_has_valid_otp_secret_mock):
+        """
+        test hasn't valid OTP secret
+        """
+        request = self.factory.post("/login/", {"phone_number": self.phone_number})
+        view = LoginView(request=request)
+        form = view.get_form()
+        is_valid = form.is_valid()
+        self.assertTrue(is_valid)
+        result = view.get_verify_url(form)
+        self.assertEqual(result, f"/phone-auth/request/{self.phone_number}/")
+
+class ValidateOTPSecretViewTestCase(TestCase):
+    """
+    tests for ValidateOTPSecretView
+    """
+
+    def setUp(self):
+        self.factory = RequestFactory()
+        otp_secret_factory = OTPSecretFactory()
+        self.otp_secret = otp_secret_factory.create_otp_secret()
+        self.otp_secret_valid = otp_secret_factory.create_otp_secret(valid_at=timezone.now())
+
+    def test_get_not_valid(self):
+        """
+        test get not valid OTP secret
+        """
+        request = self.factory.get("/validate/")
+        request.user = self.otp_secret.user
+        result = ValidateOTPSecretView.as_view()(request)
+        self.assertEqual(result.status_code, 200)
+
+    def test_get_valid(self):
+        """
+        test get valid OTP secret
+        """
+        request = self.factory.get("/validate/")
+        request.user = self.otp_secret_valid.user
+        result = ValidateOTPSecretView.as_view()(request)
+        self.assertEqual(result.status_code, 400)
+
+    @mock.patch.object(OTPSecret, "validate")
+    def test_validate(self, validate_mock):
+        """
+        test validate post with valid code
+        """
+        request = self.factory.post("/validate/", { "code": self.otp_secret.totp.now() })
+        request.user = self.otp_secret.user
+        result = ValidateOTPSecretView.as_view()(request)
+        self.assertEqual(result.status_code, 302)
+        validate_mock.assert_called()
