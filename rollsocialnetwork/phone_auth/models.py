@@ -81,6 +81,8 @@ class OTPSecret(models.Model):
                              default=fill_otp_secret_value,
                              blank=False,
                              editable=False)
+    valid_at = models.DateTimeField(null=True,
+                                    blank=True)
 
     @classmethod
     def has_otp_secret(cls, user: AbstractBaseUser) -> bool:

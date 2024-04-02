@@ -27,7 +27,7 @@ class OTPSecretAdmin(admin.ModelAdmin):
     """
 
     fields = []
-    readonly_fields = ["user"]
+    readonly_fields = ["user", "valid_at"]
 
 admin.site.register(VerificationCode, VerificationCodeAdmin)
 admin.site.register(OTPSecret, OTPSecretAdmin)
