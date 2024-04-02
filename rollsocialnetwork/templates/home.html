@@ -11,7 +11,7 @@
             <li><a href="{% url 'timeline' %}">{% translate 'timeline' %}</a></li>
             <li><a href="{% url 'logout' %}">{% translate 'logout' %}</a></li>
             {% else %}
-            <li><a href="{% url 'request-verification-code' %}">{% translate 'login' %}</a></li>
+            <li><a href="{% url 'phone-auth-login' %}">{% translate 'login' %}</a></li>
             {% endif %}
         </ul>
     </div>

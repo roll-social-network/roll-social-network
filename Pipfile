@@ -27,6 +27,7 @@ django-cors-headers = "*"
 django-csp = "*"
 channels = "*"
 daphne = "*"
+pyotp = "*"
 
 [dev-packages]
 pylint = "*"

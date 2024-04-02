@@ -3,15 +3,25 @@ phone auth urls
 """
 from django.urls import path
 from .views import (
+    LoginView,
     RequestVerificationCodeView,
     VerifyVerificationCodeView,
+    VerifyOTPCodeView,
+    ValidateOTPSecretView,
 )
 
 urlpatterns = [
-    path("request/",
+    path("login/",
+         LoginView.as_view(),
+         name="phone-auth-login"),
+    path("request/<str:phone_number>/",
          RequestVerificationCodeView.as_view(),
          name="request-verification-code"),
-    path("verify/",
+    path("verify/<str:phone_number>/",
          VerifyVerificationCodeView.as_view(),
          name="verify-verification-code"),
+    path("verify-otp/<str:phone_number>/",
+         VerifyOTPCodeView.as_view(),
+         name="verify-otp-code"),
+    path("validate-otp-secret/", ValidateOTPSecretView.as_view()),
 ]

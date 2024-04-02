@@ -29,7 +29,7 @@ class TwilioGateway(SMSGatewayBase):  # pylint: disable=R0903
 
     def send(self, verification_code: "VerificationCode") -> None:
         self.twilio_client.messages.create(
-            to=verification_code.user.get_username(),
+            to=verification_code.user.username,  # type: ignore[attr-defined]
             messaging_service_sid=self.twilio_messaging_service_sid,
             body=self.build_message_body(verification_code)
         )
