@@ -805,12 +805,12 @@
         },
         "twilio": {
             "hashes": [
-                "sha256:9450b7a9987c32146d1760c8680f92baa76b4ba570543758a4937da48ae46d77",
-                "sha256:db89a8326f92240cdd8dc1dafb1d3f69169576243be9b9cbf5cf7778ecab0eed"
+                "sha256:c13973415966e93b70651a58733fa76317df64621c74e0e4896613f10a368438",
+                "sha256:c21fd70d8518823831143999a38cc86c40dad45fab5a6b5ecfee85672e9e5cb2"
             ],
             "index": "pypi",
             "markers": "python_full_version >= '3.7.0'",
-            "version": "==9.0.2"
+            "version": "==9.0.3"
         },
         "twisted": {
             "extras": [
