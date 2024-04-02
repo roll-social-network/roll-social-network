@@ -10,7 +10,10 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.utils import timezone
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    AnonymousUser,
+)
 from django.contrib.sites.models import Site
 from .sms_gateways import get_sms_gateway
 
@@ -100,7 +103,7 @@ class OTPSecret(models.Model):
         return OTPSecret.objects.create(user=user)
 
     @classmethod
-    def get_or_create(cls, user: AbstractBaseUser) -> Tuple["OTPSecret", bool]:
+    def get_or_create(cls, user: AbstractBaseUser | AnonymousUser) -> Tuple["OTPSecret", bool]:
         """
         get or create from user
         """
