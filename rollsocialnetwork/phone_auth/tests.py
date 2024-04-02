@@ -233,25 +233,35 @@ class OTPSecretVerifyTestCase(TestCase):
 
 class OTPSecretPhoneNumberHasOTPSecretTestCase(TestCase):
     """
-    tests for OTPSecret.phone_number_has_otp_secret() class method
+    tests for OTPSecret.phone_number_has_valid_otp_secret() class method
     """
 
     def setUp(self) -> None:
         otp_secret_factory = OTPSecretFactory()
         self.otp_secret = otp_secret_factory.create_otp_secret()
+        self.otp_secret.validate()
+        self.otp_secret_not_valid = otp_secret_factory.create_otp_secret()
 
-    def test_exist(self):
+    def test_exist_valid(self):
         """
         test exist
         """
-        result = OTPSecret.phone_number_has_otp_secret(self.otp_secret.user.username)
+        result = OTPSecret.phone_number_has_valid_otp_secret(self.otp_secret.user.username)
         self.assertTrue(result)
 
     def test_not_exist(self):
         """
         test not exist
         """
-        result = OTPSecret.phone_number_has_otp_secret("+00000000")
+        result = OTPSecret.phone_number_has_valid_otp_secret("+00000000")
+        self.assertFalse(result)
+
+    def test_exists_but_not_valid(self):
+        """
+        test exists but not valid
+        """
+        result = OTPSecret.phone_number_has_valid_otp_secret(
+            self.otp_secret_not_valid.user.username)
         self.assertFalse(result)
 
 class OTPSecretURITestCase(TestCase):

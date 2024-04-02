@@ -85,18 +85,12 @@ class OTPSecret(models.Model):
                                     blank=True)
 
     @classmethod
-    def has_otp_secret(cls, user: AbstractBaseUser) -> bool:
-        """
-        user has OTP secret
-        """
-        return OTPSecret.objects.filter(user=user).exists()
-
-    @classmethod
-    def phone_number_has_otp_secret(cls, phone_number: str) -> bool:
+    def phone_number_has_valid_otp_secret(cls, phone_number: str) -> bool:
         """
         phone number has OTP secret
         """
-        return OTPSecret.objects.filter(user__username=phone_number).exists()
+        return OTPSecret.objects.filter(user__username=phone_number,
+                                        valid_at__isnull=False).exists()
 
     @classmethod
     def create(cls, user: AbstractBaseUser) -> "OTPSecret":
