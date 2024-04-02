@@ -146,3 +146,11 @@ class OTPSecret(models.Model):
         home_site = Site.objects.get(id=settings.HOME_SITE_ID)
         return self.totp.provisioning_uri(name=self.user.username,  # type: ignore[attr-defined]  # pylint: disable=no-member
                                           issuer_name=home_site.name)
+
+    def validate(self, force_save=True):
+        """
+        validate
+        """
+        self.valid_at = timezone.now()
+        if force_save:
+            self.save()
