@@ -35,12 +35,15 @@ class OTPSecretFactory:
     def __init__(self) -> None:
         self.user_factory = UserFactory()
 
-    def factory_otp_secret(self, user=None) -> dict:
+    def factory_otp_secret(self,
+                           user=None,
+                           valid_at=None) -> dict:
         """
         factory OTP secret
         """
         return {
             "user": user or self.user_factory.create_user(),
+            "valid_at": valid_at
         }
 
     def create_otp_secret(self, **kwargs) -> OTPSecret:
