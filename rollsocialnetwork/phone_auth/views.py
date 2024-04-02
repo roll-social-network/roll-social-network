@@ -126,7 +126,10 @@ class ValidateOTPSecretView(LoginRequiredMixin,
         self.otp_secret, _ = OTPSecret.get_or_create(request.user)
         return super().setup(request, *args, **kwargs)
 
-    def dispatch(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:  # type: ignore[override]
+    def dispatch(self,
+                 request: HttpRequest,  # type: ignore[override]
+                 *args,
+                 **kwargs) -> HttpResponse:
         if not self.otp_secret or self.otp_secret.valid_at:
             return HttpResponseBadRequest()
         return super().dispatch(request, *args, **kwargs)
