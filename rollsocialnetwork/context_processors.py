@@ -9,12 +9,13 @@ def home_site(request):
     """
     adds home_site and is_home_site
     """
+    site = None
     try:
-        home_site = Site.objects.get(id=settings.HOME_SITE_ID)
-    except Site.DoesNotExist as e:
-        home_site = None
+        site = Site.objects.get(id=settings.HOME_SITE_ID)
+    except Site.DoesNotExist:
+        pass
     return {
-        "home_site": home_site,
+        "home_site": site,
         "is_home_site": request.site.id == settings.HOME_SITE_ID
     }
 
