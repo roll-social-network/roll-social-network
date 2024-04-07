@@ -22,7 +22,7 @@ from .tests_factory import (
     UserFactory,
 )
 from .opener_callback import OpenerCallbackRedirectURLMixin
-from .context_processors import is_home_site
+from .context_processors import home_site
 
 class LogoutViewTest(TestCase):
     """
@@ -156,9 +156,9 @@ class OpenerCallbackRedirectURLMixinTest(TestCase):
         }
         self.assertEqual(redirect_url, f"{opener_callback_url}?{urlencode(qs)}")
 
-class IsHomeSiteContextProcessorTest(TestCase):
+class HomeSiteContextProcessorTest(TestCase):
     """
-    is_home_site context processor test
+    home_site context processor test
     """
 
     def setUp(self):
@@ -176,7 +176,7 @@ class IsHomeSiteContextProcessorTest(TestCase):
         )
         request.site = self.site
         with override_settings(HOME_SITE_ID=self.site.id):
-            result = is_home_site(request)
+            result = home_site(request)
             result_is_home_site = result.get("is_home_site")
             self.assertTrue(result_is_home_site)
 
@@ -190,6 +190,6 @@ class IsHomeSiteContextProcessorTest(TestCase):
         )
         request.site = self.site
         with override_settings(HOME_SITE_ID=0):
-            result = is_home_site(request)
+            result = home_site(request)
             result_is_home_site = result.get("is_home_site")
             self.assertFalse(result_is_home_site)

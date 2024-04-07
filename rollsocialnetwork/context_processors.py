@@ -9,8 +9,12 @@ def home_site(request):
     """
     adds home_site and is_home_site
     """
+    try:
+        home_site = Site.objects.get(id=settings.HOME_SITE_ID)
+    except Site.DoesNotExist as e:
+        home_site = None
     return {
-        "home_site": Site.objects.get(id=settings.HOME_SITE_ID),
+        "home_site": home_site,
         "is_home_site": request.site.id == settings.HOME_SITE_ID
     }
 
