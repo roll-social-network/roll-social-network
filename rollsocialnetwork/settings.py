@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -188,7 +189,7 @@ STORAGES = {
                           cast=json.loads)
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
     },
     "posts": {
         "BACKEND": config("STORAGES_POSTS_BACKEND",
