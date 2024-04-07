@@ -18,6 +18,8 @@ def another_rolls(request):
     """
     another rolls
     """
+    if not request.user.is_authenticated:
+        return {"another_rolls": []}
     qs = Site.objects.exclude(id__in=[settings.HOME_SITE_ID,
                                       request.site.id]).filter(profiles__user=request.user)
     return {"another_rolls": get_popular_rolls(qs)}
