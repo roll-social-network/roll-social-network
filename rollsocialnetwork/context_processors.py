@@ -2,18 +2,29 @@
 rollsocialnetwork context processors
 """
 from django.conf import settings
+from django.contrib.sites.models import Site
+from .utils import get_popular_rolls
 
-def is_home_site(request):
+def home_site(request):
     """
-    is home site?
+    adds home_site and is_home_site
     """
-    return {"is_home_site": request.site.id == settings.HOME_SITE_ID}
-
-def footer_urls(request):
-    """
-    footer urls
-    """
+    site = None
+    try:
+        site = Site.objects.get(id=settings.HOME_SITE_ID)
+    except Site.DoesNotExist:
+        pass
     return {
-        "about_page_url": settings.ABOUT_PAGE_URL,
-        "terms_page_url": settings.TERMS_PAGE_URL
+        "home_site": site,
+        "is_home_site": request.site.id == settings.HOME_SITE_ID
     }
+
+def another_rolls(request):
+    """
+    another rolls
+    """
+    if not request.user.is_authenticated:
+        return {"another_rolls": []}
+    qs = Site.objects.exclude(id__in=[settings.HOME_SITE_ID,
+                                      request.site.id]).filter(profiles__user=request.user)
+    return {"another_rolls": get_popular_rolls(qs)}

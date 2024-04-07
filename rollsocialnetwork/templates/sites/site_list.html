@@ -2,7 +2,8 @@
 
 {% load i18n %}
 
-{% block header-title %}<h1><a href="{% url 'home' %}">{{ request.site.name }}</a></h1>{% endblock %}
+{% block header-left-action %}{% endblock %}
+{% block header-title %}<a href="{% url 'home' %}">{{ request.site.name }}</a>{% endblock %}
 {% block subtitle %}{% translate 'all rolls' %}{% endblock %}
 
 {% block content %}
