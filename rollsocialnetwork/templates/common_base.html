@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load i18n %}
+{% load i18n uris %}
 
 {% block body %}
 <header class="fixed">
@@ -9,10 +9,10 @@
 </header>
 {% block content %}{% endblock %}
 <footer>
-    <p>{{ request.site.name }} by <strong>roll social networks</strong></p>
+    <p>{{ request.site.name }} by <a href="{% site_build_absolute_uri home_site 'home' %}"><strong>roll social networks</strong></a></p>
     <ul class="breadcrumb">
-        <li><a href="{{ about_page_url }}">{% translate 'about' %}</a></li>
-        <li><a href="{{ terms_page_url }}">{% translate 'terms' %}</a></li>
+        <li><a href="{% site_build_absolute_uri home_site 'home' %}#about">{% translate 'about' %}</a></li>
+        <li><a href="{% site_build_absolute_uri home_site 'home' %}#terms">{% translate 'terms' %}</a></li>
     </ul>
 </footer>
 {% endblock %}

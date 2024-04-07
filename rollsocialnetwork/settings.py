@@ -61,8 +61,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "rollsocialnetwork.context_processors.is_home_site",
-                "rollsocialnetwork.context_processors.footer_urls",
+                "rollsocialnetwork.context_processors.home_site",
+                "rollsocialnetwork.context_processors.another_rolls",
                 "rollsocialnetwork.social.context_processors.social",
             ],
         },
@@ -211,10 +211,6 @@ CHANNEL_LAYERS = {
 }
 SUBDOMAIN_BASE = config("SUBDOMAIN_BASE",
                         default="roll.local")
-ABOUT_PAGE_URL = config("ABOUT_PAGE_URL",
-                        default=f"//{SUBDOMAIN_BASE}#about")
-TERMS_PAGE_URL = config("TERMS_PAGE_URL",
-                        default=f"//{SUBDOMAIN_BASE}#terms")
 CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS",
                               default=f"https://{SUBDOMAIN_BASE},https://*.{SUBDOMAIN_BASE}",
                               cast=lambda value: value.split(","))
