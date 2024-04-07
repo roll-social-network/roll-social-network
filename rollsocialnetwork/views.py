@@ -19,12 +19,10 @@ from django.views.generic import (
 from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib.sites.models import Site
-from django.db.models import (
-    QuerySet,
-    Count,
-)
+from django.db.models import QuerySet
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import RollForm
+from .utils import get_popular_rolls
 
 class LogoutView(View):
     """
@@ -80,7 +78,7 @@ class HomeView(TemplateView):
         context_data = super().get_context_data(**kwargs)
         if self.is_home_site:
             context_data.update({
-                "popular": get_popular_sites()[:6]
+                "popular": get_popular_rolls()[:6]
             })
         return context_data
 
@@ -93,7 +91,7 @@ class RollsView(ListView):
     paginate_by = 12
 
     def get_queryset(self) -> QuerySet[Site]:
-        return get_popular_sites()
+        return get_popular_rolls()
 
 class CreateRollView(LoginRequiredMixin,
                      CreateView):
@@ -106,12 +104,3 @@ class CreateRollView(LoginRequiredMixin,
     def get_success_url(self):
         scheme = settings.OVERRIDE_SCHEME or self.request.scheme
         return f"{scheme}://{self.object.domain}"
-
-def get_popular_sites() -> QuerySet[Site]:
-    """
-    get popular sites
-    """
-    return Site.objects.exclude(id=settings.HOME_SITE_ID)\
-        .annotate(profiles_count=Count("profiles"),
-                  posts_count=Count("profiles__posts"))\
-            .order_by("-posts_count", "-profiles_count")

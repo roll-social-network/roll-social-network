@@ -220,3 +220,6 @@ CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS",
                               cast=lambda value: value.split(","))
 OVERRIDE_SCHEME = config("OVERRIDE_SCHEME",
                          default=None)
+HOT_POSTS_SLICE = config("HOT_POSTS_SLICE",
+                         default=12,
+                         cast=int)
