@@ -15,7 +15,8 @@ services:
     volumes:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
   app:
-    build: .
+    build:
+      target: app
     depends_on:
       - db
       - medias-ftp
@@ -54,7 +55,7 @@ services:
       POSTGRES_DB: roll
   statics:
     build:
-      dockerfile: Dockerfile.statics
+      target: statics
   medias-ftp:
     image: garethflowers/ftp-server:latest
     environment:

@@ -15,7 +15,7 @@ RUN npm install
 COPY frontend .
 RUN npm run build
 
-FROM python:3.12-alpine
+FROM python:3.12-alpine as app
 
 WORKDIR /home/app
 EXPOSE 8000
@@ -38,3 +38,8 @@ RUN python manage.py collectstatic --noinput
 
 ENTRYPOINT [ "daphne" ]
 CMD [ "-b", "0.0.0.0", "rollsocialnetwork.asgi:application" ]
+
+FROM nginx:latest as statics
+
+COPY --from=app /home/app/statics /usr/share/nginx/html
+COPY nginx.statics.default.conf /etc/nginx/conf.d/default.conf
