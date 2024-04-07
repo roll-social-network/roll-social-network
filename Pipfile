@@ -28,6 +28,7 @@ django-csp = "*"
 channels = "*"
 daphne = "*"
 pyotp = "*"
+whitenoise = "*"
 
 [dev-packages]
 pylint = "*"

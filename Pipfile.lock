@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ff7e55319659ff3c6309560dac493087469005000899d9c9cc8882df35efa114"
+            "sha256": "a16fb7795b78ec51ce1646750d4216b4345c005e21f7187ce3ac5dffad8ab958"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -213,12 +213,12 @@
         },
         "channels": {
             "hashes": [
-                "sha256:0ce53507a7da7b148eaa454526e0e05f7da5e5d1c23440e4886cf146981d8420",
-                "sha256:2253334ac76f67cba68c2072273f7e0e67dbdac77eeb7e318f511d2f9a53c5e4"
+                "sha256:a3c4419307f582c3f71d67bfb6eff748ae819c2f360b9b141694d84f242baa48",
+                "sha256:e0ed375719f5c1851861f05ed4ce78b0166f9245ca0ecd836cb77d4bb531489d"
             ],
             "index": "pypi",
-            "markers": "python_version >= '3.7'",
-            "version": "==4.0.0"
+            "markers": "python_version >= '3.8'",
+            "version": "==4.1.0"
         },
         "charset-normalizer": {
             "hashes": [
@@ -373,12 +373,12 @@
         },
         "django": {
             "hashes": [
-                "sha256:5c7d748ad113a81b2d44750ccc41edc14e933f56581683db548c9257e078cc83",
-                "sha256:5fb37580dcf4a262f9258c1f4373819aacca906431f505e4688e37f3a99195df"
+                "sha256:4bd01a8c830bb77a8a3b0e7d8b25b887e536ad17a81ba2dce5476135c73312bd",
+                "sha256:916423499d75d62da7aa038d19aef23d23498d8df229775eb0a6309ee1013775"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.10'",
-            "version": "==5.0.3"
+            "version": "==5.0.4"
         },
         "django-cors-headers": {
             "hashes": [
@@ -626,11 +626,11 @@
         },
         "phonenumbers": {
             "hashes": [
-                "sha256:991f2619f0593b36b674c345af47944ec4bae526b353cf53d707e662087be63b",
-                "sha256:f2d653268ece55a4f3752d9cda4be6f7465f298e6d028d522aedda13cf057201"
+                "sha256:7c2676be07b7d0f74411e275e0660380a0ec3ee0d359f070d719424bd2c5f62e",
+                "sha256:bc0bb5d3bab29e28549194f6bf57cb3ca03c3dd84238af12674fe24031631bda"
             ],
             "index": "pypi",
-            "version": "==8.13.33"
+            "version": "==8.13.34"
         },
         "pillow": {
             "hashes": [
@@ -805,12 +805,12 @@
         },
         "twilio": {
             "hashes": [
-                "sha256:c13973415966e93b70651a58733fa76317df64621c74e0e4896613f10a368438",
-                "sha256:c21fd70d8518823831143999a38cc86c40dad45fab5a6b5ecfee85672e9e5cb2"
+                "sha256:086abae1a575a0ee89a72c0792d814ee349fe55c8df76b563ecfc49463c3c533",
+                "sha256:d493d5bde6361bb713dffec00b9465ff84978b71334dd75002152e79604688ba"
             ],
             "index": "pypi",
             "markers": "python_full_version >= '3.7.0'",
-            "version": "==9.0.3"
+            "version": "==9.0.4"
         },
         "twisted": {
             "extras": [
@@ -833,11 +833,11 @@
         },
         "typing-extensions": {
             "hashes": [
-                "sha256:69b1a937c3a517342112fb4c6df7e72fc39a38e7891a5730ed4985b5214b5475",
-                "sha256:b0abd7c89e8fb96f98db18d86106ff1d90ab692004eb746cf6eda2682f91b3cb"
+                "sha256:83f085bd5ca59c80295fc2a82ab5dac679cbe02b9f33f7d83af68e241bea51b0",
+                "sha256:c1f94d72897edaf4ce775bb7558d5b79d8126906a14ea5ed1635921406c0387a"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==4.10.0"
+            "version": "==4.11.0"
         },
         "urllib3": {
             "hashes": [
@@ -846,6 +846,15 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==2.2.1"
+        },
+        "whitenoise": {
+            "hashes": [
+                "sha256:8998f7370973447fac1e8ef6e8ded2c5209a7b1f67c1012866dbcd09681c3251",
+                "sha256:b1f9db9bf67dc183484d760b99f4080185633136a273a03f6436034a41064146"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.8'",
+            "version": "==6.6.0"
         },
         "yarl": {
             "hashes": [
@@ -1283,12 +1292,12 @@
         },
         "faker": {
             "hashes": [
-                "sha256:998c29ee7d64429bd59204abffa9ba11f784fb26c7b9df4def78d1a70feb36a7",
-                "sha256:a5ddccbe97ab691fad6bd8036c31f5697cfaa550e62e000078d1935fa8a7ec2e"
+                "sha256:39d34c63f0d62ed574161e23fe32008917b923d18098ce94c2650fe16463b7d5",
+                "sha256:73f2bd886e8ce751e660c7d37a6c0a128aab5e1551359335bb79cfea0f4fabfc"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8'",
-            "version": "==24.4.0"
+            "version": "==24.7.1"
         },
         "faker-e164": {
             "hashes": [
@@ -1544,10 +1553,10 @@
         },
         "phonenumberslite": {
             "hashes": [
-                "sha256:4d92f4f9079bb83588dde45fd8a414bc13e4962886aa4d23576984196f4d83c2",
-                "sha256:7426bc46af3de5a800a4c8f33ab13e33225d2c8ed4fc52aa3c0380dadd8d7381"
+                "sha256:396ae65da710b0d2309f054a937a70e28fe7ddf15b097eb6371676633c512a0e",
+                "sha256:3d43d824c080b24e1f9b8b828695b2372800aeafbd17327e88e55ecb64e663c9"
             ],
-            "version": "==8.13.33"
+            "version": "==8.13.34"
         },
         "platformdirs": {
             "hashes": [
@@ -1625,12 +1634,12 @@
         },
         "twilio": {
             "hashes": [
-                "sha256:c13973415966e93b70651a58733fa76317df64621c74e0e4896613f10a368438",
-                "sha256:c21fd70d8518823831143999a38cc86c40dad45fab5a6b5ecfee85672e9e5cb2"
+                "sha256:086abae1a575a0ee89a72c0792d814ee349fe55c8df76b563ecfc49463c3c533",
+                "sha256:d493d5bde6361bb713dffec00b9465ff84978b71334dd75002152e79604688ba"
             ],
             "index": "pypi",
             "markers": "python_full_version >= '3.7.0'",
-            "version": "==9.0.3"
+            "version": "==9.0.4"
         },
         "twilio-stubs": {
             "hashes": [
@@ -1657,11 +1666,11 @@
         },
         "typing-extensions": {
             "hashes": [
-                "sha256:69b1a937c3a517342112fb4c6df7e72fc39a38e7891a5730ed4985b5214b5475",
-                "sha256:b0abd7c89e8fb96f98db18d86106ff1d90ab692004eb746cf6eda2682f91b3cb"
+                "sha256:83f085bd5ca59c80295fc2a82ab5dac679cbe02b9f33f7d83af68e241bea51b0",
+                "sha256:c1f94d72897edaf4ce775bb7558d5b79d8126906a14ea5ed1635921406c0387a"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==4.10.0"
+            "version": "==4.11.0"
         },
         "urllib3": {
             "hashes": [
