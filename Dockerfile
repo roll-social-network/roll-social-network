@@ -20,7 +20,7 @@ FROM python:3.12-alpine
 WORKDIR /home/app
 EXPOSE 8000
 ENV DEBUG 0
-ENV STATIC_ROOT=./statics/
+ENV STATIC_ROOT /home/app/statics/
 
 COPY --from=build-requirements /home/app/requirements.txt .
 RUN apk add --no-cache postgresql-libs && \
