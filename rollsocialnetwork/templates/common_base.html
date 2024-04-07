@@ -4,7 +4,15 @@
 
 {% block body %}
 <header class="fixed">
-    {% block header-title %}<h1><a href="{% if user.is_authenticated %}{% url 'timeline' %}{% else %}{% url 'home' %}{% endif %}">{{ request.site.name }}</a></h1>{% endblock %}
+    <div>
+        {% block header-left-action %}
+        <label class="open-sidebar" for="sidebar-left">
+            <i class="fa-solid fa-bars"></i>
+            <i class="fa-solid fa-photo-film"></i>
+        </label>
+        {% endblock %}
+        <h1>{% block header-title %}<a href="{% if user.is_authenticated %}{% url 'timeline' %}{% else %}{% url 'home' %}{% endif %}">{{ request.site.name }}</a>{% endblock %}</h1>
+    </div>
     <p class="thin">{% block subtitle %}-{% endblock %}</p>
 </header>
 {% block content %}{% endblock %}
@@ -15,4 +23,31 @@
         <li><a href="{% site_build_absolute_uri home_site 'home' %}#terms">{% translate 'terms' %}</a></li>
     </ul>
 </footer>
+{% endblock %}
+
+{% block aside %}
+<input type="checkbox" id="sidebar-left" />
+<aside class="sidebar left">
+    <div class="header">
+        <div><strong>{% translate 'your rolls' %}</strong></div>
+        <label for="sidebar-left" class="close"><i class="fa-solid fa-xmark"></i></label>
+    </div>
+    <ul class="links">
+        {% for site in another_rolls %}
+        <li>
+            <a href="{% site_build_absolute_uri site 'timeline' %}">
+                <i class="fa-solid fa-photo-film"></i>
+                <span class="roll-name">{{ site.name }}</span>
+                {% if site.hot_posts_count %}<span class="roll-status">{{ site.hot_posts_count }}</span>{% endif %}
+            </a>
+        </li>
+        {% endfor %}
+        <li>
+            <a href="{% site_build_absolute_uri home_site 'rolls' %}" target="_blank">
+                <i class="fa-solid fa-plus"></i>
+                <span>{% translate 'more rolls' %}</span>
+            </a>
+        </li>
+    </ul>
+</aside>
 {% endblock %}
