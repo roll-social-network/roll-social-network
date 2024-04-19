@@ -6,13 +6,13 @@ RUN pip install pipenv
 COPY Pipfile* .
 RUN pipenv requirements > requirements.txt
 
-FROM node:20.11-alpine AS build-frontend
+FROM node:20.11-alpine AS build-ui
 
 WORKDIR /home/app
 
-COPY frontend/package*.json .
+COPY ui/package*.json .
 RUN npm install
-COPY frontend .
+COPY ui .
 RUN npm run build
 
 FROM python:3.12-alpine as app
@@ -31,7 +31,7 @@ RUN apk add --no-cache postgresql-libs && \
                     channels-redis --no-cache-dir && \
         pip install -r requirements.txt --no-cache-dir && \
         apk --purge del .build-deps
-COPY --from=build-frontend /home/app/dist frontend/dist
+COPY --from=build-ui /home/app/dist ui/dist
 COPY manage.py .
 COPY rollsocialnetwork rollsocialnetwork
 RUN python manage.py collectstatic --noinput

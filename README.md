@@ -70,17 +70,17 @@ Requirements:
 - [pipenv](https://pipenv.pypa.io/en/latest/)
 - Node.js 20.11
 
-Init frontend submodule:
+Init ui submodule:
 
 ```bash
-$ git submodule init frontend
+$ git submodule init ui
 ```
 
 Install dependencies:
 
 ```bash
 $ pipenv install --dev
-$ cd frontend/ && npm install --include=dev
+$ cd ui/ && npm install --include=dev
 ```
 
 The default app settings are setted to run locally in development and watch mode.
@@ -97,10 +97,10 @@ Run Django app web server in watch mode:
 $ pipenv run dev
 ```
 
-Build the Vue app and static style files running the frontend package in watch mode:
+Build the Vue app and static style files running the ui package in watch mode:
 
 ```bash
-$ cd frontend/ && npm run watch
+$ cd ui/ && npm run watch
 ```
 
 ### Lint and Tests

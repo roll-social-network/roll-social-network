@@ -104,7 +104,7 @@ USE_TZ = True
 STATIC_URL = config("STATIC_URL",
                     default="static/")
 STATICFILES_DIRS = [
-    "frontend/dist",
+    "ui/dist",
     "rollsocialnetwork/static",
 ]
 STATIC_ROOT = config("STATIC_ROOT",
