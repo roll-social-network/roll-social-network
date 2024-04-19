@@ -1,6 +1,3 @@
-[submodule "frontend"]
-	path = frontend
-	url = https://github.com/dougppaz/roll-social-network-frontend.git
 [submodule "ui"]
 	path = ui
 	url = https://github.com/roll-social-network/roll-social-network-ui.git
