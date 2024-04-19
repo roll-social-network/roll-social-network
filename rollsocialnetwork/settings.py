@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "easy_thumbnails",
     "corsheaders",
     "channels",
+    "oauth2_provider",
     "rollsocialnetwork",
     "rollsocialnetwork.phone_auth",
     "rollsocialnetwork.social",
@@ -220,3 +221,10 @@ OVERRIDE_SCHEME = config("OVERRIDE_SCHEME",
 HOT_POSTS_SLICE = config("HOT_POSTS_SLICE",
                          default=12,
                          cast=int)
+OAUTH2_PROVIDER = {
+    "OIDC_ENABLED": True,
+    "SCOPES": {
+        "openid": "OpenID Connect",
+    },
+    "OAUTH2_VALIDATOR_CLASS": "rollsocialnetwork.oauth2_validators.RollOAuth2Validator",
+}

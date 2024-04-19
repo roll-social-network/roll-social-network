@@ -29,6 +29,7 @@ channels = "*"
 daphne = "*"
 pyotp = "*"
 whitenoise = "*"
+django-oauth-toolkit = "*"
 
 [dev-packages]
 pylint = "*"

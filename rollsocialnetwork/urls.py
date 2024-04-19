@@ -4,7 +4,6 @@ URL configuration for rollsocialnetwork project.
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
 """
-
 from django.conf import settings
 from django.contrib import admin
 from django.urls import (
@@ -31,6 +30,7 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(), name="logout"),
     path("s/", include("rollsocialnetwork.social.urls")),
     path("t/", include("rollsocialnetwork.timeline.urls")),
+    path("oauth2/", include("oauth2_provider.urls", namespace="oauth2_provider")),
     path("admin/", admin.site.urls),
 ]
 
