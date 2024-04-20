@@ -16,6 +16,8 @@ from django.urls import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.utils.http import urlencode
 from rollsocialnetwork.http_request import HttpRequest
 from .utils import format_pn
 from .forms import (
@@ -29,11 +31,29 @@ from .models import (
     OTPSecret,
 )
 
-class LoginView(FormView):
+class BuildURLWithNextQSMixin:  # pylint: disable=R0903
+    """
+    build url with next qs mixin
+    """
+    redirect_field_name = REDIRECT_FIELD_NAME
+
+    def build_url_with_next(self, url):
+        """
+        build url with next
+        """
+        qs = {}
+        next_value = self.request.GET.get(self.redirect_field_name)
+        if next_value:
+            qs.update({ self.redirect_field_name: next_value })
+        if qs:
+            return f"{url}?{urlencode(qs)}"
+        return url
+
+class LoginView(BuildURLWithNextQSMixin,
+                FormView):
     """
     login view
     """
-
     form_class = LoginForm
     template_name = "phone_auth/login_form.html"
 
@@ -41,7 +61,8 @@ class LoginView(FormView):
         return self.request.GET.dict()
 
     def form_valid(self, form: "LoginForm") -> HttpResponse:
-        return HttpResponseRedirect(self.get_verify_url(form))
+        redirect_to = self.get_verify_url(form)
+        return HttpResponseRedirect(self.build_url_with_next(redirect_to))
 
     def get_verify_url(self, form: "LoginForm") -> str:
         """
@@ -56,7 +77,8 @@ class LoginView(FormView):
         return reverse("request-verification-code",
                        kwargs={"phone_number": phone_number})
 
-class RequestVerificationCodeView(View):
+class RequestVerificationCodeView(BuildURLWithNextQSMixin,
+                                  View):
     """
     request verification code view
     """
@@ -66,8 +88,9 @@ class RequestVerificationCodeView(View):
         get
         """
         VerificationCode.request(phone_number)
-        return HttpResponseRedirect(reverse("verify-verification-code",
-                                            kwargs={"phone_number": phone_number}))
+        redirect_to = reverse("verify-verification-code",
+                              kwargs={"phone_number": phone_number})
+        return HttpResponseRedirect(self.build_url_with_next(redirect_to))
 
 class VerifyVerificationCodeView(AuthLoginView):
     """
@@ -87,7 +110,8 @@ class VerifyVerificationCodeView(AuthLoginView):
         })
         return context
 
-class VerifyOTPCodeView(AuthLoginView):
+class VerifyOTPCodeView(BuildURLWithNextQSMixin,
+                        AuthLoginView):
     """
     verify verification code view
     """
@@ -104,7 +128,7 @@ class VerifyOTPCodeView(AuthLoginView):
                               kwargs={"phone_number": self.kwargs.get("phone_number")})
         context.update({
             "phone_number": self.kwargs.get("phone_number"),
-            "send_via_sms_url": request_url
+            "send_via_sms_url": self.build_url_with_next(request_url)
         })
         return context
 
