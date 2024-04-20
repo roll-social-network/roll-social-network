@@ -6,7 +6,11 @@ from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.formfields import PhoneNumberField  # type: ignore[import-untyped]
-from phonenumber_field.widgets import RegionalPhoneNumberWidget  # type: ignore[import-untyped]
+from phonenumber_field.widgets import (  # type: ignore[import-untyped]
+    RegionalPhoneNumberWidget,
+    PhoneNumberPrefixWidget,
+)
+
 from .models import OTPSecret
 from .utils import format_pn
 
@@ -19,7 +23,9 @@ class LoginForm(forms.Form):
     login form
     """
     phone_number = PhoneNumberField(label=_("phone number"),
-                                    help_text=_("+XXXXXXXXXXX, e.g. +1 (212) 5552368"))
+                                    help_text=_("select your country prefix and fill with your "
+                                                "phone number"),
+                                    widget=PhoneNumberPrefixWidget())
 
 class VerifyCodeFormMixin:
     """

@@ -11,6 +11,8 @@ from django.test import (
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.forms import ValidationError
+from phonenumber_field.phonenumber import PhoneNumber  # type: ignore[import-untyped]
+from phonenumbers import region_code_for_country_code
 from rollsocialnetwork.phone_auth.views import LoginView, ValidateOTPSecretView
 from rollsocialnetwork.tests_factory import SiteFactory, UserFactory
 from rollsocialnetwork.tests_fake import fake
@@ -341,14 +343,18 @@ class LoginViewGetVerifyURLTestCase(TestCase):
 
     def setUp(self):
         self.factory = RequestFactory()
-        self.phone_number = fake.e164()
+        self.phone_number = PhoneNumber.from_string(fake.e164())
 
     @mock.patch.object(OTPSecret, "phone_number_has_valid_otp_secret", return_value=True)
     def test_has_valid_otp_secret(self, _phone_number_has_valid_otp_secret_mock):
         """
         test has valid OTP Secret
         """
-        request = self.factory.post("/login/", {"phone_number": self.phone_number})
+        data = {
+            "phone_number_0": region_code_for_country_code(self.phone_number.country_code),
+            "phone_number_1": self.phone_number.national_number
+        }
+        request = self.factory.post("/login/", data)
         view = LoginView(request=request)
         form = view.get_form()
         is_valid = form.is_valid()
@@ -361,7 +367,10 @@ class LoginViewGetVerifyURLTestCase(TestCase):
         """
         test hasn't valid OTP secret
         """
-        request = self.factory.post("/login/", {"phone_number": self.phone_number})
+        request = self.factory.post("/login/", {
+            "phone_number_0": region_code_for_country_code(self.phone_number.country_code),
+            "phone_number_1": self.phone_number.national_number
+        })
         view = LoginView(request=request)
         form = view.get_form()
         is_valid = form.is_valid()
