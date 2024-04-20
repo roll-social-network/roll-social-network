@@ -18,6 +18,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.utils.http import urlencode
+from django.contrib.gis.geoip2 import GeoIP2
+from geoip2.errors import AddressNotFoundError
 from rollsocialnetwork.http_request import HttpRequest
 from .utils import format_pn
 from .forms import (
@@ -58,7 +60,20 @@ class LoginView(BuildURLWithNextQSMixin,
     template_name = "phone_auth/login_form.html"
 
     def get_initial(self) -> dict[str, Any]:
-        return self.request.GET.dict()
+        g = GeoIP2()
+        address = self.request.META.get('REMOTE_ADDR')
+        country = ""
+        remote_addr = self.request.META.get('HTTP_X_FORWARDED_FOR')
+        if remote_addr:
+            address = remote_addr.split(',')[-1].strip()
+        try:
+            country = g.country_code(address)
+        except AddressNotFoundError:
+            pass
+        initial = {
+            "phone_number": (country, ""),
+        }
+        return initial
 
     def form_valid(self, form: "LoginForm") -> HttpResponse:
         redirect_to = self.get_verify_url(form)
