@@ -74,6 +74,7 @@ Init ui submodule:
 
 ```bash
 $ git submodule init ui
+$ git submodule update --init --recursive
 ```
 
 Install dependencies:
