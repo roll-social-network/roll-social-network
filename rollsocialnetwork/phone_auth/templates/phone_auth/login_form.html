@@ -3,15 +3,15 @@
 {% load i18n %}
 
 {% block subtitle %}{% translate 'login' %}{% endblock %}
+{% block header-left-action %}{% endblock %}
 
 {% block content %}
-<div class="full-height centered">
-    <div class="content">
-        <form method="post">
-            {% csrf_token %}
-            {{ form }}
-            <div><button type="submit">{% translate 'login' %}</button></div>
-        </form>
-    </div>
+<div class="header-saver"></div>
+<section class="half">
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <div><button type="submit">{% translate 'login' %}</button></div>
+    </form>
 </div>
 {% endblock %}

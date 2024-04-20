@@ -3,17 +3,17 @@
 {% load i18n %}
 
 {% block subtitle %}{% translate 'verify code' %}{% endblock %}
+{% block header-left-action %}{% endblock %}
 
 {% block content %}
-<div class="full-height centered">
-    <div class="content">
-        <p>{% translate 'check your inbox on your cell phone, we sent code via SMS.' %}</p>
-        <form method="post">
-            {% csrf_token %}
-            {{ form }}
-            <div><button type="submit">{% translate 'verify' %}</button></div>
-        </form>
-        <p class="text-center small"><a href="{% url 'phone-auth-login' %}">{% blocktranslate with phone_number=phone_number %}{{ phone_number }}  is not my phone number{% endblocktranslate %}</a></p>
-    </div>
-</div>
+<div class="header-saver"></div>
+<section class="half">
+    <p>{% translate 'check your inbox on your cell phone, we sent code via SMS.' %}</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <div><button type="submit">{% translate 'verify' %}</button></div>
+    </form>
+    <p class="text-center small"><a href="{% url 'phone-auth-login' %}">{% blocktranslate with phone_number=phone_number %}{{ phone_number }}  is not my phone number{% endblocktranslate %}</a></p>
+</section>
 {% endblock %}
