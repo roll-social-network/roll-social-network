@@ -24,6 +24,9 @@ jobs:
       - name: Install Dependencies
         run: |
           pipenv install --dev
+      - name: Download GeoIp2 database
+        run: |
+          cd .geoip && ./download-database.sh
       - name: Run Lint
         run: |
           pipenv run lint

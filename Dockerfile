@@ -36,8 +36,8 @@ COPY --from=build-ui /home/app/dist ui/dist
 COPY manage.py .
 COPY rollsocialnetwork rollsocialnetwork
 RUN mkdir .geoip
-COPY .geoip/download-data.sh .geoip/download-data.sh
-RUN cd .geoip && ./download-data.sh
+COPY .geoip/download-database.sh .geoip/download-database.sh
+RUN cd .geoip && ./download-database.sh
 RUN python manage.py collectstatic --noinput
 
 ENTRYPOINT [ "daphne" ]
