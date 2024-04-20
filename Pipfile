@@ -30,6 +30,8 @@ daphne = "*"
 pyotp = "*"
 whitenoise = "*"
 django-oauth-toolkit = "*"
+babel = "*"
+geoip2 = "*"
 
 [dev-packages]
 pylint = "*"
