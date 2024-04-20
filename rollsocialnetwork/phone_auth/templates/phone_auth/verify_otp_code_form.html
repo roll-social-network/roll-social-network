@@ -3,20 +3,20 @@
 {% load i18n %}
 
 {% block subtitle %}{% translate 'verify OTP code' %}{% endblock %}
+{% block header-left-action %}{% endblock %}
 
 {% block content %}
-<div class="full-height centered">
-    <div class="content">
-        <p>{% translate 'open your 2FA authentication app and paste OTP code bellow.' %}</p>
-        <form method="post">
-            {% csrf_token %}
-            {{ form }}
-            <div>
-                <button type="submit">{% translate 'verify' %}</button>
-                <span><a href="{{ send_via_sms_url }}">{% translate 'send code via SMS' %}</a></span>
-            </div>
-        </form>
-        <p class="text-center small"><a href="{% url 'phone-auth-login' %}">{% blocktranslate with phone_number=phone_number %}{{ phone_number }}  is not my phone number{% endblocktranslate %}</a></p>
-    </div>
-</div>
+<div class="header-saver"></div>
+<section class="half">
+    <p>{% translate 'open your 2FA authentication app and paste OTP code bellow.' %}</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <div>
+            <button type="submit">{% translate 'verify' %}</button>
+            <span><a href="{{ send_via_sms_url }}">{% translate 'send code via SMS' %}</a></span>
+        </div>
+    </form>
+    <p class="text-center small"><a href="{% url 'phone-auth-login' %}">{% blocktranslate with phone_number=phone_number %}{{ phone_number }}  is not my phone number{% endblocktranslate %}</a></p>
+</section>
 {% endblock %}

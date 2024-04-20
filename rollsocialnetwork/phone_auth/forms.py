@@ -25,7 +25,8 @@ class LoginForm(forms.Form):
     phone_number = PhoneNumberField(label=_("phone number"),
                                     help_text=_("select your country prefix and fill with your "
                                                 "phone number"),
-                                    widget=PhoneNumberPrefixWidget())
+                                    widget=PhoneNumberPrefixWidget(
+                                        country_attrs={"data-prefix-phone-number": True}))
 
 class VerifyCodeFormMixin:
     """
