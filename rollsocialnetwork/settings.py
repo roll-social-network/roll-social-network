@@ -228,3 +228,5 @@ OAUTH2_PROVIDER = {
     },
     "OAUTH2_VALIDATOR_CLASS": "rollsocialnetwork.oauth2_validators.RollOAuth2Validator",
 }
+GEOIP_PATH = config("GEOIP_PATH",
+                    default="./.geoip")

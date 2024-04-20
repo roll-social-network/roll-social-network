@@ -21,6 +21,7 @@ WORKDIR /home/app
 EXPOSE 8000
 ENV DEBUG 0
 ENV STATIC_ROOT /home/app/statics/
+ENV GEOIP_PATH /home/app/.geoip/
 
 COPY --from=build-requirements /home/app/requirements.txt .
 RUN apk add --no-cache postgresql-libs && \
@@ -34,6 +35,9 @@ RUN apk add --no-cache postgresql-libs && \
 COPY --from=build-ui /home/app/dist ui/dist
 COPY manage.py .
 COPY rollsocialnetwork rollsocialnetwork
+RUN mkdir .geoip
+COPY .geoip/download-data.sh .geoip/download-data.sh
+RUN cd .geoip && ./download-data.sh
 RUN python manage.py collectstatic --noinput
 
 ENTRYPOINT [ "daphne" ]
