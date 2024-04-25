@@ -66,6 +66,7 @@ TEMPLATES = [
                 "rollsocialnetwork.context_processors.home_site",
                 "rollsocialnetwork.context_processors.another_rolls",
                 "rollsocialnetwork.social.context_processors.social",
+                "rollsocialnetwork.phone_auth.context_processors.otp_secret_validated",
             ],
         },
     },
