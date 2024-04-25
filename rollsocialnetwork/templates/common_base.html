@@ -4,16 +4,29 @@
 
 {% block body %}
 <header class="fixed">
+    {% block header-left-action %}
     <div>
-        {% block header-left-action %}
         <label class="open-sidebar" for="sidebar-left">
             <i class="fa-solid fa-bars"></i>
             <i class="fa-solid fa-photo-film"></i>
         </label>
-        {% endblock %}
+    </div>
+    {% endblock %}
+    <div class="grow">
         <h1>{% block header-title %}<a href="{% if user.is_authenticated %}{% url 'timeline' %}{% else %}{% url 'home' %}{% endif %}">{{ request.site.name }}</a>{% endblock %}</h1>
     </div>
-    <p class="thin">{% block subtitle %}-{% endblock %}</p>
+    <div>
+        <p class="thin">{% block subtitle %}-{% endblock %}</p>
+    </div>
+    {% if user.is_authenticated %}
+    <div>
+        {% block header-right-action %}
+        <label class="open-sidebar" for="sidebar-right">
+            <i class="fa-solid fa-user"></i>
+        </label>
+        {% endblock %}
+    </div>
+    {% endif %}
 </header>
 {% block content %}{% endblock %}
 <footer>
@@ -46,6 +59,29 @@
             <a href="{% site_build_absolute_uri home_site 'rolls' %}" target="_blank">
                 <i class="fa-solid fa-plus"></i>
                 <span>{% translate 'more rolls' %}</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+<input type="checkbox" id="sidebar-right" />
+<aside class="sidebar right">
+    <div class="header">
+        <div><strong>{% translate 'your profile' %}</strong></div>
+        <label for="sidebar-right" class="close"><i class="fa-solid fa-xmark"></i></label>
+    </div>
+    <ul class="links">
+        {% if not otp_secret_validated %}
+        <li>
+            <a href="{% url 'validate-otp-secret' %}">
+                <i class="fa-solid fa-key"></i>
+                <span>{% translate 'use OTP' %}</span>
+            </a>
+        </li>
+        {% endif %}
+        <li>
+            <a href="{% url 'logout' %}">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>{% translate 'logout' %}</span>
             </a>
         </li>
     </ul>
