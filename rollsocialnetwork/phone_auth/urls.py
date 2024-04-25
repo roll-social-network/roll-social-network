@@ -23,5 +23,7 @@ urlpatterns = [
     path("verify-otp/<str:phone_number>/",
          VerifyOTPCodeView.as_view(),
          name="verify-otp-code"),
-    path("validate-otp-secret/", ValidateOTPSecretView.as_view()),
+    path("validate-otp-secret/",
+         ValidateOTPSecretView.as_view(),
+         name="validate-otp-secret"),
 ]
