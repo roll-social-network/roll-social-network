@@ -3,10 +3,22 @@ roll social network settings.
 """
 
 import json
+import os
+from typing import Optional
 from pathlib import Path
 from decouple import config  # type: ignore[import-untyped]
 import dj_database_url
 import corsheaders.defaults
+
+def oidc_rsa_private_key_cast(value: Optional[str]) -> Optional[str]:
+    """
+    oidc rsa private key cast
+    """
+    if not value:
+        return None
+    if os.path.isfile(value):
+        return open(value, encoding="utf-8").read()
+    return value
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config(
@@ -224,6 +236,9 @@ HOT_POSTS_SLICE = config("HOT_POSTS_SLICE",
                          cast=int)
 OAUTH2_PROVIDER = {
     "OIDC_ENABLED": True,
+    "OIDC_RSA_PRIVATE_KEY": config("OIDC_RSA_PRIVATE_KEY",
+                                   default=None,
+                                   cast=oidc_rsa_private_key_cast),
     "SCOPES": {
         "openid": "OpenID Connect",
     },
