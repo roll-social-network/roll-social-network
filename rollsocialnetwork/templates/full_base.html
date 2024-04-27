@@ -1,0 +1,74 @@
+{% extends 'common_base.html' %}
+
+{% load i18n uris %}
+
+{% block header-item-first %}
+<div>
+    <label class="open-sidebar" for="sidebar-left">
+        <i class="fa-solid fa-bars"></i>
+        <i class="fa-solid fa-photo-film"></i>
+    </label>
+</div>
+{% endblock %}
+
+{% block header-item-last %}
+{% if user.is_authenticated %}
+<div>
+    {% block header-right-action %}
+    <label class="open-sidebar" for="sidebar-right">
+        <i class="fa-solid fa-user"></i>
+    </label>
+    {% endblock %}
+</div>
+{% endif %}
+{% endblock %}
+
+{% block aside %}
+<input type="checkbox" id="sidebar-left" />
+<aside class="sidebar left">
+    <div class="header">
+        <div><strong>{% translate 'your rolls' %}</strong></div>
+        <label for="sidebar-left" class="close"><i class="fa-solid fa-xmark"></i></label>
+    </div>
+    <ul class="links">
+        {% for site in another_rolls %}
+        <li>
+            <a href="{% site_build_absolute_uri site 'timeline' %}">
+                <i class="fa-solid fa-photo-film"></i>
+                <span class="roll-name">{{ site.name }}</span>
+                {% if site.hot_posts_count %}<span class="roll-status">{{ site.hot_posts_count }}</span>{% endif %}
+            </a>
+        </li>
+        {% endfor %}
+        <li>
+            <a href="{% site_build_absolute_uri home_site 'rolls' %}" target="_blank">
+                <i class="fa-solid fa-plus"></i>
+                <span>{% translate 'more rolls' %}</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+<input type="checkbox" id="sidebar-right" />
+<aside class="sidebar right">
+    <div class="header">
+        <div><strong>{% translate 'your profile' %}</strong></div>
+        <label for="sidebar-right" class="close"><i class="fa-solid fa-xmark"></i></label>
+    </div>
+    <ul class="links">
+        {% if not otp_secret_validated %}
+        <li>
+            <a href="{% url 'phoneauth:validate-otp-secret' %}">
+                <i class="fa-solid fa-key"></i>
+                <span>{% translate 'use OTP' %}</span>
+            </a>
+        </li>
+        {% endif %}
+        <li>
+            <a href="{% url 'logout' %}">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>{% translate 'logout' %}</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+{% endblock %}

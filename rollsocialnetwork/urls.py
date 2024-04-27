@@ -19,20 +19,48 @@ from .views import (
     HomeView,
     RollsView,
     CreateRollView,
+    LoginView,
 )
 
 urlpatterns = [
-    path("", HomeView.as_view(), name="home"),
-    path("rolls/", RollsView.as_view(), name="rolls"),
-    path("create-roll/", CreateRollView.as_view(), name="create-roll"),
-    path("phone-auth/", include("rollsocialnetwork.phone_auth.urls")),
-    path("callback/opener/", OpenerCallbackView.as_view(), name="opener_callback"),
-    path("logout/", LogoutView.as_view(), name="logout"),
-    path("s/", include("rollsocialnetwork.social.urls")),
-    path("t/", include("rollsocialnetwork.timeline.urls")),
-    path("oauth2/", include("oauth2_provider.urls", namespace="oauth2_provider")),
-    path("admin/", admin.site.urls),
+    path("",
+         HomeView.as_view(),
+         name="home"),
+    path("rolls/",
+         RollsView.as_view(),
+         name="rolls"),
+    path("create-roll/",
+         CreateRollView.as_view(),
+         name="create-roll"),
+    path("phone-auth/",
+         include("rollsocialnetwork.phone_auth.urls",
+                 namespace="phoneauth")),
+    path("callback/opener/",
+         OpenerCallbackView.as_view(),
+         name="opener_callback"),
+    path("login/",
+         LoginView.as_view(),
+         name="login"),
+    path("logout/",
+         LogoutView.as_view(),
+         name="logout"),
+    path("s/",
+         include("rollsocialnetwork.social.urls")),
+    path("t/",
+         include("rollsocialnetwork.timeline.urls")),
+    path("oauth2/",
+         include("oauth2_provider.urls",
+                 namespace="oauth2")),
+    path("admin/",
+         admin.site.urls),
 ]
+
+if settings.ENABLE_SSO:
+    urlpatterns += [
+        path("social/",
+             include("social_django.urls",
+                     namespace="socialauth")),
+    ]
 
 if settings.MEDIA_PATH_AS_STATIC:
     urlpatterns += [

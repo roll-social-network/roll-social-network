@@ -3,7 +3,6 @@
 {% load i18n %}
 
 {% block subtitle %}{% translate 'verify code' %}{% endblock %}
-{% block header-left-action %}{% endblock %}
 
 {% block content %}
 <div class="header-saver"></div>
@@ -14,6 +13,6 @@
         {{ form }}
         <div><button type="submit">{% translate 'verify' %}</button></div>
     </form>
-    <p class="text-center small"><a href="{% url 'phone-auth-login' %}">{% blocktranslate with phone_number=phone_number %}{{ phone_number }}  is not my phone number{% endblocktranslate %}</a></p>
+    <p class="text-center small"><a href="{{ is_not_my_phone_number_url }}">{% blocktranslate with phone_number=phone_number %}{{ phone_number }}  is not my phone number{% endblocktranslate %}</a></p>
 </section>
 {% endblock %}

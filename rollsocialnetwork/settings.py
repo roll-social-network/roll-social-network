@@ -3,10 +3,22 @@ roll social network settings.
 """
 
 import json
+import os
+from typing import Optional
 from pathlib import Path
 from decouple import config  # type: ignore[import-untyped]
 import dj_database_url
 import corsheaders.defaults
+
+def oidc_rsa_private_key_cast(value: Optional[str]) -> Optional[str]:
+    """
+    oidc rsa private key cast
+    """
+    if not value:
+        return None
+    if os.path.isfile(value):
+        return open(value, encoding="utf-8").read()
+    return value
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config(
@@ -30,10 +42,12 @@ INSTALLED_APPS = [
     "corsheaders",
     "channels",
     "oauth2_provider",
+    "social_django",
     "rollsocialnetwork",
     "rollsocialnetwork.phone_auth",
     "rollsocialnetwork.social",
     "rollsocialnetwork.timeline",
+    "rollsocialnetwork.sso",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -90,14 +104,22 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",
+ENABLE_SSO = config("ENABLE_SSO",
+                    default=False,
+                    cast=bool)
+AUTHENTICATION_BACKENDS = []
+if ENABLE_SSO:
+    AUTHENTICATION_BACKENDS += [
+        "rollsocialnetwork.sso.backends.RollOpenIdConnectAuth",
+    ]
+AUTHENTICATION_BACKENDS += [
     "rollsocialnetwork.phone_auth.backends.PhoneAuthBackend",
     "rollsocialnetwork.phone_auth.backends.PhoneAuthOTPBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ]
 LOGIN_REDIRECT_URL = "/t/"
 LOGOUT_REDIRECT_URL = "/"
-LOGIN_URL = "/phone-auth/login/"
+LOGIN_URL = "/login/"
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
@@ -224,6 +246,9 @@ HOT_POSTS_SLICE = config("HOT_POSTS_SLICE",
                          cast=int)
 OAUTH2_PROVIDER = {
     "OIDC_ENABLED": True,
+    "OIDC_RSA_PRIVATE_KEY": config("OIDC_RSA_PRIVATE_KEY",
+                                   default=None,
+                                   cast=oidc_rsa_private_key_cast),
     "SCOPES": {
         "openid": "OpenID Connect",
     },
@@ -231,3 +256,28 @@ OAUTH2_PROVIDER = {
 }
 GEOIP_PATH = config("GEOIP_PATH",
                     default="./.geoip")
+SSO_OIDC_ENDPOINT = config("SSO_OIDC_ENDPOINT",
+                           default=f"https://{SUBDOMAIN_BASE}/oauth2")
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+SOCIAL_AUTH_ROLL_KEY = config("SOCIAL_AUTH_ROLL_KEY",
+                              default=None)
+SOCIAL_AUTH_ROLL_SECRET = config("SOCIAL_AUTH_ROLL_SECRET",
+                                 default=None)
+SOCIAL_AUTH_PIPELINE = [
+    "social_core.pipeline.social_auth.social_details",
+    "rollsocialnetwork.sso.pipeline.associate_roll_user",
+    "social_core.pipeline.social_auth.social_uid",
+    "social_core.pipeline.social_auth.auth_allowed",
+    "social_core.pipeline.social_auth.social_user",
+    "social_core.pipeline.user.get_username",
+    "social_core.pipeline.user.create_user",
+    "social_core.pipeline.social_auth.associate_user",
+    "social_core.pipeline.social_auth.load_extra_data",
+    "social_core.pipeline.user.user_details",
+]
+SOCIAL_AUTH_URL_NAMESPACE = "socialauth"
+ROLL_OAUTH2_APPLICATION_ID = config("ROLL_OAUTH2_APPLICATION_ID",
+                                    cast=lambda x: x and int(x),
+                                    default=None)
+ROLL_APPLICATION_REDIRECT_URI_TEMPLATE = config("ROLL_APPLICATION_REDIRECT_URI_TEMPLATE",
+                                                default="https://{domain}/social/complete/roll/")
