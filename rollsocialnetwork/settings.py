@@ -276,3 +276,8 @@ SOCIAL_AUTH_PIPELINE = [
     "social_core.pipeline.user.user_details",
 ]
 SOCIAL_AUTH_URL_NAMESPACE = "socialauth"
+ROLL_OAUTH2_APPLICATION_ID = config("ROLL_OAUTH2_APPLICATION_ID",
+                                    cast=lambda x: x and int(x),
+                                    default=None)
+ROLL_APPLICATION_REDIRECT_URI_TEMPLATE = config("ROLL_APPLICATION_REDIRECT_URI_TEMPLATE",
+                                                default="https://{domain}/social/complete/roll/")
