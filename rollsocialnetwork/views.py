@@ -114,6 +114,6 @@ class LoginView(RedirectView):
     def get_redirect_url(self, *args, **kwargs) -> str:
         url = reverse("phoneauth:login")
         qs = self.request.META.get("QUERY_STRING")
-        if args:
+        if qs:
             url = f"{url}?{qs}"
         return url
