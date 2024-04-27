@@ -87,9 +87,9 @@ class LoginView(BuildURLWithNextQSMixin,
         phone_number = format_pn(pn)
         has_otp_secret = OTPSecret.phone_number_has_valid_otp_secret(phone_number)
         if has_otp_secret:
-            return reverse("verify-otp-code",
+            return reverse("phoneauth:verify-otp-code",
                            kwargs={"phone_number": phone_number})
-        return reverse("request-verification-code",
+        return reverse("phoneauth:request-verification-code",
                        kwargs={"phone_number": phone_number})
 
 class RequestVerificationCodeView(BuildURLWithNextQSMixin,
@@ -103,7 +103,7 @@ class RequestVerificationCodeView(BuildURLWithNextQSMixin,
         get
         """
         VerificationCode.request(phone_number)
-        redirect_to = reverse("verify-verification-code",
+        redirect_to = reverse("phoneauth:verify-verification-code",
                               kwargs={"phone_number": phone_number})
         return HttpResponseRedirect(self.build_url_with_next(redirect_to))
 
@@ -139,7 +139,7 @@ class VerifyOTPCodeView(BuildURLWithNextQSMixin,
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        request_url = reverse("request-verification-code",
+        request_url = reverse("phoneauth:request-verification-code",
                               kwargs={"phone_number": self.kwargs.get("phone_number")})
         context.update({
             "phone_number": self.kwargs.get("phone_number"),

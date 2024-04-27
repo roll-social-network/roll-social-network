@@ -109,7 +109,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 LOGIN_REDIRECT_URL = "/t/"
 LOGOUT_REDIRECT_URL = "/"
-LOGIN_URL = "/phone-auth/login/"
+LOGIN_URL = "/login/"
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True

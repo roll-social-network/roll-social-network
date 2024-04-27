@@ -14,13 +14,15 @@ from django.views.generic import (
     View,
     TemplateView,
     ListView,
-    CreateView
+    CreateView,
+    RedirectView
 )
 from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib.sites.models import Site
 from django.db.models import QuerySet
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 from .forms import RollForm
 from .utils import get_popular_rolls
 
@@ -104,3 +106,14 @@ class CreateRollView(LoginRequiredMixin,
     def get_success_url(self):
         scheme = settings.OVERRIDE_SCHEME or self.request.scheme
         return f"{scheme}://{self.object.domain}"
+
+class LoginView(RedirectView):
+    """
+    login view
+    """
+    def get_redirect_url(self, *args, **kwargs) -> str:
+        url = reverse("phoneauth:login")
+        qs = self.request.META.get("QUERY_STRING")
+        if args:
+            url = f"{url}?{qs}"
+        return url
