@@ -281,3 +281,7 @@ ROLL_OAUTH2_APPLICATION_ID = config("ROLL_OAUTH2_APPLICATION_ID",
                                     default=None)
 ROLL_APPLICATION_REDIRECT_URI_TEMPLATE = config("ROLL_APPLICATION_REDIRECT_URI_TEMPLATE",
                                                 default="https://{domain}/social/complete/roll/")
+USE_X_FORWARDED_HOST = config("USE_X_FORWARDED_HOST",
+                              default=True,
+                              cast=bool)
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
