@@ -51,6 +51,20 @@ class BuildURLWithNextQSMixin:  # pylint: disable=R0903
             return f"{url}?{urlencode(qs)}"
         return url
 
+class IsNotMyPhoneNumberMixin:  # pylint: disable=R0903
+    """
+    is_not_my_phone_number_url mixin
+    """
+    def get_is_not_my_phone_number_url(self):
+        """
+        get is_not_my_phone_number_url
+        """
+        url = reverse('phoneauth:login')
+        args = self.request.META.get("QUERY_STRING")
+        if args:
+            url = f"{url}?{args}"
+        return url
+
 class LoginView(BuildURLWithNextQSMixin,
                 FormView):
     """
@@ -107,7 +121,8 @@ class RequestVerificationCodeView(BuildURLWithNextQSMixin,
                               kwargs={"phone_number": phone_number})
         return HttpResponseRedirect(self.build_url_with_next(redirect_to))
 
-class VerifyVerificationCodeView(AuthLoginView):
+class VerifyVerificationCodeView(IsNotMyPhoneNumberMixin,
+                                 AuthLoginView):
     """
     verify verification code view
     """
@@ -121,11 +136,13 @@ class VerifyVerificationCodeView(AuthLoginView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update({
-            "phone_number": self.kwargs.get("phone_number")
+            "phone_number": self.kwargs.get("phone_number"),
+            "is_not_my_phone_number_url": self.get_is_not_my_phone_number_url()
         })
         return context
 
 class VerifyOTPCodeView(BuildURLWithNextQSMixin,
+                        IsNotMyPhoneNumberMixin,
                         AuthLoginView):
     """
     verify verification code view
@@ -143,7 +160,8 @@ class VerifyOTPCodeView(BuildURLWithNextQSMixin,
                               kwargs={"phone_number": self.kwargs.get("phone_number")})
         context.update({
             "phone_number": self.kwargs.get("phone_number"),
-            "send_via_sms_url": self.build_url_with_next(request_url)
+            "send_via_sms_url": self.build_url_with_next(request_url),
+            "is_not_my_phone_number_url": self.get_is_not_my_phone_number_url()
         })
         return context
 
