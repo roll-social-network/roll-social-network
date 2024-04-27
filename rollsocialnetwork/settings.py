@@ -42,10 +42,12 @@ INSTALLED_APPS = [
     "corsheaders",
     "channels",
     "oauth2_provider",
+    "social_django",
     "rollsocialnetwork",
     "rollsocialnetwork.phone_auth",
     "rollsocialnetwork.social",
     "rollsocialnetwork.timeline",
+    "rollsocialnetwork.sso",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -102,10 +104,18 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",
+ENABLE_SSO = config("ENABLE_SSO",
+                    default=False,
+                    cast=bool)
+AUTHENTICATION_BACKENDS = []
+if ENABLE_SSO:
+    AUTHENTICATION_BACKENDS += [
+        "rollsocialnetwork.sso.backends.RollOpenIdConnectAuth",
+    ]
+AUTHENTICATION_BACKENDS += [
     "rollsocialnetwork.phone_auth.backends.PhoneAuthBackend",
     "rollsocialnetwork.phone_auth.backends.PhoneAuthOTPBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ]
 LOGIN_REDIRECT_URL = "/t/"
 LOGOUT_REDIRECT_URL = "/"
@@ -246,3 +256,23 @@ OAUTH2_PROVIDER = {
 }
 GEOIP_PATH = config("GEOIP_PATH",
                     default="./.geoip")
+SSO_OIDC_ENDPOINT = config("SSO_OIDC_ENDPOINT",
+                           default=f"https://{SUBDOMAIN_BASE}/oauth2")
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+SOCIAL_AUTH_ROLL_KEY = config("SOCIAL_AUTH_ROLL_KEY",
+                              default=None)
+SOCIAL_AUTH_ROLL_SECRET = config("SOCIAL_AUTH_ROLL_SECRET",
+                                 default=None)
+SOCIAL_AUTH_PIPELINE = [
+    "social_core.pipeline.social_auth.social_details",
+    "rollsocialnetwork.sso.pipeline.associate_roll_user",
+    "social_core.pipeline.social_auth.social_uid",
+    "social_core.pipeline.social_auth.auth_allowed",
+    "social_core.pipeline.social_auth.social_user",
+    "social_core.pipeline.user.get_username",
+    "social_core.pipeline.user.create_user",
+    "social_core.pipeline.social_auth.associate_user",
+    "social_core.pipeline.social_auth.load_extra_data",
+    "social_core.pipeline.user.user_details",
+]
+SOCIAL_AUTH_URL_NAMESPACE = "socialauth"

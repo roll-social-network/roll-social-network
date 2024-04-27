@@ -113,6 +113,10 @@ class LoginView(RedirectView):
     """
     def get_redirect_url(self, *args, **kwargs) -> str:
         url = reverse("phoneauth:login")
+        if settings.ENABLE_SSO \
+            and self.request.site.id is not settings.HOME_SITE_ID:  # type: ignore[attr-defined]
+            url = reverse("social:begin",
+                           kwargs={"backend": "roll"})
         qs = self.request.META.get("QUERY_STRING")
         if qs:
             url = f"{url}?{qs}"

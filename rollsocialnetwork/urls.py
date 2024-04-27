@@ -55,6 +55,13 @@ urlpatterns = [
          admin.site.urls),
 ]
 
+if settings.ENABLE_SSO:
+    urlpatterns += [
+        path("social/",
+             include("social_django.urls",
+                     namespace="socialauth")),
+    ]
+
 if settings.MEDIA_PATH_AS_STATIC:
     urlpatterns += [
         re_path(

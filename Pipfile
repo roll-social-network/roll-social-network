@@ -32,6 +32,7 @@ whitenoise = "*"
 django-oauth-toolkit = "*"
 babel = "*"
 geoip2 = "*"
+social-auth-app-django = "*"
 
 [dev-packages]
 pylint = "*"
