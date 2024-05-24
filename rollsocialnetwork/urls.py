@@ -49,13 +49,13 @@ urlpatterns = [
     path("t/",
          include("rollsocialnetwork.timeline.urls")),
     path("oauth2/",
-         include("oauth2_provider.urls",
+         include("rollsocialnetwork.oauth2.urls",
                  namespace="oauth2")),
     path("admin/",
          admin.site.urls),
 ]
 
-if settings.ENABLE_SSO:
+if settings.ENABLE_OIDC:
     urlpatterns += [
         path("social/",
              include("social_django.urls",

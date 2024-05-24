@@ -1,5 +1,5 @@
 """
-sso pipelines
+oidc pipelines
 """
 from typing import (
     Any,

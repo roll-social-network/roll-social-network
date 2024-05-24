@@ -1,5 +1,5 @@
 """
-sso backends
+oidc backends
 """
 from django.conf import settings
 from social_core.backends.oauth import BaseOAuth2PKCE  # type: ignore[import-untyped]
@@ -11,7 +11,7 @@ class RollOpenIdConnectAuth(BaseOAuth2PKCE,  # pylint: disable=W0223
     roll Open ID Connect Auth backend
     """
     name = "roll"
-    OIDC_ENDPOINT = settings.SSO_OIDC_ENDPOINT
+    OIDC_ENDPOINT = settings.OIDC_ENDPOINT
     PKCE_DEFAULT_CODE_CHALLENGE_METHOD = "S256"
     DEFAULT_SCOPE = ["openid"]
     USERNAME_KEY = "username"

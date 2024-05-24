@@ -1,5 +1,5 @@
 """
-sso signals
+oidc signals
 """
 import logging
 from django.conf import settings
@@ -11,9 +11,9 @@ from oauth2_provider.models import Application  # type: ignore[import-untyped]
 logger = logging.getLogger(__name__)
 
 @receiver([signals.post_save], sender=Site)
-def append_redirect_uris_sso_oauth2_application(instance: Site, **kwargs):
+def append_redirect_uris_oidc_oauth2_application(instance: Site, **kwargs):
     """
-    append redirect uris sso oauth2 application
+    append redirect uris oidc oauth2 application
     """
     if settings.ROLL_OAUTH2_APPLICATION_ID:
         try:

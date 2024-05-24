@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     "rollsocialnetwork.phone_auth",
     "rollsocialnetwork.social",
     "rollsocialnetwork.timeline",
-    "rollsocialnetwork.sso",
+    "rollsocialnetwork.oidc",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -104,13 +104,12 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-ENABLE_SSO = config("ENABLE_SSO",
-                    default=False,
-                    cast=bool)
+ENABLE_OIDC = config("ENABLE_OIDC",default=False,
+                               cast=bool)
 AUTHENTICATION_BACKENDS = []
-if ENABLE_SSO:
+if ENABLE_OIDC:
     AUTHENTICATION_BACKENDS += [
-        "rollsocialnetwork.sso.backends.RollOpenIdConnectAuth",
+        "rollsocialnetwork.oidc.backends.RollOpenIdConnectAuth",
     ]
 AUTHENTICATION_BACKENDS += [
     "rollsocialnetwork.phone_auth.backends.PhoneAuthBackend",
@@ -253,11 +252,13 @@ OAUTH2_PROVIDER = {
         "openid": "OpenID Connect",
     },
     "OAUTH2_VALIDATOR_CLASS": "rollsocialnetwork.oauth2_validators.RollOAuth2Validator",
+    "OIDC_ISS_ENDPOINT": config("OIDC_ISS_ENDPOINT",
+                                default=None)
 }
 GEOIP_PATH = config("GEOIP_PATH",
                     default="./.geoip")
-SSO_OIDC_ENDPOINT = config("SSO_OIDC_ENDPOINT",
-                           default=f"https://{SUBDOMAIN_BASE}/oauth2")
+OIDC_ENDPOINT = config("OIDC_ENDPOINT",
+                       default=f"https://{SUBDOMAIN_BASE}/oauth2")
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 SOCIAL_AUTH_ROLL_KEY = config("SOCIAL_AUTH_ROLL_KEY",
                               default=None)
@@ -265,7 +266,7 @@ SOCIAL_AUTH_ROLL_SECRET = config("SOCIAL_AUTH_ROLL_SECRET",
                                  default=None)
 SOCIAL_AUTH_PIPELINE = [
     "social_core.pipeline.social_auth.social_details",
-    "rollsocialnetwork.sso.pipeline.associate_roll_user",
+    "rollsocialnetwork.oidc.pipeline.associate_roll_user",
     "social_core.pipeline.social_auth.social_uid",
     "social_core.pipeline.social_auth.auth_allowed",
     "social_core.pipeline.social_auth.social_user",
@@ -285,3 +286,7 @@ USE_X_FORWARDED_HOST = config("USE_X_FORWARDED_HOST",
                               default=True,
                               cast=bool)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SSO_APP_URL = config("SSO_APP_URL",
+                     default=None)
+SSO_APP_AUTHORIZE_URL = config("SSO_APP_AUTHORIZE_URL",
+                               default=(f"{SSO_APP_URL}/authorize" if SSO_APP_URL else None))

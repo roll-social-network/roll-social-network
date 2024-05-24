@@ -1,5 +1,5 @@
 """
-sso tests
+oidc tests
 """
 from django.test import TestCase
 from social_core.exceptions import AuthException  # type: ignore[import-untyped]
