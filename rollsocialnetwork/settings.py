@@ -43,11 +43,14 @@ INSTALLED_APPS = [
     "channels",
     "oauth2_provider",
     "social_django",
+    "rest_framework",
+    "rest_framework.authtoken",
     "rollsocialnetwork",
     "rollsocialnetwork.phone_auth",
     "rollsocialnetwork.social",
     "rollsocialnetwork.timeline",
     "rollsocialnetwork.oidc",
+    "rollsocialnetwork.api",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -286,6 +289,12 @@ USE_X_FORWARDED_HOST = config("USE_X_FORWARDED_HOST",
                               default=True,
                               cast=bool)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ]
+}
 SSO_APP_URL = config("SSO_APP_URL",
                      default=None)
 SSO_APP_AUTHORIZE_URL = config("SSO_APP_AUTHORIZE_URL",
