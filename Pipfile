@@ -33,6 +33,8 @@ django-oauth-toolkit = "*"
 babel = "*"
 geoip2 = "*"
 social-auth-app-django = "*"
+djangorestframework = "*"
+djangorestframework-stubs = "*"
 
 [dev-packages]
 pylint = "*"
