@@ -133,7 +133,7 @@ STATICFILES_DIRS = [
     "rollsocialnetwork/static",
 ]
 STATIC_ROOT = config("STATIC_ROOT",
-                     default=None)
+                     default="./static/")
 MEDIA_ROOT = config("MEDIA_ROOT", default="./media/")
 MEDIA_URL = config("MEDIA_URL", default="/media/")
 MEDIA_PATH_AS_STATIC = config("MEDIA_PATH_AS_STATIC",
