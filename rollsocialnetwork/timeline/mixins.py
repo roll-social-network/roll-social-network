@@ -61,10 +61,11 @@ class TimelineViewMixin:
             "has_new_post_out_slice": self.fill_has_new_post_out_slice(),
         }
 
-    def get_context_data(self, **kwargs: dict[str, Any]) -> dict[str, Any]:
+    def get_context_data(self, *, object_list=None, **kwargs: dict[str, Any]) -> dict[str, Any]:
         """
         get context data
         """
-        context_data = super().get_context_data(**kwargs)  # type: ignore[misc]
+        context_data = super().get_context_data(object_list=object_list,
+                                                **kwargs)  # type: ignore[misc]
         context_data.update(self.build_context_data())
         return context_data

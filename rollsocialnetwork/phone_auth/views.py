@@ -1,8 +1,12 @@
 """
 phone auth views
 """
-from typing import Any, Optional
+from typing import (
+    Any,
+    Optional,
+)
 from django.http import (
+    HttpResponseBase,
     HttpResponse,
     HttpResponseRedirect,
     HttpResponseBadRequest,
@@ -157,9 +161,9 @@ class VerifyOTPCodeView(BuildURLWithNextQSMixin,
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         request_url = reverse("phoneauth:request-verification-code",
-                              kwargs={"phone_number": self.kwargs.get("phone_number")})
+                              kwargs={"phone_number": kwargs.get("phone_number")})
         context.update({
-            "phone_number": self.kwargs.get("phone_number"),
+            "phone_number": kwargs.get("phone_number"),
             "send_via_sms_url": self.build_url_with_next(request_url),
             "is_not_my_phone_number_url": self.get_is_not_my_phone_number_url()
         })
@@ -186,7 +190,7 @@ class ValidateOTPSecretView(LoginRequiredMixin,
     def dispatch(self,
                  request: HttpRequest,  # type: ignore[override]
                  *args,
-                 **kwargs) -> HttpResponse:
+                 **kwargs) -> HttpResponseBase:
         if not self.otp_secret or self.otp_secret.valid_at:
             return HttpResponseBadRequest()
         return super().dispatch(request, *args, **kwargs)
