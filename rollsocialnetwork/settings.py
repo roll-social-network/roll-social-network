@@ -107,8 +107,9 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-ENABLE_OIDC = config("ENABLE_OIDC",default=False,
-                               cast=bool)
+ENABLE_OIDC = config("ENABLE_OIDC",
+                     default=False,
+                     cast=bool)
 AUTHENTICATION_BACKENDS = []
 if ENABLE_OIDC:
     AUTHENTICATION_BACKENDS += [
