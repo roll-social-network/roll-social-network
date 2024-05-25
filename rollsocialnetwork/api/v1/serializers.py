@@ -128,8 +128,8 @@ class OAuth2AuthorizeSerializer(serializers.Serializer):
     scopes = serializers.DictField()
     application = OAuth2ApplicationSerializer()
 
-    def create(self, *args, **kwargs):
+    def create(self, *args, **kwargs) -> None:
         pass
 
-    def update(self, *args, **kwargs):
+    def update(self, *args, **kwargs) -> None:
         pass
