@@ -146,7 +146,7 @@ class OAuth2AuthorizeView(OAuthLibMixin,
             "code_challenge": credentials.get("code_challenge"),
             "code_challenge_method": credentials.get("code_challenge_method"),
             "nonce": credentials.get("nonce"),
-            "scopes": { (scope, all_scopes[scope]) for scope in scopes },
+            "scopes": { scope: all_scopes[scope] for scope in scopes },
             "application": application
         }
         approval_prompt = request.GET.get("approval_prompt")
