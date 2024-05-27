@@ -7,6 +7,7 @@ from django.test import TestCase
 from rest_framework.test import APIRequestFactory
 from rest_framework.serializers import ValidationError
 from rest_framework import status
+from rollsocialnetwork.phone_auth.models import VerificationCode
 from rollsocialnetwork.tests_factory import (
     UserFactory,
     SiteFactory,
@@ -16,6 +17,7 @@ from .views import (
     SitesViewset,
     UsersViewset,
     LoginView,
+    RequestVerificationCodeView,
 )
 
 PHONE_NUMBER = "+55 11 98070-6050"
@@ -117,3 +119,21 @@ class LoginViewTestCase(TestCase):
         request = self.factory.post('/api/v1/login/', data={ "phone_number": PHONE_NUMBER })
         response = LoginView(request=request).as_view()(request)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+class RequestVerificationCodeViewTestCase(TestCase):
+    """
+    RequestVerificationCodeView test case
+    """
+    def setUp(self):
+        self.factory = APIRequestFactory()
+
+    @mock.patch.object(VerificationCode, "request")
+    def test_ok(self, request_mock):
+        """
+        ok
+        """
+        request = self.factory.post('/api/v1/request-verification-code/',
+                                    data={ "phone_number": PHONE_NUMBER })
+        response = RequestVerificationCodeView(request=request).as_view()(request)
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        request_mock.assert_called()
