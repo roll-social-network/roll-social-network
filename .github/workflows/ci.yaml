@@ -18,7 +18,7 @@ jobs:
           python-version: 3.12.3
           cache: pipenv
       - name: Install pipenv
-        run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
+        run: pip install --user pipenv
       - name: Install Dependencies
         run: pipenv install --dev
       - name: Download GeoIp2 database
