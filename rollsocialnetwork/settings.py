@@ -137,9 +137,9 @@ STATIC_ROOT = config("STATIC_ROOT",
                      default="./static/")
 MEDIA_ROOT = config("MEDIA_ROOT", default="./media/")
 MEDIA_URL = config("MEDIA_URL", default="/media/")
-MEDIA_PATH_AS_STATIC = config("MEDIA_PATH_AS_STATIC",
-                              default=False,
-                              cast=bool)
+DISABLE_MEDIA_PATH_AS_STATIC = config("DISABLE_MEDIA_PATH_AS_STATIC",
+                                      default=False,
+                                      cast=bool)
 MEDIA_PATH_AS_NGINX_ACCEL = config("MEDIA_PATH_AS_NGINX_ACCEL",
                                    default=False,
                                    cast=bool)

@@ -65,7 +65,7 @@ if settings.ENABLE_OIDC:
                      namespace="socialauth")),
     ]
 
-if settings.MEDIA_PATH_AS_STATIC:
+if not settings.DISABLE_MEDIA_PATH_AS_STATIC:
     urlpatterns += [
         re_path(
             r"^media/(?P<path>.*)$",
