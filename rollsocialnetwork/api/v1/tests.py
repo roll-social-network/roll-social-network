@@ -18,6 +18,7 @@ from .views import (
     UsersViewset,
     LoginView,
     RequestVerificationCodeView,
+    VerifyVerificationCodeView,
 )
 
 PHONE_NUMBER = "+55 11 98070-6050"
@@ -137,3 +138,26 @@ class RequestVerificationCodeViewTestCase(TestCase):
         response = RequestVerificationCodeView(request=request).as_view()(request)
         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
         request_mock.assert_called()
+
+class VerifyVerificationCodeViewTestCase(TestCase):
+    """
+    VerifyVerificationCodeView test case
+    """
+    def setUp(self):
+        self.factory = APIRequestFactory()
+        self.user_factory = UserFactory()
+
+    @mock.patch.object(VerifyVerificationCodeSerializer, "validate")
+    def test_ok(self, validate_mock):
+        """
+        ok
+        """
+        data = {
+            "phone_number": PHONE_NUMBER,
+            "code": CODE
+        }
+        validate_mock.return_value = { **data, **{ "user": self.user_factory.create_user() } }
+        request = self.factory.post('/api/v1/verify-verification-code/',
+                                    data=data)
+        response = VerifyVerificationCodeView(request=request).as_view()(request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
