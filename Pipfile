@@ -34,7 +34,6 @@ babel = "*"
 geoip2 = "*"
 social-auth-app-django = "*"
 djangorestframework = "*"
-djangorestframework-stubs = "*"
 
 [dev-packages]
 pylint = "*"
@@ -46,6 +45,8 @@ twilio-stubs = "*"
 faker = "*"
 coverage = "*"
 faker-e164 = "*"
+django-stubs = "*"
+djangorestframework-stubs = "*"
 
 [requires]
 python_version = "3.12"
