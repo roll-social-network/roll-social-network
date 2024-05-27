@@ -8,10 +8,11 @@ from django.urls import reverse
 
 register = template.Library()
 
+@register.simple_tag(takes_context=True)
 def site_build_absolute_uri(context,
                             site: Site,
                             viewname: str,
-                            **kwargs: dict[str, int|str]):
+                            **kwargs: dict[str, int|str]) -> str:
     """
     site build absolute uri
 
@@ -22,7 +23,3 @@ def site_build_absolute_uri(context,
         return path
     scheme = settings.OVERRIDE_SCHEME or context.request.scheme
     return f"{scheme}://{site.domain}{path}"
-
-register.simple_tag(site_build_absolute_uri,
-                    True,
-                    "site_build_absolute_uri")
