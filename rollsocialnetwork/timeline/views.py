@@ -29,9 +29,13 @@ class TimelineView(UserProfileRequiredMixin,  # pylint: disable=R0901
     paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Post]:
+        """
+        get queryset
+        """
         queryset = super().get_queryset()
         if not self.is_home_site():
-            queryset = queryset.filter(user_profile__site=self.request.site)
+            queryset = queryset.filter(  # type: ignore[attr-defined]
+                user_profile__site=self.request.site)
         return self.build_sliced_queryset(queryset)
 
     def is_home_site(self):
@@ -41,6 +45,9 @@ class TimelineView(UserProfileRequiredMixin,  # pylint: disable=R0901
         return self.request.site.id == settings.HOME_SITE_ID
 
     def get_template_names(self):
+        """
+        get template names
+        """
         if self.request.headers.get("AJAX-Request") == 'true':
             return ["timeline/post_list_ajax.html"]
         return super().get_template_names()

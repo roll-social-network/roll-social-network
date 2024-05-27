@@ -78,14 +78,15 @@ class LoginView(BuildURLWithNextQSMixin,
     template_name = "phone_auth/login_form.html"
 
     def get_initial(self) -> dict[str, Any]:
-        g = GeoIP2()
+        geo = GeoIP2()
         address = self.request.META.get('REMOTE_ADDR')
         country = ""
         remote_addr = self.request.META.get('HTTP_X_FORWARDED_FOR')
         if remote_addr:
             address = remote_addr.split(',')[-1].strip()
         try:
-            country = g.country_code(address)
+            if address:
+                country = geo.country_code(address)
         except AddressNotFoundError:
             pass
         initial = {
@@ -102,6 +103,7 @@ class LoginView(BuildURLWithNextQSMixin,
         get verify url
         """
         pn = form.cleaned_data.get("phone_number")  # type: ignore[attr-defined]
+        assert pn, "phone number not defined"
         phone_number = format_pn(pn)
         has_otp_secret = OTPSecret.phone_number_has_valid_otp_secret(phone_number)
         if has_otp_secret:
@@ -132,7 +134,7 @@ class VerifyVerificationCodeView(IsNotMyPhoneNumberMixin,
     """
 
     template_name = "phone_auth/verify_verification_code_form.html"
-    form_class = VerifyVerificationCodeForm
+    form_class = VerifyVerificationCodeForm  # type: ignore[assignment]
 
     def get_initial(self) -> dict[str, Any]:
         return self.kwargs
@@ -153,7 +155,7 @@ class VerifyOTPCodeView(BuildURLWithNextQSMixin,
     """
 
     template_name = "phone_auth/verify_otp_code_form.html"
-    form_class = VerifyOTPCodeForm
+    form_class = VerifyOTPCodeForm  # type: ignore[assignment]
 
     def get_initial(self) -> dict[str, Any]:
         return self.kwargs

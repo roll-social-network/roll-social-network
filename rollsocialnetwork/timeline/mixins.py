@@ -65,7 +65,7 @@ class TimelineViewMixin:
         """
         get context data
         """
-        context_data = super().get_context_data(object_list=object_list,
-                                                **kwargs)  # type: ignore[misc]
+        context_data = super().get_context_data(object_list=object_list,  # type: ignore[misc]
+                                                **kwargs)
         context_data.update(self.build_context_data())
         return context_data
