@@ -6,8 +6,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.urls import reverse
-from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth.models import User  # pylint: disable=imported-auth-user
 
 class UserProfile(models.Model):
     """
@@ -32,7 +31,7 @@ class UserProfile(models.Model):
 
     @classmethod
     def get_user_profile(cls,
-                         user: AbstractBaseUser | AnonymousUser,
+                         user: User,
                          site: Site) -> Optional['UserProfile']:
         """
         get user profile

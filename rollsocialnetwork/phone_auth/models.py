@@ -10,13 +10,13 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.utils import timezone
-from django.contrib.auth.models import (
+from django.contrib.auth.models import (  # pylint: disable=imported-auth-user
     AbstractBaseUser,
     AnonymousUser,
+    User,
 )
 from django.contrib.sites.models import Site
 from .sms_gateways import get_sms_gateway
-
 from .utils import (
     fill_code,
     fill_valid_until,
@@ -96,7 +96,7 @@ class OTPSecret(models.Model):
                                         valid_at__isnull=False).exists()
 
     @classmethod
-    def create(cls, user: AbstractBaseUser) -> "OTPSecret":
+    def create(cls, user: User) -> "OTPSecret":
         """
         create from user
         """

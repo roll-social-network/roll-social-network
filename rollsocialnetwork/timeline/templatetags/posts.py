@@ -5,15 +5,14 @@ usage:
 
 {% load posts %}
 """
-from typing import Type
 from django import template
 from django.contrib.sites.models import Site
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User  # pylint: disable=imported-auth-user
 from rollsocialnetwork.timeline.models import Post
 
 register = template.Library()
 
-def has_user_like(post: Post, user: Type[AbstractUser]) -> bool:
+def has_user_like(post: Post, user: User) -> bool:
     """
     has like
     """
