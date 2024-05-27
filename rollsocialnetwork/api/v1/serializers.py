@@ -1,7 +1,10 @@
 """
 api.v1 serializers
 """
-from typing import Optional
+from typing import (
+    Dict,
+    Optional,
+)
 from rest_framework import serializers
 from django.contrib.sites.models import Site
 from django.contrib.auth import (
@@ -79,11 +82,11 @@ class VerifyVerificationCodeSerializer(serializers.Serializer):
     phone_number = PhoneNumberField()
     code = serializers.CharField()
 
-    def validate(self, attrs):
+    def validate(self, attrs: Dict) -> Dict:
         pn = attrs.get("phone_number")
-        phone_number = format_pn(pn)
         code = attrs.get("code")
-        if phone_number and code:
+        if pn and code:
+            phone_number = format_pn(pn)
             user = authenticate(request=self.context.get("request"),
                                 phone_number=phone_number,
                                 code=code)
