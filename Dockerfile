@@ -1,4 +1,4 @@
-FROM python:3.12.1-alpine AS build-requirements
+FROM python:3.12.3-alpine AS build-requirements
 
 WORKDIR /home/app
 

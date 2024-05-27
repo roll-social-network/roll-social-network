@@ -1,4 +1,4 @@
-FROM python:3.12.1-bullseye
+FROM python:3.12.3-bullseye
 
 ENV NODE_MAJOR 20
 
