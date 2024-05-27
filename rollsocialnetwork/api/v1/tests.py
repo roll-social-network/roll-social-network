@@ -3,11 +3,10 @@ api.v1 tests
 """
 from unittest import mock
 import phonenumbers
-from django.test import (
-    TestCase,
-    RequestFactory,
-)
+from django.test import TestCase
+from rest_framework.test import APIRequestFactory
 from rest_framework.serializers import ValidationError
+from rest_framework import status
 from rollsocialnetwork.tests_factory import (
     UserFactory,
     SiteFactory,
@@ -16,6 +15,7 @@ from .serializers import VerifyVerificationCodeSerializer
 from .views import (
     SitesViewset,
     UsersViewset,
+    LoginView,
 )
 
 PHONE_NUMBER = "+55 11 98070-6050"
@@ -72,7 +72,7 @@ class SitesViewsetTestCase(TestCase):
     SitesViewset test case
     """
     def setUp(self):
-        self.factory = RequestFactory()
+        self.factory = APIRequestFactory()
         self.site_factory = SiteFactory()
 
     def test_current(self):
@@ -83,14 +83,14 @@ class SitesViewsetTestCase(TestCase):
         request.site = self.site_factory.create_site()
         response = SitesViewset(request=request,
                                 format_kwarg={}).current(request)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 class UsersViewsetTestCase(TestCase):
     """
     UsersViewset test case
     """
     def setUp(self):
-        self.factory = RequestFactory()
+        self.factory = APIRequestFactory()
         self.user_factory = UserFactory()
 
     def test_current(self):
@@ -102,3 +102,18 @@ class UsersViewsetTestCase(TestCase):
         response = UsersViewset(request=request,
                                 format_kwarg={}).current(request)
         self.assertEqual(response.status_code, 200)
+
+class LoginViewTestCase(TestCase):
+    """
+    LoginView test case
+    """
+    def setUp(self):
+        self.factory = APIRequestFactory()
+
+    def test_ok(self):
+        """
+        ok
+        """
+        request = self.factory.post('/api/v1/login/', data={ "phone_number": PHONE_NUMBER })
+        response = LoginView(request=request).as_view()(request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
