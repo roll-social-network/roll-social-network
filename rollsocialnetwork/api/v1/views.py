@@ -120,6 +120,8 @@ class OAuth2AuthorizeView(OAuthLibMixin,
     """
     OAuth2 authorize view
     """
+    permission_classes = [IsAuthenticated]
+
     def api_error_response(self, error: OAuthToolkitError):
         """
         error response
@@ -171,7 +173,7 @@ class OAuth2AuthorizeView(OAuthLibMixin,
                 "credentials": credentials,
                 "allow": True,
             }
-            approval_prompt = request.GET.get("approval_prompt")
+            approval_prompt = credentials.get("approval_prompt")
             if approval_prompt != "auto":
                 uri, _, _, _ = self.create_authorization_response(**create_authorization_kwargs)
                 return Response({ "uri": uri })
