@@ -48,6 +48,7 @@ faker-e164 = "*"
 django-stubs = "*"
 djangorestframework-stubs = "*"
 pytest-django = "*"
+types-oauthlib = "*"
 
 [requires]
 python_version = "3.12"
