@@ -1,8 +1,12 @@
 """
 phone auth views
 """
-from typing import Any, Optional
+from typing import (
+    Any,
+    Optional,
+)
 from django.http import (
+    HttpResponseBase,
     HttpResponse,
     HttpResponseRedirect,
     HttpResponseBadRequest,
@@ -74,14 +78,15 @@ class LoginView(BuildURLWithNextQSMixin,
     template_name = "phone_auth/login_form.html"
 
     def get_initial(self) -> dict[str, Any]:
-        g = GeoIP2()
+        geo = GeoIP2()
         address = self.request.META.get('REMOTE_ADDR')
         country = ""
         remote_addr = self.request.META.get('HTTP_X_FORWARDED_FOR')
         if remote_addr:
             address = remote_addr.split(',')[-1].strip()
         try:
-            country = g.country_code(address)
+            if address:
+                country = geo.country_code(address)
         except AddressNotFoundError:
             pass
         initial = {
@@ -98,6 +103,7 @@ class LoginView(BuildURLWithNextQSMixin,
         get verify url
         """
         pn = form.cleaned_data.get("phone_number")  # type: ignore[attr-defined]
+        assert pn, "phone number not defined"
         phone_number = format_pn(pn)
         has_otp_secret = OTPSecret.phone_number_has_valid_otp_secret(phone_number)
         if has_otp_secret:
@@ -128,7 +134,7 @@ class VerifyVerificationCodeView(IsNotMyPhoneNumberMixin,
     """
 
     template_name = "phone_auth/verify_verification_code_form.html"
-    form_class = VerifyVerificationCodeForm
+    form_class = VerifyVerificationCodeForm  # type: ignore[assignment]
 
     def get_initial(self) -> dict[str, Any]:
         return self.kwargs
@@ -149,7 +155,7 @@ class VerifyOTPCodeView(BuildURLWithNextQSMixin,
     """
 
     template_name = "phone_auth/verify_otp_code_form.html"
-    form_class = VerifyOTPCodeForm
+    form_class = VerifyOTPCodeForm  # type: ignore[assignment]
 
     def get_initial(self) -> dict[str, Any]:
         return self.kwargs
@@ -157,9 +163,9 @@ class VerifyOTPCodeView(BuildURLWithNextQSMixin,
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         request_url = reverse("phoneauth:request-verification-code",
-                              kwargs={"phone_number": self.kwargs.get("phone_number")})
+                              kwargs={"phone_number": kwargs.get("phone_number")})
         context.update({
-            "phone_number": self.kwargs.get("phone_number"),
+            "phone_number": kwargs.get("phone_number"),
             "send_via_sms_url": self.build_url_with_next(request_url),
             "is_not_my_phone_number_url": self.get_is_not_my_phone_number_url()
         })
@@ -186,7 +192,7 @@ class ValidateOTPSecretView(LoginRequiredMixin,
     def dispatch(self,
                  request: HttpRequest,  # type: ignore[override]
                  *args,
-                 **kwargs) -> HttpResponse:
+                 **kwargs) -> HttpResponseBase:
         if not self.otp_secret or self.otp_secret.valid_at:
             return HttpResponseBadRequest()
         return super().dispatch(request, *args, **kwargs)

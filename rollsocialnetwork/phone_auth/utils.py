@@ -9,7 +9,7 @@ import pyotp
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import User  # pylint: disable=imported-auth-user
 
 def fill_code() -> str:
     """
@@ -37,7 +37,7 @@ def normalize_phone_number(phone_number: str) -> str:
     pn = phonenumbers.parse(phone_number, None)
     return format_pn(pn)
 
-def get_or_create_user(phone_number: str) -> AbstractBaseUser:
+def get_or_create_user(phone_number: str) -> User:
     """
     get or create user using phone number
     """

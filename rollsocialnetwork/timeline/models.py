@@ -1,12 +1,9 @@
 """
 timeline models
 """
-from typing import (
-    Optional,
-    Type,
-)
+from typing import Optional
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User  # pylint: disable=imported-auth-user
 from django.core.files.storage import storages  # type: ignore[attr-defined]
 from django.dispatch import receiver  # type: ignore[attr-defined]
 from rollsocialnetwork.social.models import UserProfile
@@ -61,7 +58,7 @@ class Post(models.Model):
         self._dislike(like)
         return None
 
-    def has_user_like(self, user: Type[AbstractUser]) -> bool:
+    def has_user_like(self, user: User) -> bool:
         """
         has user like
         """
