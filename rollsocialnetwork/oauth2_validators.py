@@ -1,7 +1,6 @@
 """
 rollsocialnetwork oauth2_validators
 """
-from typing import Dict
 from django.conf import settings
 from oauth2_provider.oauth2_validators import OAuth2Validator  # type: ignore[import-untyped]
 from rollsocialnetwork.http_request import HttpRequest
@@ -20,7 +19,7 @@ class RollOAuth2Validator(OAuth2Validator):  # pylint: disable=W0223
         "passwords_email": "passwords",
     }
 
-    def get_additional_claims(self, request):
+    def get_additional_claims(self, request: HttpRequest):
         claims = {}
         user = request.user
         if user.is_authenticated:
