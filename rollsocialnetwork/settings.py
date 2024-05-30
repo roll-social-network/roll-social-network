@@ -247,6 +247,12 @@ OVERRIDE_SCHEME = config("OVERRIDE_SCHEME",
 HOT_POSTS_SLICE = config("HOT_POSTS_SLICE",
                          default=12,
                          cast=int)
+OAUTH_PKCE_REQUIRED_LIST = config("OAUTH_PKCE_REQUIRED_LIST",
+                                 default=None,
+                                 cast=(lambda value: value if value is None else value.split()))
+OAUTH2_PKCE_REQUIRED = (lambda client_id: client_id in OAUTH_PKCE_REQUIRED_LIST) \
+    if OAUTH_PKCE_REQUIRED_LIST is not None \
+        else config("OAUTH2_PKCE_REQUIRED", default=True, cast=bool)
 OAUTH2_PROVIDER = {
     "OIDC_ENABLED": True,
     "OIDC_RSA_PRIVATE_KEY": config("OIDC_RSA_PRIVATE_KEY",
@@ -254,10 +260,15 @@ OAUTH2_PROVIDER = {
                                    cast=oidc_rsa_private_key_cast),
     "SCOPES": {
         "openid": "OpenID Connect",
+        "profile": "Profile",
+        "email": "E-mail",
+        "grafana": "Roll Monitoring Grafana",
+        "passwords": "Roll Passwords Manager",
     },
     "OAUTH2_VALIDATOR_CLASS": "rollsocialnetwork.oauth2_validators.RollOAuth2Validator",
     "OIDC_ISS_ENDPOINT": config("OIDC_ISS_ENDPOINT",
-                                default=None)
+                                default=None),
+    "PKCE_REQUIRED": OAUTH2_PKCE_REQUIRED,
 }
 GEOIP_PATH = config("GEOIP_PATH",
                     default="./.geoip")

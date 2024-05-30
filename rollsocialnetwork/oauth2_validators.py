@@ -1,7 +1,6 @@
 """
 rollsocialnetwork oauth2_validators
 """
-from typing import Dict
 from django.conf import settings
 from oauth2_provider.oauth2_validators import OAuth2Validator  # type: ignore[import-untyped]
 from rollsocialnetwork.http_request import HttpRequest
@@ -10,8 +9,18 @@ class RollOAuth2Validator(OAuth2Validator):  # pylint: disable=W0223
     """
     roll OAuth2 Validator
     """
-    def get_userinfo_claims(self, request: HttpRequest) -> Dict:
-        claims = super().get_userinfo_claims(request)
+    oidc_claim_scope = {
+        "sub": "openid",
+        "name": "profile",
+        "username": "profile",
+        "email": "email",
+        "grafana_email": "grafana",
+        "grafana_role": "grafana",
+        "passwords_email": "passwords",
+    }
+
+    def get_additional_claims(self, request: HttpRequest):
+        claims = {}
         user = request.user
         if user.is_authenticated:
             name = user.get_full_name()  # type: ignore[attr-defined]
@@ -26,9 +35,8 @@ class RollOAuth2Validator(OAuth2Validator):  # pylint: disable=W0223
                 "name": name,
                 "username": username,
                 "email": email,
-                "grafana": {
-                    "email": email or f"{username}@monitoring.{settings.SUBDOMAIN_BASE}",
-                    "role": grafana_role
-                }
+                "grafana_email": email or f"{username}@monitoring.{settings.SUBDOMAIN_BASE}",
+                "grafana_role": grafana_role,
+                "passwords_email": email or f"{username}@passwords.{settings.SUBDOMAIN_BASE}"
             })
         return claims
