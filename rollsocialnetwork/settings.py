@@ -264,6 +264,7 @@ OAUTH2_PROVIDER = {
         "email": "E-mail",
         "grafana": "Roll Monitoring Grafana",
         "passwords": "Roll Passwords Manager",
+        "groups": "Groups",
     },
     "OAUTH2_VALIDATOR_CLASS": "rollsocialnetwork.oauth2_validators.RollOAuth2Validator",
     "OIDC_ISS_ENDPOINT": config("OIDC_ISS_ENDPOINT",
