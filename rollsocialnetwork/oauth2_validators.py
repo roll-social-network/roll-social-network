@@ -17,6 +17,7 @@ class RollOAuth2Validator(OAuth2Validator):  # pylint: disable=W0223
         "grafana_email": "grafana",
         "grafana_role": "grafana",
         "passwords_email": "passwords",
+        "passwords_username": "passwords"
     }
 
     def get_additional_claims(self, request: HttpRequest):
@@ -31,12 +32,15 @@ class RollOAuth2Validator(OAuth2Validator):  # pylint: disable=W0223
                 grafana_role = "Editor"
             if user.is_superuser:  # type: ignore[attr-defined]
                 grafana_role = "Admin"
+            grafana_email = f"{username}@monitoring.{settings.SUBDOMAIN_BASE}"
+            passwords_email = f"{username}@passwords.{settings.SUBDOMAIN_BASE}"
             claims.update({
                 "name": name,
                 "username": username,
                 "email": email,
-                "grafana_email": email or f"{username}@monitoring.{settings.SUBDOMAIN_BASE}",
+                "grafana_email": grafana_email,
                 "grafana_role": grafana_role,
-                "passwords_email": email or f"{username}@passwords.{settings.SUBDOMAIN_BASE}"
+                "passwords_email": email or passwords_email,
+                "passwords_username": passwords_email
             })
         return claims
