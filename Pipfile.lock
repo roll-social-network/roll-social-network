@@ -1509,12 +1509,12 @@
         },
         "faker": {
             "hashes": [
-                "sha256:2baf32ca8a9e6870445f2248c99b210e5d0e5eadaba5936b407f6eb9d63cb96a",
-                "sha256:c6c2a937c59f12ee9878434c6ad3d6eca5d429d50a9b7c5923d99aa1a7ba5fba"
+                "sha256:0e1cf7a8d3c94de91a65ab1e9cf7050903efae1e97901f8e5924a9f45147ae44",
+                "sha256:f1dc27dc8035cb7e97e96afbb5fe1305eed6aeea53374702cbac96acfe851626"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8'",
-            "version": "==25.4.0"
+            "version": "==25.9.1"
         },
         "faker-e164": {
             "hashes": [
